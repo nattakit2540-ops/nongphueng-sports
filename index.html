@@ -517,8 +517,8 @@ const PLAN_DEF=[
  {id:'r1',label:'ฟุตบอล ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบแรก',sports:TEAM_SPORTS,rounds:[0],def:['2026-12-15','09:00','17:00']},
  {id:'semi',label:'ฟุตบอล ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบรองชนะเลิศ',sports:TEAM_SPORTS,rounds:[1],def:['2026-12-17','09:00','12:00']},
  {id:'fin3',label:'ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบชิง',sports:['futsal','volleyball','takraw'],rounds:[2],def:['2026-12-17','13:00','17:00']},
- {id:'finFFp',label:'ฟุตบอลหญิง ประถม — รอบชิง',sports:['football'],gender:'f',level:'p',rounds:[2],def:['2026-12-17','13:00','17:00']},
- {id:'finFFs',label:'ฟุตบอลหญิง มัธยม — รอบชิง (เริ่มตรงเวลา)',sports:['football'],gender:'f',level:'s',fixed:true,secFinal:true,rounds:[2],def:['2026-12-17','14:00','14:00']},
+ {id:'finFFp',label:'ฟุตบอลหญิง ประถม — รอบชิง (เริ่มตรงเวลา)',sports:['football'],gender:'f',level:'p',fixed:true,rounds:[2],def:['2026-12-17','14:00','14:00']},
+ {id:'finFFs',label:'ฟุตบอลหญิง มัธยม — รอบชิง (เริ่มตรงเวลา)',sports:['football'],gender:'f',level:'s',fixed:true,secFinal:true,rounds:[2],def:['2026-12-17','15:00','15:00']},
  {id:'finFMp',label:'ฟุตบอลชาย ประถม — รอบชิง',sports:['football'],gender:'m',level:'p',rounds:[2],def:['2026-12-18','13:00','17:00']},
  {id:'finFMs',label:'ฟุตบอลชาย มัธยม — รอบชิง (เริ่มตรงเวลา)',sports:['football'],gender:'m',level:'s',fixed:true,secFinal:true,rounds:[2],def:['2026-12-18','14:00','14:00']}];
 function planRule(sid,d,round){const dv=div(d),k=divKind(d);for(const r of PLAN_DEF){if(!r.sports.includes(sid)||!r.rounds.includes(round))continue;if(r.gender&&r.gender!==dv.g)continue;if(r.level&&r.level!==dv.lv)continue;if(r.kinds&&!r.kinds.includes(k))continue;return r}return null}
@@ -551,7 +551,7 @@ const DEFAULT_NAME='แข่งขันกีฬาอำเภอเกษต
 function defaultState(){return migrate({version:3,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,sports:{}},brackets:{}})}
 const validSeeds=a=>{if(!Array.isArray(a)||a.length!==6)return false;const t=a.filter(x=>x!==null);return t.every(x=>Number.isInteger(x)&&x>=0&&x<6)&&new Set(t).size===t.length};
 // upgrades older saved data (v2: 4 divisions per sport) to the current set of events
-const DATA_REV=9;
+const DATA_REV=10;
 function migrate(v){if(!v||typeof v!=='object'||(v.version!==2&&v.version!==3)||typeof v.eventName!=='string'||!v.settings||typeof v.settings!=='object')return null;
  if((Number(v.rev)||0)<DATA_REV){const bs={};for(const [k,b] of Object.entries(v.brackets||{}))if(b&&typeof b==='object')bs[k]={...b,schedules:{}};
   v={...v,rev:DATA_REV,brackets:bs,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,lockedDays:[],sports:{}}}}
@@ -635,7 +635,7 @@ function autoSchedule(keepExisting=false,silent=false){const z=state.settings,da
  // latest start so that the next round(s) on the same day still fit before their window closes
  const childOf=new Map();events.forEach(c=>c.parents.forEach(pk=>childOf.set(pk,c)));
  const latestStart=(e,date)=>{let L=atTime(slotOf(e).to)-e.duration;const c=childOf.get(e.key);if(c&&slotOf(c).dates.includes(date))L=Math.min(L,latestStart(c,date)-Number(z.rest)-e.duration);return L};
- for(let round=0;round<3;round++){const batch=shuffle(events.filter(e=>e.round===round)).sort((a,b)=>b.duration-a.duration);for(let i=0;i<batch.length;i++){const e=batch[i];if(hasDate(e))continue;let placed=false,preferred=[];const sl=slotOf(e),dates=sl.dates.filter(x=>!L.has(x));
+ for(let round=0;round<3;round++){const fx=e=>{const r=planRule(e.s,e.d,e.round);return r&&r.fixed?1:0},batch=shuffle(events.filter(e=>e.round===round)).sort((a,b)=>fx(b)-fx(a)||b.duration-a.duration);for(let i=0;i<batch.length;i++){const e=batch[i];if(hasDate(e))continue;let placed=false,preferred=[];const sl=slotOf(e),dates=sl.dates.filter(x=>!L.has(x));
   // first round early, semifinals in the middle, finals over the last days (latest first);
   // finals reserve every team that could still reach them, so they need more than one day
   if(dates.length>=3){const n=dates.length,c1=Math.max(1,Math.round(n*.45)),c2=Math.max(c1+1,Math.round(n*.7));if(round===0){const pre=dates.slice(0,c1);preferred=[pre[i%pre.length],...pre]}else if(round===1){const mid=dates.slice(c1-1,c2);preferred=[mid[i%mid.length],...mid]}else preferred=dates.slice(c2-1).reverse()}else if(dates.length===2)preferred=round===0?[dates[0]]:[dates[1]];else preferred=[...dates];
