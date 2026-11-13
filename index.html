@@ -347,7 +347,11 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 .chip .live{display:inline-block;margin-right:2px}
 .live-check{margin-top:0;padding:10px 12px;border-radius:12px;background:#fff5f7}
 .report{border-color:#f6d4d4;margin-bottom:14px}.report:before{background:linear-gradient(90deg,#ff8a8a,#ffb36b)}
-.rt-card{margin-top:16px}.rt-help{margin-top:16px;font-size:13.5px}.rt-help summary{cursor:pointer;font-weight:600;color:var(--sky-d)}.rt-help .steps{margin-top:10px}.rt-help pre{background:#f6f8fc;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;overflow:auto;white-space:pre}
+.daily-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:6px 0 14px}.daily-head h2{font:700 24px/1.25 var(--display);margin:2px 0 4px}
+.daily .card{margin-bottom:14px}.daily-sport h3{display:flex;align-items:center;gap:9px}.daily-div h4{margin:14px 0 8px;font:600 14.5px var(--display);color:var(--pink-d)}
+.daily-tbl{min-width:640px}.daily-tbl td small{display:block;font-size:11.5px;color:var(--muted)}.daily-tbl td.sc{font:700 17px var(--num);text-align:center;white-space:nowrap}.daily-tbl td.w{font-weight:700;color:var(--pink-d)}.daily-tbl th,.daily-tbl td{padding:10px 12px;font-size:13.5px}
+.daily-champ ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}.daily-champ li{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:12px;background:linear-gradient(90deg,#fff6fa,#f1f9ff);font-size:14px}
+@media print{.view-sw,.daily .toolbar,[data-rday]{display:none!important}.daily .card{break-inside:avoid;border:1px solid #ddd;box-shadow:none}.daily .card:before{display:none}.daily-tbl{min-width:0}}
 /* responsive */
 @media(max-width:1100px){.champs{grid-template-columns:repeat(2,1fr)}.sports{grid-template-columns:repeat(3,1fr)}.next{grid-template-columns:repeat(2,1fr)}.fx{grid-template-columns:70px minmax(0,1fr) minmax(0,2fr) 104px 38px}.fx-venue{display:none}}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
@@ -430,7 +434,6 @@ body{background:#fff}.topbar,.foot,.toolbar,.filters,.days,.icon-btn,.hero-cta,.
         <div class="colon">:</div>
         <div class="sbb"><input class="si" id="scoreB" type="number" min="0" max="999" step="1" placeholder="–" aria-label="คะแนนทีมที่ 2"></div>
       </div>
-      <label class="check live-check"><input type="checkbox" id="liveScore"><span><b>🔴 กำลังแข่งขัน (ผลสด)</b> — แสดงคะแนนระหว่างแข่งให้ผู้ชมเห็น ยังไม่นับผลแพ้ชนะ · เอาเครื่องหมายออกเมื่อจบการแข่งขัน</span></label>
       <label class="f"><span>กรณีคะแนนเท่ากัน เลือกทีมชนะ (จุดโทษ / การตัดสิน)</span><select class="input" id="tieWinner"><option value="">ไม่เสมอ</option><option value="a">ทีมที่ 1</option><option value="b">ทีมที่ 2</option></select></label>
       <div id="modalNotice" class="alert" hidden></div>
       <div class="sub-h">วัน เวลา และสนาม</div>
@@ -573,8 +576,8 @@ function possibilities(s,d,m,cache,pcache){const k=key(s,d,m);if(pcache.has(k))r
 function allEvents(){const oc=new Map(),pc=new Map(),res=[];SPORTS.forEach(s=>{s.divs.forEach(d=>{const venues=venueList(s.id,div(d).lv);MATCH_ORDER.forEach(m=>{const o=outcome(s.id,d,m,oc),b=bdata(s.id,d);res.push({key:key(s.id,d,m),s:s.id,d,venues,m,round:MATCH[m].round,number:MATCH[m].number,participants:possibilities(s.id,d,m,oc,pc),sides:[o.a,o.b],winner:o.winner,completed:o.completed,result:o.result,schedule:{...(b.schedules[m]||{})},parents:MATCH[m].parents.map(p=>key(s.id,d,p)),duration:durOf(s.id,d),defaultVenue:venues[0]})})})});return res}
 let autoPubTimer=null;
 function store(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){alert('ไม่สามารถบันทึกในเบราว์เซอร์ได้ กรุณาสำรอง JSON: '+e.message)}
- if(typeof admin!=='undefined'&&admin&&localStorage.getItem('np_autopub')==='1'&&localStorage.getItem('np_gh_token')){clearTimeout(autoPubTimer);autoPubTimer=setTimeout(()=>publish(true),2500)}
- if(typeof admin!=='undefined')rtQueue()}
+
+}
 function toast(msg,ms=3200){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),ms)}
 const isLive=e=>Boolean(e.result&&e.result.live&&Number.isInteger(e.result.a)&&Number.isInteger(e.result.b));
 const hasDate=e=>Boolean(e.schedule.date&&e.schedule.time);
@@ -671,15 +674,10 @@ function homeHTML(){const es=allEvents(),z=state.settings,done=es.filter(e=>e.co
  </div><div><div class="cd-label" id="cdLabel">เริ่มการแข่งขันใน</div><div class="cd" id="countdown"><div><b data-cd="d">00</b><span>วัน</span></div><div><b data-cd="h">00</b><span>ชั่วโมง</span></div><div><b data-cd="m">00</b><span>นาที</span></div><div><b data-cd="s">00</b><span>วินาที</span></div></div></div></div>
  <div class="kpis"><div><b>${SPORTS.length}</b><span>ชนิดกีฬา</span></div><div><b>${NDIV}</b><span>ประเภทการแข่งขัน</span></div><div><b>${es.length}</b><span>นัดทั้งหมด</span></div><div><b><em>${done}</em></b><span>แข่งขันแล้ว</span></div></div></div></section>
  <section class="wrap sec"><div class="sec-h"><div><span class="kicker">Sports</span><h2>ชนิดกีฬา</h2></div><button class="link" data-view-link="bracket">ดูผังทั้งหมด ${ic('arrow')}</button></div><div class="sports">${cards}</div></section>
- ${liveHTML(es)}<section class="wrap sec"><div class="sec-h"><div><span class="kicker">Up next</span><h2>นัดถัดไป</h2></div><button class="link" data-view-link="schedule">ตารางทั้งหมด ${ic('arrow')}</button></div>${next?`<div class="next">${next}</div>`:'<div class="empty">ไม่มีนัดที่รอแข่งขัน</div>'}</section>
+ <section class="wrap sec"><div class="sec-h"><div><span class="kicker">Daily report</span><h2>รายงานผลประจำวัน</h2></div><button class="link" data-goto-report="1">ดูรายงาน ${ic('arrow')}</button></div><p class="lead">สรุปผลการแข่งขันของแต่ละวัน แยกตามชนิดกีฬาและประเภท พิมพ์หรือส่งออก Excel ได้</p></section>
+ <section class="wrap sec"><div class="sec-h"><div><span class="kicker">Up next</span><h2>นัดถัดไป</h2></div><button class="link" data-view-link="schedule">ตารางทั้งหมด ${ic('arrow')}</button></div>${next?`<div class="next">${next}</div>`:'<div class="empty">ไม่มีนัดที่รอแข่งขัน</div>'}</section>
  <section class="wrap sec"><div class="sec-h"><div><span class="kicker">Champions</span><h2>ทำเนียบผู้ชนะเลิศ</h2></div></div><div class="champs">${champ}</div></section>`}
 
-function liveHTML(es){const now=Date.now(),st=e=>new Date(`${e.schedule.date}T${e.schedule.time}:00`).getTime();
- const onNow=es.filter(e=>!e.completed&&(isLive(e)||(hasDate(e)&&now>=st(e)&&now<st(e)+e.duration*60000))).sort(byTime);
- const recent=es.filter(e=>e.completed).sort((a,b)=>byTime(b,a)).slice(0,6);
- const card=e=>`<button class="nx ${isLive(e)?'is-live':''}" data-sport="${e.s}" data-open="${e.key}"><span class="nx-top"><span class="nx-time"><b>${e.schedule.time||'--:--'}</b><small>${hasDate(e)?dLong(e.schedule.date):''}</small></span><span class="chip">${isLive(e)?'<i class="live"></i>LIVE':e.completed?'จบแล้ว':'กำลังแข่ง'} · ${sport(e.s).name}</span></span><span class="nx-score"><span class="${e.completed&&e.winner===e.sides[0]?'w':''}">${safe(teamLabel(e,0))}</span><b>${e.completed||isLive(e)?`${e.result.a} : ${e.result.b}`:'VS'}</b><span class="${e.completed&&e.winner===e.sides[1]?'w':''}">${safe(teamLabel(e,1))}</span></span><span class="nx-foot">${div(e.d).name} · ${ROUND[e.round]} · ${safe((e.schedule.venue||'').split(' · ')[0])}</span></button>`;
- return (onNow.length?`<section class="wrap sec"><div class="sec-h"><div><span class="kicker live-k"><i class="live"></i>Live now</span><h2>กำลังแข่งขัน</h2></div><span class="upd">อัปเดตอัตโนมัติ</span></div><div class="next">${onNow.map(card).join('')}</div></section>`:'')+
-  (recent.length?`<section class="wrap sec"><div class="sec-h"><div><span class="kicker">Results</span><h2>ผลล่าสุด</h2></div><button class="link" data-view-link="schedule">ผลทั้งหมด ${ic('arrow')}</button></div><div class="next">${recent.map(card).join('')}</div></section>`:'')}
 function tick(){const el=$('#countdown');if(!el)return;const z=state.settings,cdays=compDays(),start=new Date(`${cdays[0]}T${z.timeFrom}:00`).getTime(),end=new Date(`${cdays[cdays.length-1]}T${z.timeTo}:00`).getTime(),now=Date.now();let diff=start-now,label='เริ่มการแข่งขันใน',live=false;
  if(diff<=0){if(now<end){label='กำลังแข่งขัน · สิ้นสุดใน';diff=end-now;live=true}else{label='การแข่งขันจบลงแล้ว';diff=0}}
  const s=Math.max(0,Math.floor(diff/1000)),parts={d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60};
@@ -758,6 +756,22 @@ function boardHTML(){const days=compDays();if(!days.includes(boardDay))boardDay=
  <div class="bwrap"><div class="tray" data-tray="1"><div class="tray-h">ยังไม่ลงเวลา <b>${tray.length}</b> นัด</div>${tray.length?[...groups].map(([g,list])=>`<div class="tray-g">${g}</div>${list.map(chip).join('')}`).join(''):'<p class="tiny">วางครบทุกนัดของวันนี้แล้ว ✓</p>'}</div>
  ${gridHTML(d,!locked)}</div></section>`}
 let schedMode='list',venueDay=null;
+let reportDay=null;
+function dailyEvents(d){return allEvents().filter(e=>e.schedule.date===d).sort((a,b)=>SPORTS.findIndex(x=>x.id===a.s)-SPORTS.findIndex(x=>x.id===b.s)||sport(a.s).divs.indexOf(a.d)-sport(b.s).divs.indexOf(b.d)||a.number-b.number)}
+function dailyReportHTML(){const days=compDays(),all=allEvents();if(!days.includes(reportDay)){const t=new Date(),today=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;reportDay=days.includes(today)?today:days[0]}
+ const d=reportDay,es=dailyEvents(d),done=es.filter(e=>e.completed).length,champs=es.filter(e=>e.m==='M5'&&e.completed);
+ const bySport=new Map();es.forEach(e=>{if(!bySport.has(e.s))bySport.set(e.s,new Map());const m=bySport.get(e.s);if(!m.has(e.d))m.set(e.d,[]);m.get(e.d).push(e)});
+ const row=e=>`<tr><td>คู่ ${e.number}<small>${ROUND[e.round]}</small></td><td>${e.schedule.time} น.<small>${safe((e.schedule.venue||'').split(' · ')[0])}</small></td><td class="${e.completed&&e.winner===e.sides[0]?'w':''}">${safe(teamLabel(e,0))}</td><td class="sc">${e.completed?`${e.result.a} – ${e.result.b}`:'–'}</td><td class="${e.completed&&e.winner===e.sides[1]?'w':''}">${safe(teamLabel(e,1))}</td><td>${e.completed?`<b>${safe(TEAMS[e.winner])}</b>`:'<span class="muted">ยังไม่แข่ง</span>'}</td></tr>`;
+ return `<div class="days">${days.map((x,i)=>{const n=all.filter(e=>e.schedule.date===x),k=n.filter(e=>e.completed).length;return `<button class="day ${x===d?'active':''}" data-rday="${x}"><small>Day ${i+1}</small><b>${TH_D[pd(x).w].slice(0,3)}. ${dShort(x)}</b><i>ผลแล้ว ${k}/${n.length}</i></button>`}).join('')}</div>
+ <div class="daily">
+  <div class="daily-head"><div><span class="kicker">Daily report</span><h2>รายงานผลการแข่งขันประจำวัน${dLong(d).replace(/^[^ ]+ที่ /,' วันที่ ')}</h2><p class="lead">${safe(state.eventName)} · แข่งแล้ว ${done} จาก ${es.length} นัด</p></div>
+  <div class="toolbar"><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์ / PDF</button><button class="btn btn-sm" data-act="csvday">${ic('download')}Excel วันนี้</button></div></div>
+  ${champs.length?`<div class="card daily-champ"><h3>🏆 ผู้ชนะเลิศที่ได้วันนี้</h3><ul>${champs.map(e=>`<li><span>${sport(e.s).name} · ${div(e.d).name}</span><b>${safe(TEAMS[e.winner])}</b></li>`).join('')}</ul></div>`:''}
+  ${es.length?[...bySport].map(([sid,divs])=>`<div class="card daily-sport" data-sport="${sid}"><h3><span class="sdot"></span>${sport(sid).name}</h3>${[...divs].map(([did,list])=>`<div class="daily-div"><h4>${div(did).name}</h4><div class="tbl-wrap"><table class="tbl daily-tbl"><thead><tr><th>คู่</th><th>เวลา / สนาม</th><th>ทีม 1</th><th>ผล</th><th>ทีม 2</th><th>ผู้ชนะ</th></tr></thead><tbody>${list.map(row).join('')}</tbody></table></div></div>`).join('')}</div>`).join(''):'<div class="empty">ไม่มีการแข่งขันในวันนี้</div>'}
+ </div>`}
+function exportDayCSV(){const d=reportDay,es=dailyEvents(d);const head=['วันที่','ชนิดกีฬา','ประเภท','คู่ที่','รอบ','เวลา','สนาม','ทีมที่ 1','คะแนน 1','คะแนน 2','ทีมที่ 2','ผู้ชนะ'];
+ const rows=[head,...es.map(e=>[d,sport(e.s).name,div(e.d).name,e.number,ROUND[e.round],e.schedule.time,e.schedule.venue||'',teamLabel(e,0),e.completed?e.result.a:'',e.completed?e.result.b:'',teamLabel(e,1),e.completed?TEAMS[e.winner]:'ยังไม่แข่ง'])];
+ download('﻿'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),`รายงานผล_${d}.csv`,'text/csv;charset=utf-8');toast('ส่งออกรายงานประจำวันแล้ว')}
 function venueViewHTML(){const days=compDays(),es=allEvents();if(!days.includes(venueDay)){venueDay=days.find(x=>es.some(e=>e.schedule.date===x))||days[0]}
  return `<div class="days">${days.map((x,i)=>`<button class="day ${x===venueDay?'active':''}" data-vday="${x}"><small>Day ${i+1}</small><b>${TH_D[pd(x).w].slice(0,3)}. ${dShort(x)}</b><i>${es.filter(e=>e.schedule.date===x).length} นัด</i></button>`).join('')}</div>
  <p class="tiny" style="margin:0 0 10px">ตารางเวลาแยกตามสนาม · แตะที่นัดเพื่อดูรายละเอียด</p>${gridHTML(venueDay,false)}`}
@@ -785,8 +799,8 @@ function scheduleHTML(){const es=allEvents(),z=state.settings,issues=warnings(es
  const opt=(v,list)=>list.map(([a,b])=>`<option value="${a}" ${v===a?'selected':''}>${b}</option>`).join('');
  return `<section class="wrap"><div class="page-h"><div><span class="kicker">Match Schedule</span><h1>ตารางแข่งขัน</h1><p class="lead">${fmtDays(compDays())} · ${es.length} นัด ทุกชนิดกีฬา</p></div><div class="toolbar"><button class="btn btn-sm btn-volt admin-only" data-act="autotime">${ic('shuffle')}จัดเวลาอัตโนมัติ</button><button class="btn btn-sm admin-only" data-view-link="board">${ic('edit')}ปรับเวลาเอง (ลากวาง)</button><button class="btn btn-sm" data-act="csv">${ic('download')}Excel</button><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์</button></div></div>
  <div class="notice ${issues.length?'warn':''}"><i></i><span>${issues.length?`พบข้อขัดแย้ง ${issues.length} รายการ — ${admin?'ย้ายนัดที่มีกรอบแดงได้ที่หน้า “จัดเวลา”':'ผู้ดูแลกำลังปรับตาราง'}`:`ไม่มีทีมหรือสนามชนกัน${miss?` · ยังไม่จัดเวลา ${miss} นัด`:' · จัดครบทุกนัดแล้ว'}`}</span></div>
- ${reportHTML()}<div class="seg view-sw"><button class="${schedMode==='list'?'active':''}" data-svmode="list">รายการ</button><button class="${schedMode==='venue'?'active':''}" data-svmode="venue">ตามสนาม</button></div>
- ${schedMode==='venue'?venueViewHTML():''}<div class="list-part" ${schedMode==='venue'?'hidden':''}><div class="days">${dayBtn('all','All days','ทั้งหมด',es.length)}${dates.map((d,i)=>dayBtn(d,`Day ${i+1}`,dShort(d),es.filter(e=>e.schedule.date===d).length)).join('')}</div>
+ ${reportHTML()}<div class="seg view-sw"><button class="${schedMode==='list'?'active':''}" data-svmode="list">รายการ</button><button class="${schedMode==='venue'?'active':''}" data-svmode="venue">ตามสนาม</button><button class="${schedMode==='report'?'active':''}" data-svmode="report">รายงานประจำวัน</button></div>
+ ${schedMode==='venue'?venueViewHTML():schedMode==='report'?dailyReportHTML():''}<div class="list-part" ${schedMode!=='list'?'hidden':''}><div class="days">${dayBtn('all','All days','ทั้งหมด',es.length)}${dates.map((d,i)=>dayBtn(d,`Day ${i+1}`,dShort(d),es.filter(e=>e.schedule.date===d).length)).join('')}</div>
  <div class="filters"><select class="input" id="fSport" aria-label="ชนิดกีฬา">${opt(filter.sport,[['all','ทุกชนิดกีฬา'],...SPORTS.map(s=>[s.id,s.name])])}</select><select class="input" id="fDiv" aria-label="ประเภท">${opt(filter.division,[['all','ทุกประเภท'],...DIVS.filter(d=>SPORTS.some(x=>x.divs.includes(d.id))).map(d=>[d.id,d.name])])}</select><div class="search">${ic('search')}<input class="input" id="fText" placeholder="ค้นหาทีม สนาม หรือชนิดกีฬา" value="${safe(filter.text)}" aria-label="ค้นหา"></div></div>
  <div id="fixtures"></div></div></section>`}
 function bindSchedule(){
@@ -820,7 +834,7 @@ function settingsHTML(){const z=state.settings,es=allEvents(),errs=warnings(es),
   <label class="f wide"><span>ระดับมัธยมศึกษา</span><input class="input" id="school-s" value="${safe(z.schools.s)}" maxlength="120"></label></div></div></div>
  <div class="actions"><button class="btn btn-dark" id="saveSettings">บันทึกการตั้งค่า</button><button class="btn btn-volt" id="saveAndGen">${ic('shuffle')}บันทึกและจัดเวลาอัตโนมัติ</button><button class="btn btn-danger" id="resetSchedules">ล้างวันเวลาทั้งหมด</button></div>
  <div class="grid2"><div class="card"><h3>ตรวจสอบตาราง</h3><p class="d">จัดเวลาแล้ว ${planned}/${es.length} นัด</p><div class="notice ${errs.length?'warn':''}" style="margin:0 0 12px"><i></i><span>${errs.length?`พบปัญหา ${errs.length} รายการ`:'ไม่พบทีมหรือสนามชนกัน'}</span></div>${errs.length?`<ul class="warn-list">${errs.slice(0,80).map(m=>`<li>${safe(m)}</li>`).join('')}</ul>`:''}</div>
- ${rtCardHTML()}<div class="card"><h3>ข้อมูล</h3><p class="d">ผลที่บันทึกจะอยู่ในเครื่องนี้ก่อน กด “เผยแพร่ขึ้นเว็บ” เพื่อให้ทุกคนที่เปิดเว็บเห็นผล (ผู้ชมจะเห็นภายในประมาณ 1–2 นาที)</p><div class="actions" style="margin:0"><button class="btn btn-sm btn-volt" data-act="publish">เผยแพร่ขึ้นเว็บ</button><button class="btn btn-sm" data-act="pull">ดึงข้อมูลล่าสุดจากเว็บ</button><button class="btn btn-sm" data-act="token">เชื่อมต่อ GitHub</button><button class="btn btn-sm" data-act="rename">แก้ไขชื่องาน</button><button class="btn btn-sm" data-act="backup">${ic('download')}สำรองข้อมูล</button><button class="btn btn-sm" data-act="restore">นำเข้าข้อมูล</button><button class="btn btn-sm" data-act="csv">ส่งออก Excel</button></div></div></div></section>`}
+ <div class="card"><h3>ข้อมูล</h3><p class="d">ผลที่บันทึกจะอยู่ในเครื่องนี้ก่อน กด “เผยแพร่ขึ้นเว็บ” เพื่อให้ทุกคนที่เปิดเว็บเห็นผล (ผู้ชมจะเห็นภายในประมาณ 1–2 นาที)</p><div class="actions" style="margin:0"><button class="btn btn-sm btn-volt" data-act="publish">เผยแพร่ขึ้นเว็บ</button><button class="btn btn-sm" data-act="pull">ดึงข้อมูลล่าสุดจากเว็บ</button><button class="btn btn-sm" data-act="token">เชื่อมต่อ GitHub</button><button class="btn btn-sm" data-act="rename">แก้ไขชื่องาน</button><button class="btn btn-sm" data-act="backup">${ic('download')}สำรองข้อมูล</button><button class="btn btn-sm" data-act="restore">นำเข้าข้อมูล</button><button class="btn btn-sm" data-act="csv">ส่งออก Excel</button></div></div></div></section>`}
 function dayChips(f,t,on){const all=dateList(f,t);if(!all.length||all.length>31)return '<span class="tiny">กรุณาเลือกวันแรกและวันสุดท้ายให้ถูกต้อง</span>';return all.map(d=>{const p=pd(d);return `<label class="daychip"><input type="checkbox" value="${d}" ${on.includes(d)?'checked':''}><span><small>${TH_D[p.w]}</small>${dShort(d)}</span></label>`}).join('')}
 function sportChips(sid,f,t){const all=dateList(f,t);if(!all.length||all.length>31)return '';const on=sportDays(sid);return all.map(d=>`<label class="daychip sm"><input type="checkbox" data-sd="${sid}" value="${d}" ${on.includes(d)?'checked':''}><span>${dShort(d)}</span></label>`).join('')}
 function bindSettings(){setTimeout(()=>{const g=$('#saveAndGen');if(g)g.addEventListener('click',()=>{if(confirm('บันทึกและจัดเวลาอัตโนมัติใหม่ทุกนัด? (วันที่ล็อกไว้และนัดที่แข่งแล้วจะไม่เปลี่ยน · ทีมในสายไม่เปลี่ยน)'))applySettings(true)})});const redraw=()=>{const cur=[...document.querySelectorAll('#dayChips input:checked')].map(i=>i.value),all=dateList($('#fromDate').value,$('#toDate').value);$('#dayChips').innerHTML=dayChips($('#fromDate').value,$('#toDate').value,cur.length?cur:all);SPORTS.forEach(s=>{const el=document.querySelector(`.sport-days[data-sport="${s.id}"]`);if(el)el.innerHTML='<span>วันแข่ง</span>'+sportChips(s.id,$('#fromDate').value,$('#toDate').value)})};$('#fromDate').addEventListener('change',redraw);$('#toDate').addEventListener('change',redraw);$('#saveSettings').addEventListener('click',()=>applySettings(false));
@@ -829,14 +843,14 @@ function applySettings(gen){const f=$('#fromDate').value,t=$('#toDate').value,fr
  if(!days.length||days.length>31){alert('กรุณากำหนดวันที่เริ่มและสิ้นสุดถูกต้อง (สูงสุด 31 วัน)');return}if(!from||!to||atTime(to)<=atTime(from)){alert('กรุณากำหนดเวลาเริ่ม–สิ้นสุดให้ถูกต้อง');return}if(!Number.isInteger(rest)||rest<0||rest>120){alert('เวลาพักต้องเป็น 0–120 นาที');return}
  const picked=[...document.querySelectorAll('#dayChips input:checked')].map(i=>i.value).filter(d=>days.includes(d)).sort();if(!picked.length){alert('กรุณาเลือกวันที่มีการแข่งขันอย่างน้อย 1 วัน');return}
  const z0=state.settings,plan={};for(const r of PLAN_DEF){const d=$('#plan-d-'+r.id).value,a=$('#plan-f-'+r.id).value,b=$('#plan-t-'+r.id).value;if(!d||!a||!b||atTime(b)<=atTime(a)){alert('ตรวจสอบวันและเวลาของ: '+r.label);return}if(!picked.includes(d)){alert(r.label+' — วันที่เลือกไม่ได้เป็นวันแข่งขัน');return}plan[r.id]={date:d,from:a,to:b}}
- const settings={plan,schools:{p:$('#school-p').value.trim(),s:$('#school-s').value.trim()},lockedDays:z0.lockedDays||[],realtime:{dbUrl:($('#rt-db')||{value:''}).value.trim(),apiKey:($('#rt-key')||{value:''}).value.trim(),email:($('#rt-email')||{value:''}).value.trim()},dateFrom:f,dateTo:t,days:picked,timeFrom:from,timeTo:to,rest,interval:Number($('#interval').value),strict:$('#strict').checked,sepIndiv:$('#sepIndiv').checked,sepEvents:$('#sepEvents').checked,sports:{}};
+ const settings={plan,schools:{p:$('#school-p').value.trim(),s:$('#school-s').value.trim()},lockedDays:z0.lockedDays||[],dateFrom:f,dateTo:t,days:picked,timeFrom:from,timeTo:to,rest,interval:Number($('#interval').value),strict:$('#strict').checked,sepIndiv:$('#sepIndiv').checked,sepEvents:$('#sepEvents').checked,sports:{}};
  for(const s of SPORTS){const duration=Number($('#dur-'+s.id).value),courts=Number($('#courts-'+s.id).value),venue=$('#venue-'+s.id).value.trim();if(!Number.isInteger(duration)||duration<5||duration>240||!Number.isInteger(courts)||courts<1||courts>16||!venue){alert('ตรวจสอบระยะเวลา จำนวนสนาม และชื่อสนามของ '+s.name);return}const sd=[...document.querySelectorAll(`input[data-sd="${s.id}"]:checked`)].map(i=>i.value).filter(d=>picked.includes(d));const durByDiv={};s.divs.forEach(d=>{const el=document.getElementById(`dd-${s.id}-${d}`);if(el&&Number(el.value)>0)durByDiv[d]=Number(el.value)});settings.sports[s.id]={duration,durByDiv,byLevel:!!z0.sports[s.id].byLevel,venue,courts,days:sd}}
  state.settings=settings;if(gen)autoSchedule(false);else{store();toast('บันทึกการตั้งค่าแล้ว')}render()}
 
 /* ---------- match dialog ---------- */
 function openMatch(s,d,m){editing={s,d,m};const o=outcome(s,d,m,new Map()),sc=bdata(s,d).schedules[m]||{};const texts=[o.a,o.b].map((n,i)=>n===null?sideLabel(m,i):TEAMS[n]);const known=o.a!==null&&o.b!==null;
  $('#modalTitle').textContent=`${sport(s).name} · ${div(d).name} · คู่ที่ ${MATCH[m].number}`;$('#modalSub').textContent=ROUND[MATCH[m].round];$('#teamA').textContent=texts[0];$('#teamB').textContent=texts[1];
- $('#scoreA').value=o.result.a??'';$('#scoreB').value=o.result.b??'';$('#liveScore').checked=!!o.result.live;$('#liveScore').disabled=!known||!admin;['#scoreA','#scoreB','#tieWinner'].forEach(q=>$(q).disabled=!known);
+ $('#scoreA').value=o.result.a??'';$('#scoreB').value=o.result.b??'';['#scoreA','#scoreB','#tieWinner'].forEach(q=>$(q).disabled=!known);
  $('#tieWinner').value=o.result.tieWinner||'';$('#tieWinner').options[1].textContent='ทีมที่ 1: '+texts[0];$('#tieWinner').options[2].textContent='ทีมที่ 2: '+texts[1];
  $('#matchDate').value=sc.date||'';$('#matchTime').value=sc.time||'';$('#matchVenue').value=sc.venue||venueList(s,div(d).lv)[0];
  $('#durationNote').textContent=`ระยะเวลาแข่งขัน ${durOf(s,d)} นาที · พักขั้นต่ำก่อนนัดถัดไป ${state.settings.rest} นาที`;
@@ -845,14 +859,16 @@ function openMatch(s,d,m){editing={s,d,m};const o=outcome(s,d,m,new Map()),sc=bd
 function clearDescendantScores(s,d,m){const deps=[m],removed=[];while(deps.length){const x=deps.shift();for(const [id,cfg] of Object.entries(MATCH))if(cfg.parents.includes(x)&&!removed.includes(id)){removed.push(id);deps.push(id)}}removed.forEach(id=>delete bdata(s,d).results[id]);return removed}
 function saveMatch(ev){ev.preventDefault();if(!editing||!admin)return;const {s,d,m}=editing,b=bdata(s,d),old=b.results[m]||{},o=outcome(s,d,m,new Map());const sa=$('#scoreA').value.trim(),sb=$('#scoreB').value.trim();
  if((sa==='')!==(sb==='')){alert('กรุณากรอกคะแนนทั้งสองทีม หรือเว้นว่างทั้งคู่');return}let next=null;
- if(sa!==''){const a=Number(sa),v=Number(sb);if(!Number.isInteger(a)||!Number.isInteger(v)||a<0||v<0||a>999||v>999){alert('คะแนนต้องเป็นจำนวนเต็ม 0–999');return}if(o.a===null||o.b===null){alert('ยังไม่ทราบทีมแข่งจากคู่ก่อนหน้า');return}const live=$('#liveScore').checked;if(live){next={a,b:v,live:true}}else{const tieWinner=a===v?$('#tieWinner').value:'';if(a===v&&!tieWinner){alert('คะแนนเสมอกัน กรุณาเลือกทีมที่ชนะจากจุดโทษหรือการตัดสิน');return}next={a,b:v,tieWinner}}}
+ if(sa!==''){const a=Number(sa),v=Number(sb);if(!Number.isInteger(a)||!Number.isInteger(v)||a<0||v<0||a>999||v>999){alert('คะแนนต้องเป็นจำนวนเต็ม 0–999');return}if(o.a===null||o.b===null){alert('ยังไม่ทราบทีมแข่งจากคู่ก่อนหน้า');return}const tieWinner=a===v?$('#tieWinner').value:'';if(a===v&&!tieWinner){alert('คะแนนเสมอกัน กรุณาเลือกทีมที่ชนะจากจุดโทษหรือการตัดสิน');return}next={a,b:v,tieWinner}}
  const date=$('#matchDate').value,time=$('#matchTime').value,venue=$('#matchVenue').value.trim();if(Boolean(date)!==Boolean(time)){alert('กรุณาระบุวันและเวลาให้ครบ');return}if(date&&!venue){alert('กรุณากรอกชื่อสนาม');return}
  const es=allEvents(),target=es.find(x=>x.key===key(s,d,m)),byKey=new Map(es.map(x=>[x.key,x]));if(date){const err=validateTrial(target,{date,time,venue},es,byKey);if(err){alert('ไม่สามารถกำหนดเวลานี้ได้ เนื่องจาก'+err+sugTxt(nearestFree(target,date,atTime(time),venue)));return}}
- const before=new Set(warnings(es)),prevR=JSON.parse(JSON.stringify(b.results)),prevS=JSON.parse(JSON.stringify(b.schedules));
+ const before=new Set(warnings(es)),prevR=JSON.parse(JSON.stringify(b.results)),prevS=JSON.parse(JSON.stringify(b.schedules)),schedChanged=JSON.stringify(b.schedules[m]||null)!==JSON.stringify(date?{date,time,venue}:null);
  const changed=JSON.stringify(next||null)!==JSON.stringify(Object.keys(old).length?old:null);
  if(changed){const down=Object.keys(MATCH).filter(x=>x!==m&&MATCH[x].round>MATCH[m].round&&b.results[x]);if(down.length&&!confirm('การเปลี่ยนคะแนนอาจเปลี่ยนทีมในรอบถัดไป ระบบจะล้างผลรอบถัดไปที่เกี่ยวข้อง ยืนยันหรือไม่?'))return;clearDescendantScores(s,d,m);if(next)b.results[m]=next;else delete b.results[m]}
  if(date)b.schedules[m]={date,time,venue};else delete b.schedules[m];
- const fresh=warnings(allEvents()).filter(x=>!before.has(x));if(fresh.length){b.results=prevR;b.schedules=prevS;alert('ไม่สามารถบันทึกได้ เพราะทำให้ตารางมีปัญหาใหม่:\n\n'+fresh.slice(0,3).join('\n')+'\n\nกรุณาปรับเวลาแข่งขันก่อน');return}
+ // a new result can reveal clashes for the team that advances; those are re-timed automatically below,
+ // so only a manual change of date/time/venue is refused here
+ const fresh=schedChanged?warnings(allEvents()).filter(x=>!before.has(x)):[];if(fresh.length){b.results=prevR;b.schedules=prevS;alert('ไม่สามารถบันทึกได้ เพราะทำให้ตารางมีปัญหาใหม่:\n\n'+fresh.slice(0,3).join('\n')+'\n\nกรุณาปรับเวลาแข่งขันก่อน');return}
  const fx=changed&&next&&!next.live?fixClashes([s,d]):{moved:0};store();$('#matchModal').close();editing=null;render();if(m==='M5'&&next&&!next.live){confetti();toast('ยินดีด้วย! ได้ผู้ชนะเลิศแล้ว 🏆')}else toast(fx.moved?`บันทึกผลแล้ว · ทีมที่เข้ารอบชนเวลา จึง${fx.full?'จัดเวลาใหม่ (วันที่ล็อกไม่เปลี่ยน)':`ปรับเวลา ${fx.moved} นัด`}อัตโนมัติ${fx.left?` · ยังหาเวลาไม่ได้ ${fx.left} นัด`:''}`:'บันทึกข้อมูลการแข่งขันแล้ว')}
 function clearScore(){if(!editing)return;const {s,d,m}=editing;if(!confirm('ล้างคะแนนคู่นี้และคะแนนรอบถัดไปที่เกี่ยวข้อง? วันและเวลาจะไม่ถูกล้าง'))return;clearDescendantScores(s,d,m);delete bdata(s,d).results[m];store();$('#matchModal').close();editing=null;render();toast('ล้างผลคะแนนแล้ว')}
 
@@ -861,8 +877,8 @@ function download(text,name,type){const blob=new Blob([text],{type}),url=URL.cre
 function exportCSV(){const es=allEvents().sort(byTime);const head=['ชนิดกีฬา','ประเภท','คู่ที่','รอบ','ทีมที่ 1','ทีมที่ 2','วันแข่งขัน (ค.ศ.)','เวลาเริ่ม','ระยะเวลา (นาที)','สนามแข่งขัน','คะแนนทีม 1','คะแนนทีม 2','ผู้ชนะ','สถานะ'];
  const rows=[head,...es.map(e=>[sport(e.s).name,div(e.d).name,e.number,ROUND[e.round],teamLabel(e,0),teamLabel(e,1),e.schedule.date||'',e.schedule.time||'',e.duration,e.schedule.venue||'',e.completed?e.result.a:'',e.completed?e.result.b:'',e.winner==null?'':TEAMS[e.winner],e.completed?'แข่งขันแล้ว':hasDate(e)?'รอแข่งขัน':'ยังไม่กำหนด'])];
  download('﻿'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),'ตารางแข่งขัน_หนองผึ้งเกมส์.csv','text/csv;charset=utf-8');toast('ส่งออกตารางเป็น CSV แล้ว')}
-function act(name){if(name==='rtconnect'){rtConnect();return}if(name==='rtoff'){localStorage.removeItem(RT_TOKEN);rtId=null;rtStatus='off';toast('ตัดการเชื่อมต่อเรียลไทม์ของเครื่องนี้แล้ว');render();return}
- if(name==='autopub'){const on=localStorage.getItem('np_autopub')==='1';if(on){localStorage.removeItem('np_autopub');toast('ปิดเผยแพร่อัตโนมัติแล้ว')}else{if(!localStorage.getItem('np_gh_token')){openToken();toast('เชื่อมต่อ GitHub ก่อน แล้วกดเปิดอีกครั้ง');return}localStorage.setItem('np_autopub','1');toast('เปิดเผยแพร่อัตโนมัติ — บันทึกแล้วขึ้นเว็บทันที');publish(true)}renderStatus();return}
+function act(name){if(name==='csvday'){exportDayCSV();return}
+ 
  if(name==='autotime'){if(!confirm('จัดเวลาอัตโนมัติทุกนัดตามกำหนดการ?\n\n• ทีมในสายที่จับสลากไว้ไม่เปลี่ยน\n• วันที่ล็อกไว้ และนัดที่แข่งแล้ว ไม่เปลี่ยน\n• ไม่ให้ทีมเดียวกันแข่งชนเวลา / สนามชน'))return;autoSchedule(false);render();return}
  if(name==='lockday'){const L=new Set(state.settings.lockedDays||[]);L.has(boardDay)?L.delete(boardDay):L.add(boardDay);state.settings.lockedDays=[...L];store();render();toast(L.has(boardDay)?`ล็อกตาราง ${dShort(boardDay)} แล้ว`:`ปลดล็อก ${dShort(boardDay)} แล้ว`);return}
  if(name==='clearday'){if(!confirm(`นำทุกนัดของวันที่ ${dShort(boardDay)} ออกจากตารางเวลา? (นัดที่มีผลแล้วจะไม่ถูกนำออก)`))return;let n=0;SPORTS.forEach(sp=>sp.divs.forEach(d=>{const b=bdata(sp.id,d);for(const m of Object.keys(b.schedules))if(b.schedules[m].date===boardDay&&!b.results[m]){delete b.schedules[m];n++}}));store();render();toast(`นำออก ${n} นัด`);return}
@@ -870,7 +886,7 @@ function act(name){if(name==='rtconnect'){rtConnect();return}if(name==='rtoff'){
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{const menu=$('#menu');if(menu.open&&!e.target.closest('#menu'))menu.open=false;
- const el=e.target.closest('[data-view],[data-view-link],[data-goto],[data-pick-sport],[data-pick-div],[data-day],[data-bday],[data-svmode],[data-vday],[data-open],[data-match],[data-seed],[data-act]');if(!el)return;const ds=el.dataset;
+ const el=e.target.closest('[data-view],[data-view-link],[data-goto],[data-pick-sport],[data-pick-div],[data-day],[data-bday],[data-svmode],[data-vday],[data-rday],[data-goto-report],[data-open],[data-match],[data-seed],[data-act]');if(!el)return;const ds=el.dataset;
  if(ds.view)setView(ds.view);
  else if(ds.viewLink){e.preventDefault();setView(ds.viewLink)}
  else if(ds.goto){activeSport=ds.goto;setView('bracket')}
@@ -880,6 +896,8 @@ document.addEventListener('click',e=>{const menu=$('#menu');if(menu.open&&!e.tar
  else if(ds.bday){boardDay=ds.bday;render()}
  else if(ds.svmode){schedMode=ds.svmode;render()}
  else if(ds.vday){venueDay=ds.vday;render()}
+ else if(ds.rday){reportDay=ds.rday;render()}
+ else if(ds.gotoReport){schedMode='report';setView('schedule')}
  else if(ds.open){const [s,d,m]=ds.open.split('|');openMatch(s,d,m)}
  else if(ds.match)openMatch(activeSport,activeDivision,ds.match);
  else if(ds.seed==='clear'){if(confirm('ล้างทีมออกจากสายทั้งหมดของประเภทนี้?'))setSeeds([...SEED0])}
@@ -887,57 +905,6 @@ document.addEventListener('click',e=>{const menu=$('#menu');if(menu.open&&!e.tar
 $('#fileRestore').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const data=migrate(JSON.parse(await f.text()));if(!data)throw new Error('ไฟล์ไม่ใช่ข้อมูลสำรองของระบบนี้');if(confirm('นำเข้าข้อมูลสำรองนี้แทนข้อมูลปัจจุบันทั้งหมด?')){state=data;store();render();toast('นำเข้าข้อมูลสำรองแล้ว')}}catch(ex){alert('นำเข้าไม่สำเร็จ: '+ex.message)}finally{e.target.value=''}});
 $('#matchForm').addEventListener('submit',saveMatch);$('#clearScore').addEventListener('click',clearScore);$('#modalClose').addEventListener('click',()=>$('#matchModal').close());$('#cancelModal').addEventListener('click',()=>$('#matchModal').close());
 
-
-/* ---------- real-time results: Firebase Realtime Database over REST + Server-Sent Events ---------- */
-const RT_TOKEN='np_rt_refresh';
-const rtCfg=()=>{const r=(state.settings&&state.settings.realtime)||{};return r.dbUrl&&r.apiKey?{db:String(r.dbUrl).trim().replace(/\/+$/,''),key:String(r.apiKey).trim(),email:String(r.email||'').trim()}:null};
-let rtId=null,rtExp=0,rtPushed={},rtTimer=null,rtSrc=null,rtTree=null,rtAt=0,rtStatus='off',rtRenderT=null;
-async function rtSignIn(email,password){const c=rtCfg();if(!c)throw new Error('ยังไม่ได้ตั้งค่า Firebase');
- if(c.key==='test-local'){localStorage.setItem(RT_TOKEN,'test');rtId='test';rtExp=Date.now()+36e5;return}
- const r=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${encodeURIComponent(c.key)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password,returnSecureToken:true})});const j=await r.json();
- if(!r.ok)throw new Error(j.error&&j.error.message||'sign-in failed');localStorage.setItem(RT_TOKEN,j.refreshToken);rtId=j.idToken;rtExp=Date.now()+(Number(j.expiresIn)-60)*1000}
-async function rtToken(){if(rtId&&Date.now()<rtExp)return rtId;const c=rtCfg(),rt=localStorage.getItem(RT_TOKEN);if(!c||!rt)return null;if(c.key==='test-local'){rtId='test';rtExp=Date.now()+36e5;return rtId}
- const r=await fetch(`https://securetoken.googleapis.com/v1/token?key=${encodeURIComponent(c.key)}`,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)});const j=await r.json();
- if(!r.ok){localStorage.removeItem(RT_TOKEN);return null}rtId=j.id_token;rtExp=Date.now()+(Number(j.expires_in)-60)*1000;return rtId}
-function rtParts(){const {brackets,...meta}=state;const parts={meta:JSON.stringify(meta)};for(const [k,b] of Object.entries(brackets))parts['b/'+k]=JSON.stringify(b);return parts}
-async function rtPush(full){const c=rtCfg();if(!c||!admin)return false;const tok=await rtToken();if(!tok){rtStatus='auth';renderStatus();return false}
- const parts=rtParts(),body={};for(const [k,v] of Object.entries(parts))if(full||rtPushed[k]!==v)body[k]=v;if(!Object.keys(body).length)return true;body.at={'.sv':'timestamp'};
- try{const r=await fetch(`${c.db}/live.json?auth=${encodeURIComponent(tok)}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('HTTP '+r.status);Object.assign(rtPushed,parts);rtStatus='on';renderStatus();return true}
- catch(e){rtStatus='err';renderStatus();console.warn('realtime push failed',e);return false}}
-function rtQueue(){if(!admin||!rtCfg()||!localStorage.getItem(RT_TOKEN))return;clearTimeout(rtTimer);rtTimer=setTimeout(()=>rtPush(false),600)}
-function rtSet(obj,path,val){const seg=path.split('/').filter(Boolean);if(!seg.length)return val;let o=obj;for(let i=0;i<seg.length-1;i++){if(typeof o[seg[i]]!=='object'||o[seg[i]]===null)o[seg[i]]={};o=o[seg[i]]}if(val===null)delete o[seg[seg.length-1]];else o[seg[seg.length-1]]=val;return obj}
-function rtRebuild(){if(!rtTree||typeof rtTree.meta!=='string'||!rtTree.b)return;try{const meta=JSON.parse(rtTree.meta),brackets={};for(const [k,v] of Object.entries(rtTree.b))brackets[k]=typeof v==='string'?JSON.parse(v):v;
-  const st=migrate({...meta,brackets});if(!st)return;const at=Number(rtTree.at)||Date.now();if(at<rtAt)return;rtAt=at;state=st;publishedAt=new Date(at).toISOString();publishedStr=JSON.stringify(st);
-  clearTimeout(rtRenderT);rtRenderT=setTimeout(()=>{if($('#matchModal').open||$('#tokenModal').open)return;render()},200)}catch(e){console.warn('realtime data error',e)}}
-function rtSubscribe(){const c=rtCfg();if(!c||admin||rtSrc||!window.EventSource)return;try{rtSrc=new EventSource(`${c.db}/live.json`)}catch(e){return}
- rtSrc.addEventListener('put',e=>{try{const m=JSON.parse(e.data);rtTree=m.path==='/'?(m.data||{}):rtSet(rtTree||{},m.path,m.data);rtRebuild()}catch(x){}});
- rtSrc.addEventListener('patch',e=>{try{const m=JSON.parse(e.data);rtTree=rtTree||{};for(const [k,v] of Object.entries(m.data||{}))rtSet(rtTree,(m.path==='/'?'':m.path)+'/'+k,v);rtRebuild()}catch(x){}});
- rtSrc.onopen=()=>{rtStatus='on';renderStatus()};rtSrc.onerror=()=>{rtStatus=rtSrc&&rtSrc.readyState===2?'off':'err';renderStatus()}}
-async function rtConnect(){const email=$('#rt-email').value.trim(),pw=$('#rt-pass').value;if(!rtCfg()){alert('กรุณากรอก Database URL และ Web API Key แล้วกด “บันทึกการตั้งค่า” ก่อน');return}if(!email||!pw){alert('กรุณากรอกอีเมลและรหัสผ่านของผู้ดูแลใน Firebase');return}
- try{toast('กำลังเชื่อมต่อ Firebase…');await rtSignIn(email,pw);$('#rt-pass').value='';const ok=await rtPush(true);toast(ok?'เชื่อมต่อเรียลไทม์แล้ว — ผู้ชมจะเห็นผลภายในไม่กี่วินาที':'เชื่อมต่อแล้ว แต่ส่งข้อมูลไม่สำเร็จ — ตรวจ Rules และ UID ใน Firebase',6000);render()}catch(e){alert('เชื่อมต่อไม่สำเร็จ: '+e.message)}}
-function rtCardHTML(){const r=state.settings.realtime||{},on=!!localStorage.getItem(RT_TOKEN);
- return `<div class="card rt-card"><h3>ผลสดเรียลไทม์ (Firebase)</h3><p class="d">ผู้ชมจะเห็นคะแนนภายในไม่กี่วินาทีหลังบันทึก · สถานะ: <b>${on?(rtStatus==='err'?'⚠ ส่งข้อมูลไม่สำเร็จ':'🟢 เชื่อมต่อแล้ว'):'ยังไม่เชื่อมต่อ'}</b></p>
-  <div class="fields"><label class="f wide"><span>Database URL</span><input class="input" id="rt-db" value="${safe(r.dbUrl||'')}" placeholder="https://xxxx-default-rtdb.asia-southeast1.firebasedatabase.app" spellcheck="false"></label>
-  <label class="f"><span>Web API Key</span><input class="input" id="rt-key" value="${safe(r.apiKey||'')}" placeholder="AIza..." spellcheck="false"></label>
-  <label class="f"><span>อีเมลผู้ดูแล (Firebase)</span><input class="input" id="rt-email" value="${safe(r.email||'')}" placeholder="admin@example.com" spellcheck="false" autocomplete="username"></label>
-  <label class="f wide"><span>รหัสผ่านผู้ดูแล (Firebase) — ใช้ตอนเชื่อมต่อเท่านั้น ไม่ถูกบันทึก</span><input class="input" id="rt-pass" type="password" autocomplete="current-password"></label></div>
-  <div class="actions" style="margin:14px 0 0"><button class="btn btn-sm btn-volt" data-act="rtconnect">เชื่อมต่อและส่งข้อมูลทั้งหมด</button>${on?'<button class="btn btn-sm btn-danger" data-act="rtoff">ตัดการเชื่อมต่อเครื่องนี้</button>':''}</div>
-  <details class="rt-help"><summary>วิธีตั้งค่า Firebase (ครั้งเดียว · ฟรี)</summary><ol class="steps">
-   <li>เปิด <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Firebase Console</a> → <b>Add project</b> → ตั้งชื่อ (ปิด Google Analytics ได้)</li>
-   <li><b>Build → Realtime Database → Create database</b> → เลือก Singapore (asia-southeast1) → <b>Start in locked mode</b> → คัดลอก URL ด้านบน (https://…firebasedatabase.app) มาใส่ช่อง Database URL</li>
-   <li><b>Build → Authentication → Get started → Email/Password → Enable</b> แล้วไปแท็บ <b>Users → Add user</b> สร้างอีเมล/รหัสผ่านผู้ดูแล → คัดลอก <b>User UID</b></li>
-   <li>Authentication → <b>Settings → User actions</b> → ปิด <b>Enable create (sign-up)</b> เพื่อไม่ให้คนอื่นสมัครเอง</li>
-   <li>Realtime Database → แท็บ <b>Rules</b> วางข้อความนี้ (แทน UID ด้วยของคุณ) แล้วกด Publish:<pre>{
-  "rules": {
-    "live": {
-      ".read": true,
-      ".write": "auth != null &amp;&amp; auth.uid === 'วาง_UID_ที่นี่'"
-    }
-  }
-}</pre></li>
-   <li>⚙ Project settings → General → Your apps → ไอคอน <b>&lt;/&gt;</b> (Web) → ตั้งชื่อ → คัดลอกค่า <b>apiKey</b> มาใส่ช่อง Web API Key</li>
-   <li>กรอกอีเมลผู้ดูแล กด <b>บันทึกการตั้งค่า</b> ด้านล่าง → กรอกรหัสผ่าน กด <b>เชื่อมต่อและส่งข้อมูลทั้งหมด</b> → แล้วกด <b>เผยแพร่ขึ้นเว็บ</b> 1 ครั้ง เพื่อให้หน้าเว็บผู้ชมรู้จักฐานข้อมูลนี้</li>
-  </ol></details></div>`}
 
 /* ---------- publishing (shared results via data.json in the GitHub repo) ---------- */
 const ADMIN_KEY='np_admin',TOKEN_KEY='np_gh_token',ADMIN_HASH='487c3854cdb2bedb1fd6f56d4bf5fca490b628765ed80be32c72307db823e027';
@@ -947,8 +914,8 @@ const fmtStamp=iso=>{const d=new Date(iso);return `${d.getDate()} ${TH_M[d.getMo
 async function fetchPublished(){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),6000);const r=await fetch('data.json?t='+Date.now(),{cache:'no-store',signal:c.signal});clearTimeout(t);if(!r.ok)return null;const j=await r.json();const st=j&&migrate(j.state);if(st){j.state=st;if(['การแข่งขันกีฬา “หนองผึ้งเกมส์”','การแข่งขันกีฬาอำเภอ'].includes(j.state.eventName))j.state.eventName=DEFAULT_NAME;return j}}catch(e){}return null}
 function usePublished(p){publishedAt=p.publishedAt;publishedStr=JSON.stringify(p.state)}
 function renderStatus(){document.body.classList.toggle('viewer',!admin);const tg=$('#adminToggle');if(tg)tg.textContent=admin?'ออกจากระบบผู้ดูแล':'เข้าสู่ระบบผู้ดูแล';const el=$('#statusBar');
- if(admin){const dirty=JSON.stringify(state)!==publishedStr;el.className='status admin';el.innerHTML=`<div class="wrap status-in"><span class="st-dot ${dirty?'warn':''}"></span><span><b>โหมดผู้ดูแล</b> · ${dirty?'มีข้อมูลที่ยังไม่ได้เผยแพร่':'ข้อมูลตรงกับบนเว็บแล้ว'}${publishedAt?` · เผยแพร่ล่าสุด ${fmtStamp(publishedAt)}`:''}</span><button class="btn btn-sm" data-act="autopub" title="เผยแพร่ขึ้นเว็บทันทีทุกครั้งที่บันทึก (ต้องเชื่อมต่อ GitHub แล้ว)">${localStorage.getItem('np_autopub')==='1'?'⚡ เผยแพร่อัตโนมัติ: เปิด':'เผยแพร่อัตโนมัติ: ปิด'}</button><button class="btn btn-sm btn-volt" data-act="publish" ${dirty?'':'disabled'}>เผยแพร่ขึ้นเว็บ</button></div>`}
- else if(publishedAt){el.className='status';el.innerHTML=`<div class="wrap status-in"><span class="st-dot"></span><span>${rtSrc&&rtStatus==='on'?'<b>🔴 ผลสดเรียลไทม์</b> · ':''}ผลการแข่งขันอัปเดตอัตโนมัติ · ล่าสุด ${fmtStamp(publishedAt)}</span></div>`}
+ if(admin){const dirty=JSON.stringify(state)!==publishedStr;el.className='status admin';el.innerHTML=`<div class="wrap status-in"><span class="st-dot ${dirty?'warn':''}"></span><span><b>โหมดผู้ดูแล</b> · ${dirty?'มีข้อมูลที่ยังไม่ได้เผยแพร่':'ข้อมูลตรงกับบนเว็บแล้ว'}${publishedAt?` · เผยแพร่ล่าสุด ${fmtStamp(publishedAt)}`:''}</span><button class="btn btn-sm btn-volt" data-act="publish" ${dirty?'':'disabled'}>เผยแพร่ขึ้นเว็บ</button></div>`}
+ else if(publishedAt){el.className='status';el.innerHTML=`<div class="wrap status-in"><span class="st-dot"></span><span>ผลการแข่งขันอัปเดตอัตโนมัติ · ล่าสุด ${fmtStamp(publishedAt)}</span></div>`}
  else{el.className='';el.innerHTML=''}}
 function toggleAdmin(){
  if(admin){admin=false;try{localStorage.removeItem(ADMIN_KEY)}catch(e){}if(publishedStr)state=JSON.parse(publishedStr);toast('ออกจากระบบผู้ดูแลแล้ว');render();return}
@@ -983,14 +950,14 @@ $('#clearToken').addEventListener('click',()=>{try{localStorage.removeItem(TOKEN
 $('#manualPublish').addEventListener('click',()=>{const {text}=publishPayload();download(text,'data.json','application/json;charset=utf-8');window.open(`https://github.com/${REPO.owner}/${REPO.name}/upload/${REPO.branch}`,'_blank','noopener');toast('ดาวน์โหลด data.json แล้ว — ลากไฟล์ไปวางในหน้า GitHub แล้วกด Commit changes')});
 $$('#tokenModal [data-close]').forEach(b=>b.addEventListener('click',()=>$('#tokenModal').close()));
 // viewers pick up newly published results automatically
-const pollPublished=async()=>{if(admin||document.hidden||evDrag||(rtSrc&&rtStatus==='on'))return;const p=await fetchPublished();if(p&&p.publishedAt!==publishedAt&&!(rtAt&&Date.parse(p.publishedAt)<=rtAt)){usePublished(p);state=JSON.parse(publishedStr);render();toast('มีผลการแข่งขันอัปเดตใหม่')}};setInterval(pollPublished,20000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)pollPublished()});
+const pollPublished=async()=>{if(admin||document.hidden||evDrag)return;const p=await fetchPublished();if(p&&p.publishedAt!==publishedAt){usePublished(p);state=JSON.parse(publishedStr);render();toast('มีผลการแข่งขันอัปเดตใหม่')}};setInterval(pollPublished,60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)pollPublished()});
 async function boot(){const p=await fetchPublished();if(p)usePublished(p);
  const hasLocal=(()=>{try{return Boolean(localStorage.getItem(KEY))}catch(e){return false}})();
  if(admin){if(!hasLocal&&p){state=JSON.parse(publishedStr);store()}else if(hasLocal)store();
   // no times yet in this browser: schedule automatically by the competition plan and rules
   if(!allEvents().some(hasDate))autoSchedule(false,true)}
  else if(p)state=JSON.parse(publishedStr);
- if(!admin)rtSubscribe();
+
  
  render()}
 boot();
