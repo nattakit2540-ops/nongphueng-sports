@@ -257,6 +257,15 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 /* scroll reveal */
 .rv{opacity:0;translate:0 26px;transition:opacity .7s ease,translate .8s var(--ease),transform .3s var(--ease),border-color .3s,box-shadow .3s,background .2s}
 .rv.in{opacity:1;translate:0 0}
+.status{background:linear-gradient(90deg,#fff0f7,#eaf7ff);border-bottom:1px solid var(--line);font-size:13.5px}
+.status.admin{background:linear-gradient(90deg,#ffe4f0,#e0f4ff)}
+.status-in{display:flex;align-items:center;gap:10px;min-height:46px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+.status-in .btn{margin-left:auto}
+.st-dot{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none;animation:ping 2.2s infinite}.st-dot.warn{background:var(--warn)}
+.viewer .admin-only{display:none!important}
+.modal.ro .mf .btn-danger,.modal.ro .mf button[type=submit]{display:none}
+.steps{margin:0;padding-left:20px;display:grid;gap:7px;font-size:14px}.steps a{color:var(--sky-d);font-weight:600}
+.loading{padding:90px 0;text-align:center;color:var(--muted)}
 /* responsive */
 @media(max-width:1100px){.sports{grid-template-columns:repeat(3,1fr)}.next{grid-template-columns:repeat(2,1fr)}.fx{grid-template-columns:70px minmax(0,1fr) minmax(0,2fr) 104px 38px}.fx-venue{display:none}}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
@@ -298,28 +307,33 @@ body{background:#fff}.topbar,.foot,.toolbar,.filters,.days,.icon-btn,.hero-cta,.
       <button class="tab" data-view="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg><span>หน้าแรก</span></button>
       <button class="tab" data-view="bracket"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h5v4H3zM3 15.5h5v4H3zM16 10h5v4h-5zM8 6.5h3v11H8M11 12h5"/></svg><span>ผังการแข่งขัน</span></button>
       <button class="tab" data-view="schedule"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>ตารางแข่ง</span></button>
-      <button class="tab" data-view="settings"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg><span>ตั้งค่า</span></button>
+      <button class="tab admin-only" data-view="settings"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg><span>ตั้งค่า</span></button>
     </nav>
     <details class="menu" id="menu">
       <summary aria-label="เมนูเพิ่มเติม"><svg class="ico" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></summary>
       <div class="menu-pop">
-        <button data-act="rename">แก้ไขชื่องาน</button>
+        <button data-act="publish" class="admin-only">เผยแพร่ผลขึ้นเว็บ</button>
+        <button data-act="pull" class="admin-only">ดึงข้อมูลล่าสุดจากเว็บ</button>
+        <button data-act="rename" class="admin-only">แก้ไขชื่องาน</button>
         <button data-act="csv">ส่งออกตาราง Excel (CSV)</button>
         <button data-act="print">พิมพ์ / บันทึก PDF</button>
         <hr>
-        <button data-act="backup">สำรองข้อมูล (JSON)</button>
-        <button data-act="restore">นำเข้าข้อมูลสำรอง</button>
+        <button data-act="backup" class="admin-only">สำรองข้อมูล (JSON)</button>
+        <button data-act="restore" class="admin-only">นำเข้าข้อมูลสำรอง</button>
+        <button data-act="token" class="admin-only">ตั้งค่าการเชื่อมต่อ GitHub</button>
+        <button data-act="admin" id="adminToggle">เข้าสู่โหมดผู้ดูแล</button>
       </div>
     </details>
     <input type="file" id="fileRestore" accept="application/json,.json" hidden>
   </div>
 </header>
 
-<main id="app"></main>
+<div id="statusBar"></div>
+<main id="app"><div class="wrap loading">กำลังโหลดข้อมูลการแข่งขัน…</div></main>
 
 <footer class="wrap foot">
   <span><b>หนองผึ้งเกมส์ 2026</b> · แข่งขันกีฬาอำเภอเกษตรวิสัย</span>
-  <span>ข้อมูลบันทึกในเบราว์เซอร์เครื่องนี้ · ควรสำรองไฟล์ JSON เป็นระยะ</span>
+  <span>ผลการแข่งขันเผยแพร่โดยผู้ดูแลการแข่งขัน · อัปเดตอัตโนมัติ</span>
 </footer>
 
 <dialog class="modal" id="matchModal">
@@ -345,6 +359,21 @@ body{background:#fff}.topbar,.foot,.toolbar,.filters,.days,.icon-btn,.hero-cta,.
     </div>
     <div class="mf"><button type="button" class="btn btn-sm btn-danger" id="clearScore">ล้างผลคะแนน</button><div><button type="button" class="btn btn-sm" id="cancelModal">ยกเลิก</button><button type="submit" class="btn btn-sm btn-dark">บันทึก</button></div></div>
   </form>
+</dialog>
+<dialog class="modal" id="tokenModal">
+  <div class="mh"><div><span class="kicker">Publish to website</span><h3>เชื่อมต่อ GitHub เพื่อเผยแพร่ผล</h3></div><button type="button" class="x" data-close aria-label="ปิด">×</button></div>
+  <div class="mb">
+    <ol class="steps">
+      <li>เปิดหน้า <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">สร้าง Fine-grained token</a> (ล็อกอินด้วยบัญชีเจ้าของเว็บ)</li>
+      <li>Repository access → <b>Only select repositories</b> → เลือก <b id="repoName"></b></li>
+      <li>Permissions → Repository permissions → <b>Contents</b> → <b>Read and write</b></li>
+      <li>กด <b>Generate token</b> แล้วคัดลอกมาวางด้านล่าง</li>
+    </ol>
+    <label class="f"><span>GitHub token</span><input class="input" id="tokenInput" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..."></label>
+    <p class="tiny">token จะถูกเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น ใช้บนเครื่องของผู้ดูแลเท่านั้น อย่าใช้บนเครื่องสาธารณะ</p>
+    <div class="alert">ไม่สะดวกใช้ token? <button type="button" class="link" id="manualPublish">ดาวน์โหลด data.json</button> แล้วอัปโหลดแทนไฟล์เดิมในหน้า GitHub ของเว็บ</div>
+  </div>
+  <div class="mf"><button type="button" class="btn btn-sm btn-danger" id="clearToken">ลบ token</button><div><button type="button" class="btn btn-sm" data-close>ยกเลิก</button><button type="button" class="btn btn-sm btn-volt" id="saveToken">บันทึกและเผยแพร่</button></div></div>
 </dialog>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
@@ -438,7 +467,7 @@ function autoSchedule(keepExisting=false,silent=false){const z=state.settings,da
  store();const n=events.filter(hasDate).length;if(!silent)toast(`จัดตารางแล้ว ${n}/${events.length} นัด${failed.length?` · ยังไม่ลงเวลา ${failed.length} นัด`:''}`);return n}
 
 /* ---------- views ---------- */
-function render(){$$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===view));const app=$('#app');
+function render(){if(!admin&&view==='settings')view='home';renderStatus();$$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===view));const app=$('#app');
  if(view==='home')app.innerHTML=homeHTML();
  else if(view==='bracket'){app.innerHTML=bracketHTML()}
  else if(view==='schedule'){app.innerHTML=scheduleHTML();bindSchedule();renderFixtures()}
@@ -493,12 +522,12 @@ function bracketBoard(){const oc=new Map(),O=m=>outcome(activeSport,activeDivisi
 function bracketHTML(){return `<section class="wrap"><div class="page-h"><div><span class="kicker">Tournament Bracket</span><h1>ผังการแข่งขัน</h1><p class="lead">แพ้คัดออก 6 ทีม · คู่ 1→2 สายบน, คู่ 3→4 สายล่าง, ผู้ชนะคู่ 2 และ 4 ชิงชนะเลิศในคู่ 5</p></div><div class="toolbar"><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์ผัง</button></div></div>
  <div class="pick">${SPORTS.map(x=>`<button class="pk ${x.id===activeSport?'active':''}" data-sport="${x.id}" data-pick-sport="${x.id}" aria-pressed="${x.id===activeSport}"><span class="ic">${ic(x.id)}</span>${x.name}</button>`).join('')}</div>
  <div class="bracket-bar"><div class="seg">${DIVS.map(x=>`<button class="${x.id===activeDivision?'active':''}" data-pick-div="${x.id}" aria-pressed="${x.id===activeDivision}">${x.name}</button>`).join('')}</div><div class="legend"><span><i class="lg done"></i>เส้นทางผู้ชนะ</span><span><i class="lg"></i>รอแข่งขัน</span></div></div>
- ${bracketBoard()}<p class="hint"><span class="m-only">← ปัดซ้าย–ขวาเพื่อดูผังเต็ม → · </span>แตะหมายเลขคู่ หรือชื่อทีม เพื่อบันทึกผล หรือแก้ไขวัน เวลา และสนาม</p></section>`}
+ ${bracketBoard()}<p class="hint"><span class="m-only">← ปัดซ้าย–ขวาเพื่อดูผังเต็ม → · </span>${admin?'แตะหมายเลขคู่ หรือชื่อทีม เพื่อบันทึกผล หรือแก้ไขวัน เวลา และสนาม':'แตะหมายเลขคู่เพื่อดูรายละเอียด วัน เวลา และสนาม'}</p></section>`}
 
 function scheduleHTML(){const es=allEvents(),z=state.settings,issues=warnings(es),miss=es.filter(e=>!hasDate(e)).length,dates=[...new Set(es.filter(hasDate).map(e=>e.schedule.date))].sort();if(filter.day!=='all'&&!dates.includes(filter.day))filter.day='all';
  const dayBtn=(id,top,main,n)=>`<button class="day ${filter.day===id?'active':''}" data-day="${id}"><small>${top}</small><b>${main}</b><i>${n} นัด</i></button>`;
  const opt=(v,list)=>list.map(([a,b])=>`<option value="${a}" ${v===a?'selected':''}>${b}</option>`).join('');
- return `<section class="wrap"><div class="page-h"><div><span class="kicker">Match Schedule</span><h1>ตารางแข่งขัน</h1><p class="lead">${dRange(z.dateFrom,z.dateTo)} · ${es.length} นัด ทุกชนิดกีฬา</p></div><div class="toolbar"><button class="btn btn-sm btn-dark" id="reshuffle">${ic('shuffle')}สุ่มตารางใหม่</button><button class="btn btn-sm" id="fillEmpty">เติมคู่ที่ยังไม่มีเวลา</button><button class="btn btn-sm" data-act="csv">${ic('download')}Excel</button><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์</button></div></div>
+ return `<section class="wrap"><div class="page-h"><div><span class="kicker">Match Schedule</span><h1>ตารางแข่งขัน</h1><p class="lead">${dRange(z.dateFrom,z.dateTo)} · ${es.length} นัด ทุกชนิดกีฬา</p></div><div class="toolbar"><button class="btn btn-sm btn-dark admin-only" id="reshuffle">${ic('shuffle')}สุ่มตารางใหม่</button><button class="btn btn-sm admin-only" id="fillEmpty">เติมคู่ที่ยังไม่มีเวลา</button><button class="btn btn-sm" data-act="csv">${ic('download')}Excel</button><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์</button></div></div>
  <div class="notice ${issues.length?'warn':''}"><i></i><span>${issues.length?`พบข้อขัดแย้ง ${issues.length} รายการ — ดูรายละเอียดที่หน้าตั้งค่า`:`ไม่มีทีมหรือสนามชนกัน${miss?` · ยังไม่จัดเวลา ${miss} นัด`:' · จัดครบทุกนัดแล้ว'}`}</span></div>
  <div class="days">${dayBtn('all','All days','ทั้งหมด',es.length)}${dates.map((d,i)=>dayBtn(d,`Day ${i+1}`,dShort(d),es.filter(e=>e.schedule.date===d).length)).join('')}</div>
  <div class="filters"><select class="input" id="fSport" aria-label="ชนิดกีฬา">${opt(filter.sport,[['all','ทุกชนิดกีฬา'],...SPORTS.map(s=>[s.id,s.name])])}</select><select class="input" id="fDiv" aria-label="รุ่น">${opt(filter.division,[['all','ทุกรุ่น'],...DIVS.map(d=>[d.id,d.name])])}</select><div class="search">${ic('search')}<input class="input" id="fText" placeholder="ค้นหาทีม สนาม หรือชนิดกีฬา" value="${safe(filter.text)}" aria-label="ค้นหา"></div></div>
@@ -525,7 +554,7 @@ function settingsHTML(){const z=state.settings,es=allEvents(),errs=warnings(es),
   ${SPORTS.map(s=>`<div class="sport-row" data-sport="${s.id}"><span class="sr-name"><span class="sdot"></span>${s.name}</span><input class="input" type="number" min="15" max="240" step="5" id="dur-${s.id}" value="${Number(z.sports[s.id].duration)}" aria-label="นาทีต่อนัด ${s.name}"><input class="input" id="venue-${s.id}" value="${safe(z.sports[s.id].venue)}" maxlength="120" aria-label="สนาม ${s.name}"></div>`).join('')}</div></div>
  <div class="actions"><button class="btn btn-dark" id="saveSettings">บันทึกการตั้งค่า</button><button class="btn btn-volt" id="saveAndGen">${ic('shuffle')}บันทึกและสุ่มตารางใหม่</button><button class="btn btn-danger" id="resetSchedules">ล้างวันเวลาทั้งหมด</button></div>
  <div class="grid2"><div class="card"><h3>ตรวจสอบตาราง</h3><p class="d">จัดเวลาแล้ว ${planned}/${es.length} นัด</p><div class="notice ${errs.length?'warn':''}" style="margin:0 0 12px"><i></i><span>${errs.length?`พบปัญหา ${errs.length} รายการ`:'ไม่พบทีมหรือสนามชนกัน'}</span></div>${errs.length?`<ul class="warn-list">${errs.slice(0,80).map(m=>`<li>${safe(m)}</li>`).join('')}</ul>`:''}</div>
- <div class="card"><h3>ข้อมูล</h3><p class="d">ข้อมูลบันทึกในเบราว์เซอร์เครื่องนี้ ควรสำรองไฟล์ JSON ไว้เป็นระยะ และนำเข้าคืนได้ทุกเครื่อง</p><div class="actions" style="margin:0"><button class="btn btn-sm" data-act="rename">แก้ไขชื่องาน</button><button class="btn btn-sm" data-act="backup">${ic('download')}สำรองข้อมูล</button><button class="btn btn-sm" data-act="restore">นำเข้าข้อมูล</button><button class="btn btn-sm" data-act="csv">ส่งออก Excel</button></div></div></div></section>`}
+ <div class="card"><h3>ข้อมูล</h3><p class="d">ผลที่บันทึกจะอยู่ในเครื่องนี้ก่อน กด “เผยแพร่ขึ้นเว็บ” เพื่อให้ทุกคนที่เปิดเว็บเห็นผล (ผู้ชมจะเห็นภายในประมาณ 1–2 นาที)</p><div class="actions" style="margin:0"><button class="btn btn-sm btn-volt" data-act="publish">เผยแพร่ขึ้นเว็บ</button><button class="btn btn-sm" data-act="pull">ดึงข้อมูลล่าสุดจากเว็บ</button><button class="btn btn-sm" data-act="token">เชื่อมต่อ GitHub</button><button class="btn btn-sm" data-act="rename">แก้ไขชื่องาน</button><button class="btn btn-sm" data-act="backup">${ic('download')}สำรองข้อมูล</button><button class="btn btn-sm" data-act="restore">นำเข้าข้อมูล</button><button class="btn btn-sm" data-act="csv">ส่งออก Excel</button></div></div></div></section>`}
 function bindSettings(){$('#saveSettings').addEventListener('click',()=>applySettings(false));$('#saveAndGen').addEventListener('click',()=>{if(confirm('บันทึกและสุ่มเวลาใหม่ทั้งหมด? วันเวลาเดิมจะเปลี่ยน แต่ผลคะแนนยังอยู่'))applySettings(true)});
  $('#resetSchedules').addEventListener('click',()=>{if(!confirm('ลบวันและเวลาแข่งขันทั้งหมด? ผลคะแนนจะยังอยู่'))return;SPORTS.forEach(s=>DIVS.forEach(d=>bdata(s.id,d.id).schedules={}));store();render();toast('ล้างตารางแข่งขันแล้ว')})}
 function applySettings(gen){const f=$('#fromDate').value,t=$('#toDate').value,from=$('#fromTime').value,to=$('#toTime').value,days=dateList(f,t),rest=Number($('#rest').value);
@@ -542,9 +571,9 @@ function openMatch(s,d,m){editing={s,d,m};const o=outcome(s,d,m,new Map()),sc=bd
  $('#matchDate').value=sc.date||'';$('#matchTime').value=sc.time||'';$('#matchVenue').value=sc.venue||state.settings.sports[s].venue;
  $('#durationNote').textContent=`ระยะเวลาแข่งขัน ${state.settings.sports[s].duration} นาที · พักขั้นต่ำก่อนนัดถัดไป ${state.settings.rest} นาที`;
  const note=$('#modalNotice');note.hidden=known;if(!known)note.textContent='ยังไม่ทราบผู้ชนะจากคู่ก่อนหน้า จึงยังบันทึกคะแนนไม่ได้ แต่กำหนดวัน เวลา และสนามล่วงหน้าได้';
- $('#clearScore').disabled=!o.completed;$('#matchModal').showModal()}
+ const ro=!admin;if(ro)['#scoreA','#scoreB','#tieWinner'].forEach(q=>$(q).disabled=true);['#matchDate','#matchTime','#matchVenue'].forEach(q=>$(q).disabled=ro);$('#matchModal').classList.toggle('ro',ro);if(ro){note.hidden=false;note.textContent='ดูข้อมูลได้อย่างเดียว — การบันทึกผลทำได้เฉพาะผู้ดูแลการแข่งขัน'}$('#clearScore').disabled=!o.completed;$('#matchModal').showModal()}
 function clearDescendantScores(s,d,m){const deps=[m],removed=[];while(deps.length){const x=deps.shift();for(const [id,cfg] of Object.entries(MATCH))if(cfg.parents.includes(x)&&!removed.includes(id)){removed.push(id);deps.push(id)}}removed.forEach(id=>delete bdata(s,d).results[id]);return removed}
-function saveMatch(ev){ev.preventDefault();if(!editing)return;const {s,d,m}=editing,b=bdata(s,d),old=b.results[m]||{},o=outcome(s,d,m,new Map());const sa=$('#scoreA').value.trim(),sb=$('#scoreB').value.trim();
+function saveMatch(ev){ev.preventDefault();if(!editing||!admin)return;const {s,d,m}=editing,b=bdata(s,d),old=b.results[m]||{},o=outcome(s,d,m,new Map());const sa=$('#scoreA').value.trim(),sb=$('#scoreB').value.trim();
  if((sa==='')!==(sb==='')){alert('กรุณากรอกคะแนนทั้งสองทีม หรือเว้นว่างทั้งคู่');return}let next=null;
  if(sa!==''){const a=Number(sa),v=Number(sb);if(!Number.isInteger(a)||!Number.isInteger(v)||a<0||v<0||a>999||v>999){alert('คะแนนต้องเป็นจำนวนเต็ม 0–999');return}if(o.a===null||o.b===null){alert('ยังไม่ทราบทีมแข่งจากคู่ก่อนหน้า');return}const tieWinner=a===v?$('#tieWinner').value:'';if(a===v&&!tieWinner){alert('คะแนนเสมอกัน กรุณาเลือกทีมที่ชนะจากจุดโทษหรือการตัดสิน');return}next={a,b:v,tieWinner}}
  const date=$('#matchDate').value,time=$('#matchTime').value,venue=$('#matchVenue').value.trim();if(Boolean(date)!==Boolean(time)){alert('กรุณาระบุวันและเวลาให้ครบ');return}if(date&&!venue){alert('กรุณากรอกชื่อสนาม');return}
@@ -562,7 +591,7 @@ function download(text,name,type){const blob=new Blob([text],{type}),url=URL.cre
 function exportCSV(){const es=allEvents().sort(byTime);const head=['ชนิดกีฬา','ประเภท','คู่ที่','รอบ','ทีมที่ 1','ทีมที่ 2','วันแข่งขัน (ค.ศ.)','เวลาเริ่ม','ระยะเวลา (นาที)','สนามแข่งขัน','คะแนนทีม 1','คะแนนทีม 2','ผู้ชนะ','สถานะ'];
  const rows=[head,...es.map(e=>[sport(e.s).name,div(e.d).name,e.number,ROUND[e.round],teamLabel(e,0),teamLabel(e,1),e.schedule.date||'',e.schedule.time||'',e.duration,e.schedule.venue||'',e.completed?e.result.a:'',e.completed?e.result.b:'',e.winner==null?'':TEAMS[e.winner],e.completed?'แข่งขันแล้ว':hasDate(e)?'รอแข่งขัน':'ยังไม่กำหนด'])];
  download('﻿'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),'ตารางแข่งขัน_หนองผึ้งเกมส์.csv','text/csv;charset=utf-8');toast('ส่งออกตารางเป็น CSV แล้ว')}
-function act(name){if(name==='csv')exportCSV();else if(name==='print')window.print();else if(name==='backup'){download(JSON.stringify(state,null,2),'district-games-backup.json','application/json;charset=utf-8');toast('ดาวน์โหลดไฟล์สำรองแล้ว')}else if(name==='restore')$('#fileRestore').click();else if(name==='rename'){const s=prompt('ชื่อการแข่งขัน',state.eventName);if(s!==null&&s.trim()){state.eventName=s.trim();store();render()}}}
+function act(name){if(name==='publish')publish();else if(name==='token')openToken();else if(name==='admin')toggleAdmin();else if(name==='pull')pullLatest();else if(name==='csv')exportCSV();else if(name==='print')window.print();else if(name==='backup'){download(JSON.stringify(state,null,2),'district-games-backup.json','application/json;charset=utf-8');toast('ดาวน์โหลดไฟล์สำรองแล้ว')}else if(name==='restore')$('#fileRestore').click();else if(name==='rename'){const s=prompt('ชื่อการแข่งขัน',state.eventName);if(s!==null&&s.trim()){state.eventName=s.trim();store();render()}}}
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{const menu=$('#menu');if(menu.open&&!e.target.closest('#menu'))menu.open=false;
@@ -579,9 +608,55 @@ document.addEventListener('click',e=>{const menu=$('#menu');if(menu.open&&!e.tar
 $('#fileRestore').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!validState(data))throw new Error('ไฟล์ไม่ใช่ข้อมูลสำรองเวอร์ชันปัจจุบัน');if(confirm('นำเข้าข้อมูลสำรองนี้แทนข้อมูลปัจจุบันทั้งหมด?')){state=data;store();render();toast('นำเข้าข้อมูลสำรองแล้ว')}}catch(ex){alert('นำเข้าไม่สำเร็จ: '+ex.message)}finally{e.target.value=''}});
 $('#matchForm').addEventListener('submit',saveMatch);$('#clearScore').addEventListener('click',clearScore);$('#modalClose').addEventListener('click',()=>$('#matchModal').close());$('#cancelModal').addEventListener('click',()=>$('#matchModal').close());
 
-// first visit: seed a complete, editable schedule
-if(!localStorage.getItem(KEY))autoSchedule(false,true);
-render();
+
+/* ---------- publishing (shared results via data.json in the GitHub repo) ---------- */
+const ADMIN_KEY='np_admin',TOKEN_KEY='np_gh_token';
+const REPO=(()=>{const h=location.hostname.match(/^([^.]+)\.github\.io$/i),seg=location.pathname.split('/').filter(Boolean)[0];return {owner:h?h[1]:'nattakit2540-ops',name:h&&seg&&!/\.html?$/i.test(seg)?seg:'nongphueng-sports',branch:'main',path:'data.json'}})();
+let admin=(()=>{try{return localStorage.getItem(ADMIN_KEY)==='1'}catch(e){return false}})(),publishedAt=null,publishedStr=null;
+const fmtStamp=iso=>{const d=new Date(iso);return `${d.getDate()} ${TH_M[d.getMonth()]} ${d.getFullYear()+543} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} น.`};
+async function fetchPublished(){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),6000);const r=await fetch('data.json?t='+Date.now(),{cache:'no-store',signal:c.signal});clearTimeout(t);if(!r.ok)return null;const j=await r.json();if(j&&validState(j.state)){if(['การแข่งขันกีฬา “หนองผึ้งเกมส์”','การแข่งขันกีฬาอำเภอ'].includes(j.state.eventName))j.state.eventName=DEFAULT_NAME;return j}}catch(e){}return null}
+function usePublished(p){publishedAt=p.publishedAt;publishedStr=JSON.stringify(p.state)}
+function renderStatus(){document.body.classList.toggle('viewer',!admin);const tg=$('#adminToggle');if(tg)tg.textContent=admin?'ออกจากโหมดผู้ดูแล':'เข้าสู่โหมดผู้ดูแล (บันทึกผล)';const el=$('#statusBar');
+ if(admin){const dirty=JSON.stringify(state)!==publishedStr;el.className='status admin';el.innerHTML=`<div class="wrap status-in"><span class="st-dot ${dirty?'warn':''}"></span><span><b>โหมดผู้ดูแล</b> · ${dirty?'มีข้อมูลที่ยังไม่ได้เผยแพร่':'ข้อมูลตรงกับบนเว็บแล้ว'}${publishedAt?` · เผยแพร่ล่าสุด ${fmtStamp(publishedAt)}`:''}</span><button class="btn btn-sm btn-volt" data-act="publish" ${dirty?'':'disabled'}>เผยแพร่ขึ้นเว็บ</button></div>`}
+ else if(publishedAt){el.className='status';el.innerHTML=`<div class="wrap status-in"><span class="st-dot"></span><span>ผลการแข่งขันอัปเดตอัตโนมัติ · ล่าสุด ${fmtStamp(publishedAt)}</span></div>`}
+ else{el.className='';el.innerHTML=''}}
+function toggleAdmin(){
+ if(admin){admin=false;try{localStorage.removeItem(ADMIN_KEY)}catch(e){}if(publishedStr)state=JSON.parse(publishedStr);toast('ออกจากโหมดผู้ดูแลแล้ว');render();return}
+ if(!confirm('เข้าสู่โหมดผู้ดูแล?\n\nสำหรับผู้จัดการแข่งขัน ใช้บันทึกผลและเผยแพร่ขึ้นเว็บ'))return;
+ admin=true;try{localStorage.setItem(ADMIN_KEY,'1')}catch(e){}
+ const hasLocal=(()=>{try{return Boolean(localStorage.getItem(KEY))}catch(e){return false}})();
+ if(hasLocal){const local=load();state=(publishedStr&&JSON.stringify(local)!==publishedStr&&confirm('ข้อมูลในเครื่องนี้ไม่ตรงกับบนเว็บ\n\nตกลง = ใช้ข้อมูลล่าสุดจากเว็บ\nยกเลิก = ใช้ข้อมูลที่บันทึกในเครื่องนี้'))?JSON.parse(publishedStr):local}
+ else if(publishedStr)state=JSON.parse(publishedStr);
+ store();toast('เข้าสู่โหมดผู้ดูแลแล้ว');render()}
+async function pullLatest(){const p=await fetchPublished();if(!p){alert('ยังไม่พบข้อมูลที่เผยแพร่บนเว็บ');return}if(!confirm('แทนที่ข้อมูลในเครื่องนี้ด้วยข้อมูลล่าสุดจากเว็บ?'))return;usePublished(p);state=JSON.parse(publishedStr);store();render();toast('ดึงข้อมูลล่าสุดจากเว็บแล้ว')}
+function openToken(){$('#repoName').textContent=`${REPO.owner}/${REPO.name}`;$('#tokenInput').value='';$('#tokenModal').showModal()}
+function publishPayload(){const at=new Date().toISOString();return {at,text:JSON.stringify({publishedAt:at,state},null,1)}}
+const b64=t=>{const bytes=new TextEncoder().encode(t);let bin='';for(let i=0;i<bytes.length;i+=8192)bin+=String.fromCharCode(...bytes.subarray(i,i+8192));return btoa(bin)};
+async function publish(){if(!admin)return;let token='';try{token=localStorage.getItem(TOKEN_KEY)||''}catch(e){}if(!token){openToken();return}
+ const api=`https://api.github.com/repos/${REPO.owner}/${REPO.name}/contents/${REPO.path}`,h={Authorization:'Bearer '+token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+ toast('กำลังเผยแพร่…');
+ try{for(let attempt=0;attempt<2;attempt++){const g=await fetch(`${api}?ref=${REPO.branch}&t=${Date.now()}`,{headers:h,cache:'no-store'});
+   if(g.status===401||g.status===403)throw Object.assign(new Error('auth'),{auth:true});
+   const sha=g.ok?(await g.json()).sha:undefined,{at,text}=publishPayload();
+   const r=await fetch(api,{method:'PUT',headers:h,body:JSON.stringify({message:`อัปเดตผลการแข่งขัน ${fmtStamp(at)}`,content:b64(text),branch:REPO.branch,...(sha?{sha}:{})})});
+   if(r.ok){publishedAt=at;publishedStr=JSON.stringify(state);renderStatus();toast('เผยแพร่แล้ว — ผู้ชมจะเห็นผลภายในประมาณ 1–2 นาที');return}
+   if(r.status===401||r.status===403||r.status===404)throw Object.assign(new Error('auth'),{auth:true});
+   if(r.status!==409&&r.status!==422)throw new Error('HTTP '+r.status)}
+  throw new Error('conflict')}
+ catch(e){if(e.auth){alert('เผยแพร่ไม่สำเร็จ: token ไม่ถูกต้อง หมดอายุ หรือไม่มีสิทธิ์ Contents (Read and write) ของ '+REPO.owner+'/'+REPO.name);openToken()}else alert('เผยแพร่ไม่สำเร็จ ('+e.message+') กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่')}}
+$('#saveToken').addEventListener('click',()=>{const v=$('#tokenInput').value.trim();if(!v){alert('กรุณาวาง GitHub token');return}try{localStorage.setItem(TOKEN_KEY,v)}catch(e){}$('#tokenModal').close();publish()});
+$('#clearToken').addEventListener('click',()=>{try{localStorage.removeItem(TOKEN_KEY)}catch(e){}$('#tokenInput').value='';toast('ลบ token ออกจากเครื่องนี้แล้ว')});
+$('#manualPublish').addEventListener('click',()=>{const {text}=publishPayload();download(text,'data.json','application/json;charset=utf-8');window.open(`https://github.com/${REPO.owner}/${REPO.name}/upload/${REPO.branch}`,'_blank','noopener');toast('ดาวน์โหลด data.json แล้ว — ลากไฟล์ไปวางในหน้า GitHub แล้วกด Commit changes')});
+$$('#tokenModal [data-close]').forEach(b=>b.addEventListener('click',()=>$('#tokenModal').close()));
+// viewers pick up newly published results automatically
+setInterval(async()=>{if(admin||document.hidden)return;const p=await fetchPublished();if(p&&p.publishedAt!==publishedAt){usePublished(p);state=JSON.parse(publishedStr);render();toast('มีผลการแข่งขันอัปเดตใหม่')}},60000);
+async function boot(){const p=await fetchPublished();if(p)usePublished(p);
+ const hasLocal=(()=>{try{return Boolean(localStorage.getItem(KEY))}catch(e){return false}})();
+ if(admin){if(!hasLocal){if(p){state=JSON.parse(publishedStr);store()}else autoSchedule(false,true)}}
+ else if(p)state=JSON.parse(publishedStr);
+ else if(!hasLocal)autoSchedule(false,true);
+ render()}
+boot();
 })();
 </script>
 </body>
