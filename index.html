@@ -347,6 +347,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 .chip .live{display:inline-block;margin-right:2px}
 .live-check{margin-top:0;padding:10px 12px;border-radius:12px;background:#fff5f7}
 .report{border-color:#f6d4d4;margin-bottom:14px}.report:before{background:linear-gradient(90deg,#ff8a8a,#ffb36b)}
+.rt-card{margin-top:16px}.rt-help{margin-top:16px;font-size:13.5px}.rt-help summary{cursor:pointer;font-weight:600;color:var(--sky-d)}.rt-help .steps{margin-top:10px}.rt-help pre{background:#f6f8fc;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;overflow:auto;white-space:pre}
 /* responsive */
 @media(max-width:1100px){.champs{grid-template-columns:repeat(2,1fr)}.sports{grid-template-columns:repeat(3,1fr)}.next{grid-template-columns:repeat(2,1fr)}.fx{grid-template-columns:70px minmax(0,1fr) minmax(0,2fr) 104px 38px}.fx-venue{display:none}}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
@@ -572,7 +573,8 @@ function possibilities(s,d,m,cache,pcache){const k=key(s,d,m);if(pcache.has(k))r
 function allEvents(){const oc=new Map(),pc=new Map(),res=[];SPORTS.forEach(s=>{s.divs.forEach(d=>{const venues=venueList(s.id,div(d).lv);MATCH_ORDER.forEach(m=>{const o=outcome(s.id,d,m,oc),b=bdata(s.id,d);res.push({key:key(s.id,d,m),s:s.id,d,venues,m,round:MATCH[m].round,number:MATCH[m].number,participants:possibilities(s.id,d,m,oc,pc),sides:[o.a,o.b],winner:o.winner,completed:o.completed,result:o.result,schedule:{...(b.schedules[m]||{})},parents:MATCH[m].parents.map(p=>key(s.id,d,p)),duration:durOf(s.id,d),defaultVenue:venues[0]})})})});return res}
 let autoPubTimer=null;
 function store(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){alert('ไม่สามารถบันทึกในเบราว์เซอร์ได้ กรุณาสำรอง JSON: '+e.message)}
- if(typeof admin!=='undefined'&&admin&&localStorage.getItem('np_autopub')==='1'&&localStorage.getItem('np_gh_token')){clearTimeout(autoPubTimer);autoPubTimer=setTimeout(()=>publish(true),2500)}}
+ if(typeof admin!=='undefined'&&admin&&localStorage.getItem('np_autopub')==='1'&&localStorage.getItem('np_gh_token')){clearTimeout(autoPubTimer);autoPubTimer=setTimeout(()=>publish(true),2500)}
+ if(typeof admin!=='undefined')rtQueue()}
 function toast(msg,ms=3200){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),ms)}
 const isLive=e=>Boolean(e.result&&e.result.live&&Number.isInteger(e.result.a)&&Number.isInteger(e.result.b));
 const hasDate=e=>Boolean(e.schedule.date&&e.schedule.time);
@@ -818,7 +820,7 @@ function settingsHTML(){const z=state.settings,es=allEvents(),errs=warnings(es),
   <label class="f wide"><span>ระดับมัธยมศึกษา</span><input class="input" id="school-s" value="${safe(z.schools.s)}" maxlength="120"></label></div></div></div>
  <div class="actions"><button class="btn btn-dark" id="saveSettings">บันทึกการตั้งค่า</button><button class="btn btn-volt" id="saveAndGen">${ic('shuffle')}บันทึกและจัดเวลาอัตโนมัติ</button><button class="btn btn-danger" id="resetSchedules">ล้างวันเวลาทั้งหมด</button></div>
  <div class="grid2"><div class="card"><h3>ตรวจสอบตาราง</h3><p class="d">จัดเวลาแล้ว ${planned}/${es.length} นัด</p><div class="notice ${errs.length?'warn':''}" style="margin:0 0 12px"><i></i><span>${errs.length?`พบปัญหา ${errs.length} รายการ`:'ไม่พบทีมหรือสนามชนกัน'}</span></div>${errs.length?`<ul class="warn-list">${errs.slice(0,80).map(m=>`<li>${safe(m)}</li>`).join('')}</ul>`:''}</div>
- <div class="card"><h3>ข้อมูล</h3><p class="d">ผลที่บันทึกจะอยู่ในเครื่องนี้ก่อน กด “เผยแพร่ขึ้นเว็บ” เพื่อให้ทุกคนที่เปิดเว็บเห็นผล (ผู้ชมจะเห็นภายในประมาณ 1–2 นาที)</p><div class="actions" style="margin:0"><button class="btn btn-sm btn-volt" data-act="publish">เผยแพร่ขึ้นเว็บ</button><button class="btn btn-sm" data-act="pull">ดึงข้อมูลล่าสุดจากเว็บ</button><button class="btn btn-sm" data-act="token">เชื่อมต่อ GitHub</button><button class="btn btn-sm" data-act="rename">แก้ไขชื่องาน</button><button class="btn btn-sm" data-act="backup">${ic('download')}สำรองข้อมูล</button><button class="btn btn-sm" data-act="restore">นำเข้าข้อมูล</button><button class="btn btn-sm" data-act="csv">ส่งออก Excel</button></div></div></div></section>`}
+ ${rtCardHTML()}<div class="card"><h3>ข้อมูล</h3><p class="d">ผลที่บันทึกจะอยู่ในเครื่องนี้ก่อน กด “เผยแพร่ขึ้นเว็บ” เพื่อให้ทุกคนที่เปิดเว็บเห็นผล (ผู้ชมจะเห็นภายในประมาณ 1–2 นาที)</p><div class="actions" style="margin:0"><button class="btn btn-sm btn-volt" data-act="publish">เผยแพร่ขึ้นเว็บ</button><button class="btn btn-sm" data-act="pull">ดึงข้อมูลล่าสุดจากเว็บ</button><button class="btn btn-sm" data-act="token">เชื่อมต่อ GitHub</button><button class="btn btn-sm" data-act="rename">แก้ไขชื่องาน</button><button class="btn btn-sm" data-act="backup">${ic('download')}สำรองข้อมูล</button><button class="btn btn-sm" data-act="restore">นำเข้าข้อมูล</button><button class="btn btn-sm" data-act="csv">ส่งออก Excel</button></div></div></div></section>`}
 function dayChips(f,t,on){const all=dateList(f,t);if(!all.length||all.length>31)return '<span class="tiny">กรุณาเลือกวันแรกและวันสุดท้ายให้ถูกต้อง</span>';return all.map(d=>{const p=pd(d);return `<label class="daychip"><input type="checkbox" value="${d}" ${on.includes(d)?'checked':''}><span><small>${TH_D[p.w]}</small>${dShort(d)}</span></label>`}).join('')}
 function sportChips(sid,f,t){const all=dateList(f,t);if(!all.length||all.length>31)return '';const on=sportDays(sid);return all.map(d=>`<label class="daychip sm"><input type="checkbox" data-sd="${sid}" value="${d}" ${on.includes(d)?'checked':''}><span>${dShort(d)}</span></label>`).join('')}
 function bindSettings(){setTimeout(()=>{const g=$('#saveAndGen');if(g)g.addEventListener('click',()=>{if(confirm('บันทึกและจัดเวลาอัตโนมัติใหม่ทุกนัด? (วันที่ล็อกไว้และนัดที่แข่งแล้วจะไม่เปลี่ยน · ทีมในสายไม่เปลี่ยน)'))applySettings(true)})});const redraw=()=>{const cur=[...document.querySelectorAll('#dayChips input:checked')].map(i=>i.value),all=dateList($('#fromDate').value,$('#toDate').value);$('#dayChips').innerHTML=dayChips($('#fromDate').value,$('#toDate').value,cur.length?cur:all);SPORTS.forEach(s=>{const el=document.querySelector(`.sport-days[data-sport="${s.id}"]`);if(el)el.innerHTML='<span>วันแข่ง</span>'+sportChips(s.id,$('#fromDate').value,$('#toDate').value)})};$('#fromDate').addEventListener('change',redraw);$('#toDate').addEventListener('change',redraw);$('#saveSettings').addEventListener('click',()=>applySettings(false));
@@ -827,7 +829,7 @@ function applySettings(gen){const f=$('#fromDate').value,t=$('#toDate').value,fr
  if(!days.length||days.length>31){alert('กรุณากำหนดวันที่เริ่มและสิ้นสุดถูกต้อง (สูงสุด 31 วัน)');return}if(!from||!to||atTime(to)<=atTime(from)){alert('กรุณากำหนดเวลาเริ่ม–สิ้นสุดให้ถูกต้อง');return}if(!Number.isInteger(rest)||rest<0||rest>120){alert('เวลาพักต้องเป็น 0–120 นาที');return}
  const picked=[...document.querySelectorAll('#dayChips input:checked')].map(i=>i.value).filter(d=>days.includes(d)).sort();if(!picked.length){alert('กรุณาเลือกวันที่มีการแข่งขันอย่างน้อย 1 วัน');return}
  const z0=state.settings,plan={};for(const r of PLAN_DEF){const d=$('#plan-d-'+r.id).value,a=$('#plan-f-'+r.id).value,b=$('#plan-t-'+r.id).value;if(!d||!a||!b||atTime(b)<=atTime(a)){alert('ตรวจสอบวันและเวลาของ: '+r.label);return}if(!picked.includes(d)){alert(r.label+' — วันที่เลือกไม่ได้เป็นวันแข่งขัน');return}plan[r.id]={date:d,from:a,to:b}}
- const settings={plan,schools:{p:$('#school-p').value.trim(),s:$('#school-s').value.trim()},dateFrom:f,dateTo:t,days:picked,timeFrom:from,timeTo:to,rest,interval:Number($('#interval').value),strict:$('#strict').checked,sepIndiv:$('#sepIndiv').checked,sepEvents:$('#sepEvents').checked,sports:{}};
+ const settings={plan,schools:{p:$('#school-p').value.trim(),s:$('#school-s').value.trim()},lockedDays:z0.lockedDays||[],realtime:{dbUrl:($('#rt-db')||{value:''}).value.trim(),apiKey:($('#rt-key')||{value:''}).value.trim(),email:($('#rt-email')||{value:''}).value.trim()},dateFrom:f,dateTo:t,days:picked,timeFrom:from,timeTo:to,rest,interval:Number($('#interval').value),strict:$('#strict').checked,sepIndiv:$('#sepIndiv').checked,sepEvents:$('#sepEvents').checked,sports:{}};
  for(const s of SPORTS){const duration=Number($('#dur-'+s.id).value),courts=Number($('#courts-'+s.id).value),venue=$('#venue-'+s.id).value.trim();if(!Number.isInteger(duration)||duration<5||duration>240||!Number.isInteger(courts)||courts<1||courts>16||!venue){alert('ตรวจสอบระยะเวลา จำนวนสนาม และชื่อสนามของ '+s.name);return}const sd=[...document.querySelectorAll(`input[data-sd="${s.id}"]:checked`)].map(i=>i.value).filter(d=>picked.includes(d));const durByDiv={};s.divs.forEach(d=>{const el=document.getElementById(`dd-${s.id}-${d}`);if(el&&Number(el.value)>0)durByDiv[d]=Number(el.value)});settings.sports[s.id]={duration,durByDiv,byLevel:!!z0.sports[s.id].byLevel,venue,courts,days:sd}}
  state.settings=settings;if(gen)autoSchedule(false);else{store();toast('บันทึกการตั้งค่าแล้ว')}render()}
 
@@ -859,7 +861,8 @@ function download(text,name,type){const blob=new Blob([text],{type}),url=URL.cre
 function exportCSV(){const es=allEvents().sort(byTime);const head=['ชนิดกีฬา','ประเภท','คู่ที่','รอบ','ทีมที่ 1','ทีมที่ 2','วันแข่งขัน (ค.ศ.)','เวลาเริ่ม','ระยะเวลา (นาที)','สนามแข่งขัน','คะแนนทีม 1','คะแนนทีม 2','ผู้ชนะ','สถานะ'];
  const rows=[head,...es.map(e=>[sport(e.s).name,div(e.d).name,e.number,ROUND[e.round],teamLabel(e,0),teamLabel(e,1),e.schedule.date||'',e.schedule.time||'',e.duration,e.schedule.venue||'',e.completed?e.result.a:'',e.completed?e.result.b:'',e.winner==null?'':TEAMS[e.winner],e.completed?'แข่งขันแล้ว':hasDate(e)?'รอแข่งขัน':'ยังไม่กำหนด'])];
  download('﻿'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),'ตารางแข่งขัน_หนองผึ้งเกมส์.csv','text/csv;charset=utf-8');toast('ส่งออกตารางเป็น CSV แล้ว')}
-function act(name){if(name==='autopub'){const on=localStorage.getItem('np_autopub')==='1';if(on){localStorage.removeItem('np_autopub');toast('ปิดเผยแพร่อัตโนมัติแล้ว')}else{if(!localStorage.getItem('np_gh_token')){openToken();toast('เชื่อมต่อ GitHub ก่อน แล้วกดเปิดอีกครั้ง');return}localStorage.setItem('np_autopub','1');toast('เปิดเผยแพร่อัตโนมัติ — บันทึกแล้วขึ้นเว็บทันที');publish(true)}renderStatus();return}
+function act(name){if(name==='rtconnect'){rtConnect();return}if(name==='rtoff'){localStorage.removeItem(RT_TOKEN);rtId=null;rtStatus='off';toast('ตัดการเชื่อมต่อเรียลไทม์ของเครื่องนี้แล้ว');render();return}
+ if(name==='autopub'){const on=localStorage.getItem('np_autopub')==='1';if(on){localStorage.removeItem('np_autopub');toast('ปิดเผยแพร่อัตโนมัติแล้ว')}else{if(!localStorage.getItem('np_gh_token')){openToken();toast('เชื่อมต่อ GitHub ก่อน แล้วกดเปิดอีกครั้ง');return}localStorage.setItem('np_autopub','1');toast('เปิดเผยแพร่อัตโนมัติ — บันทึกแล้วขึ้นเว็บทันที');publish(true)}renderStatus();return}
  if(name==='autotime'){if(!confirm('จัดเวลาอัตโนมัติทุกนัดตามกำหนดการ?\n\n• ทีมในสายที่จับสลากไว้ไม่เปลี่ยน\n• วันที่ล็อกไว้ และนัดที่แข่งแล้ว ไม่เปลี่ยน\n• ไม่ให้ทีมเดียวกันแข่งชนเวลา / สนามชน'))return;autoSchedule(false);render();return}
  if(name==='lockday'){const L=new Set(state.settings.lockedDays||[]);L.has(boardDay)?L.delete(boardDay):L.add(boardDay);state.settings.lockedDays=[...L];store();render();toast(L.has(boardDay)?`ล็อกตาราง ${dShort(boardDay)} แล้ว`:`ปลดล็อก ${dShort(boardDay)} แล้ว`);return}
  if(name==='clearday'){if(!confirm(`นำทุกนัดของวันที่ ${dShort(boardDay)} ออกจากตารางเวลา? (นัดที่มีผลแล้วจะไม่ถูกนำออก)`))return;let n=0;SPORTS.forEach(sp=>sp.divs.forEach(d=>{const b=bdata(sp.id,d);for(const m of Object.keys(b.schedules))if(b.schedules[m].date===boardDay&&!b.results[m]){delete b.schedules[m];n++}}));store();render();toast(`นำออก ${n} นัด`);return}
@@ -885,6 +888,57 @@ $('#fileRestore').addEventListener('change',async e=>{const f=e.target.files[0];
 $('#matchForm').addEventListener('submit',saveMatch);$('#clearScore').addEventListener('click',clearScore);$('#modalClose').addEventListener('click',()=>$('#matchModal').close());$('#cancelModal').addEventListener('click',()=>$('#matchModal').close());
 
 
+/* ---------- real-time results: Firebase Realtime Database over REST + Server-Sent Events ---------- */
+const RT_TOKEN='np_rt_refresh';
+const rtCfg=()=>{const r=(state.settings&&state.settings.realtime)||{};return r.dbUrl&&r.apiKey?{db:String(r.dbUrl).trim().replace(/\/+$/,''),key:String(r.apiKey).trim(),email:String(r.email||'').trim()}:null};
+let rtId=null,rtExp=0,rtPushed={},rtTimer=null,rtSrc=null,rtTree=null,rtAt=0,rtStatus='off',rtRenderT=null;
+async function rtSignIn(email,password){const c=rtCfg();if(!c)throw new Error('ยังไม่ได้ตั้งค่า Firebase');
+ if(c.key==='test-local'){localStorage.setItem(RT_TOKEN,'test');rtId='test';rtExp=Date.now()+36e5;return}
+ const r=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${encodeURIComponent(c.key)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password,returnSecureToken:true})});const j=await r.json();
+ if(!r.ok)throw new Error(j.error&&j.error.message||'sign-in failed');localStorage.setItem(RT_TOKEN,j.refreshToken);rtId=j.idToken;rtExp=Date.now()+(Number(j.expiresIn)-60)*1000}
+async function rtToken(){if(rtId&&Date.now()<rtExp)return rtId;const c=rtCfg(),rt=localStorage.getItem(RT_TOKEN);if(!c||!rt)return null;if(c.key==='test-local'){rtId='test';rtExp=Date.now()+36e5;return rtId}
+ const r=await fetch(`https://securetoken.googleapis.com/v1/token?key=${encodeURIComponent(c.key)}`,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)});const j=await r.json();
+ if(!r.ok){localStorage.removeItem(RT_TOKEN);return null}rtId=j.id_token;rtExp=Date.now()+(Number(j.expires_in)-60)*1000;return rtId}
+function rtParts(){const {brackets,...meta}=state;const parts={meta:JSON.stringify(meta)};for(const [k,b] of Object.entries(brackets))parts['b/'+k]=JSON.stringify(b);return parts}
+async function rtPush(full){const c=rtCfg();if(!c||!admin)return false;const tok=await rtToken();if(!tok){rtStatus='auth';renderStatus();return false}
+ const parts=rtParts(),body={};for(const [k,v] of Object.entries(parts))if(full||rtPushed[k]!==v)body[k]=v;if(!Object.keys(body).length)return true;body.at={'.sv':'timestamp'};
+ try{const r=await fetch(`${c.db}/live.json?auth=${encodeURIComponent(tok)}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('HTTP '+r.status);Object.assign(rtPushed,parts);rtStatus='on';renderStatus();return true}
+ catch(e){rtStatus='err';renderStatus();console.warn('realtime push failed',e);return false}}
+function rtQueue(){if(!admin||!rtCfg()||!localStorage.getItem(RT_TOKEN))return;clearTimeout(rtTimer);rtTimer=setTimeout(()=>rtPush(false),600)}
+function rtSet(obj,path,val){const seg=path.split('/').filter(Boolean);if(!seg.length)return val;let o=obj;for(let i=0;i<seg.length-1;i++){if(typeof o[seg[i]]!=='object'||o[seg[i]]===null)o[seg[i]]={};o=o[seg[i]]}if(val===null)delete o[seg[seg.length-1]];else o[seg[seg.length-1]]=val;return obj}
+function rtRebuild(){if(!rtTree||typeof rtTree.meta!=='string'||!rtTree.b)return;try{const meta=JSON.parse(rtTree.meta),brackets={};for(const [k,v] of Object.entries(rtTree.b))brackets[k]=typeof v==='string'?JSON.parse(v):v;
+  const st=migrate({...meta,brackets});if(!st)return;const at=Number(rtTree.at)||Date.now();if(at<rtAt)return;rtAt=at;state=st;publishedAt=new Date(at).toISOString();publishedStr=JSON.stringify(st);
+  clearTimeout(rtRenderT);rtRenderT=setTimeout(()=>{if($('#matchModal').open||$('#tokenModal').open)return;render()},200)}catch(e){console.warn('realtime data error',e)}}
+function rtSubscribe(){const c=rtCfg();if(!c||admin||rtSrc||!window.EventSource)return;try{rtSrc=new EventSource(`${c.db}/live.json`)}catch(e){return}
+ rtSrc.addEventListener('put',e=>{try{const m=JSON.parse(e.data);rtTree=m.path==='/'?(m.data||{}):rtSet(rtTree||{},m.path,m.data);rtRebuild()}catch(x){}});
+ rtSrc.addEventListener('patch',e=>{try{const m=JSON.parse(e.data);rtTree=rtTree||{};for(const [k,v] of Object.entries(m.data||{}))rtSet(rtTree,(m.path==='/'?'':m.path)+'/'+k,v);rtRebuild()}catch(x){}});
+ rtSrc.onopen=()=>{rtStatus='on';renderStatus()};rtSrc.onerror=()=>{rtStatus=rtSrc&&rtSrc.readyState===2?'off':'err';renderStatus()}}
+async function rtConnect(){const email=$('#rt-email').value.trim(),pw=$('#rt-pass').value;if(!rtCfg()){alert('กรุณากรอก Database URL และ Web API Key แล้วกด “บันทึกการตั้งค่า” ก่อน');return}if(!email||!pw){alert('กรุณากรอกอีเมลและรหัสผ่านของผู้ดูแลใน Firebase');return}
+ try{toast('กำลังเชื่อมต่อ Firebase…');await rtSignIn(email,pw);$('#rt-pass').value='';const ok=await rtPush(true);toast(ok?'เชื่อมต่อเรียลไทม์แล้ว — ผู้ชมจะเห็นผลภายในไม่กี่วินาที':'เชื่อมต่อแล้ว แต่ส่งข้อมูลไม่สำเร็จ — ตรวจ Rules และ UID ใน Firebase',6000);render()}catch(e){alert('เชื่อมต่อไม่สำเร็จ: '+e.message)}}
+function rtCardHTML(){const r=state.settings.realtime||{},on=!!localStorage.getItem(RT_TOKEN);
+ return `<div class="card rt-card"><h3>ผลสดเรียลไทม์ (Firebase)</h3><p class="d">ผู้ชมจะเห็นคะแนนภายในไม่กี่วินาทีหลังบันทึก · สถานะ: <b>${on?(rtStatus==='err'?'⚠ ส่งข้อมูลไม่สำเร็จ':'🟢 เชื่อมต่อแล้ว'):'ยังไม่เชื่อมต่อ'}</b></p>
+  <div class="fields"><label class="f wide"><span>Database URL</span><input class="input" id="rt-db" value="${safe(r.dbUrl||'')}" placeholder="https://xxxx-default-rtdb.asia-southeast1.firebasedatabase.app" spellcheck="false"></label>
+  <label class="f"><span>Web API Key</span><input class="input" id="rt-key" value="${safe(r.apiKey||'')}" placeholder="AIza..." spellcheck="false"></label>
+  <label class="f"><span>อีเมลผู้ดูแล (Firebase)</span><input class="input" id="rt-email" value="${safe(r.email||'')}" placeholder="admin@example.com" spellcheck="false" autocomplete="username"></label>
+  <label class="f wide"><span>รหัสผ่านผู้ดูแล (Firebase) — ใช้ตอนเชื่อมต่อเท่านั้น ไม่ถูกบันทึก</span><input class="input" id="rt-pass" type="password" autocomplete="current-password"></label></div>
+  <div class="actions" style="margin:14px 0 0"><button class="btn btn-sm btn-volt" data-act="rtconnect">เชื่อมต่อและส่งข้อมูลทั้งหมด</button>${on?'<button class="btn btn-sm btn-danger" data-act="rtoff">ตัดการเชื่อมต่อเครื่องนี้</button>':''}</div>
+  <details class="rt-help"><summary>วิธีตั้งค่า Firebase (ครั้งเดียว · ฟรี)</summary><ol class="steps">
+   <li>เปิด <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Firebase Console</a> → <b>Add project</b> → ตั้งชื่อ (ปิด Google Analytics ได้)</li>
+   <li><b>Build → Realtime Database → Create database</b> → เลือก Singapore (asia-southeast1) → <b>Start in locked mode</b> → คัดลอก URL ด้านบน (https://…firebasedatabase.app) มาใส่ช่อง Database URL</li>
+   <li><b>Build → Authentication → Get started → Email/Password → Enable</b> แล้วไปแท็บ <b>Users → Add user</b> สร้างอีเมล/รหัสผ่านผู้ดูแล → คัดลอก <b>User UID</b></li>
+   <li>Authentication → <b>Settings → User actions</b> → ปิด <b>Enable create (sign-up)</b> เพื่อไม่ให้คนอื่นสมัครเอง</li>
+   <li>Realtime Database → แท็บ <b>Rules</b> วางข้อความนี้ (แทน UID ด้วยของคุณ) แล้วกด Publish:<pre>{
+  "rules": {
+    "live": {
+      ".read": true,
+      ".write": "auth != null &amp;&amp; auth.uid === 'วาง_UID_ที่นี่'"
+    }
+  }
+}</pre></li>
+   <li>⚙ Project settings → General → Your apps → ไอคอน <b>&lt;/&gt;</b> (Web) → ตั้งชื่อ → คัดลอกค่า <b>apiKey</b> มาใส่ช่อง Web API Key</li>
+   <li>กรอกอีเมลผู้ดูแล กด <b>บันทึกการตั้งค่า</b> ด้านล่าง → กรอกรหัสผ่าน กด <b>เชื่อมต่อและส่งข้อมูลทั้งหมด</b> → แล้วกด <b>เผยแพร่ขึ้นเว็บ</b> 1 ครั้ง เพื่อให้หน้าเว็บผู้ชมรู้จักฐานข้อมูลนี้</li>
+  </ol></details></div>`}
+
 /* ---------- publishing (shared results via data.json in the GitHub repo) ---------- */
 const ADMIN_KEY='np_admin',TOKEN_KEY='np_gh_token',ADMIN_HASH='487c3854cdb2bedb1fd6f56d4bf5fca490b628765ed80be32c72307db823e027';
 const REPO=(()=>{const h=location.hostname.match(/^([^.]+)\.github\.io$/i),seg=location.pathname.split('/').filter(Boolean)[0];return {owner:h?h[1]:'nattakit2540-ops',name:h&&seg&&!/\.html?$/i.test(seg)?seg:'nongphueng-sports',branch:'main',path:'data.json'}})();
@@ -894,7 +948,7 @@ async function fetchPublished(){try{const c=new AbortController(),t=setTimeout((
 function usePublished(p){publishedAt=p.publishedAt;publishedStr=JSON.stringify(p.state)}
 function renderStatus(){document.body.classList.toggle('viewer',!admin);const tg=$('#adminToggle');if(tg)tg.textContent=admin?'ออกจากระบบผู้ดูแล':'เข้าสู่ระบบผู้ดูแล';const el=$('#statusBar');
  if(admin){const dirty=JSON.stringify(state)!==publishedStr;el.className='status admin';el.innerHTML=`<div class="wrap status-in"><span class="st-dot ${dirty?'warn':''}"></span><span><b>โหมดผู้ดูแล</b> · ${dirty?'มีข้อมูลที่ยังไม่ได้เผยแพร่':'ข้อมูลตรงกับบนเว็บแล้ว'}${publishedAt?` · เผยแพร่ล่าสุด ${fmtStamp(publishedAt)}`:''}</span><button class="btn btn-sm" data-act="autopub" title="เผยแพร่ขึ้นเว็บทันทีทุกครั้งที่บันทึก (ต้องเชื่อมต่อ GitHub แล้ว)">${localStorage.getItem('np_autopub')==='1'?'⚡ เผยแพร่อัตโนมัติ: เปิด':'เผยแพร่อัตโนมัติ: ปิด'}</button><button class="btn btn-sm btn-volt" data-act="publish" ${dirty?'':'disabled'}>เผยแพร่ขึ้นเว็บ</button></div>`}
- else if(publishedAt){el.className='status';el.innerHTML=`<div class="wrap status-in"><span class="st-dot"></span><span>ผลการแข่งขันอัปเดตอัตโนมัติ · ล่าสุด ${fmtStamp(publishedAt)}</span></div>`}
+ else if(publishedAt){el.className='status';el.innerHTML=`<div class="wrap status-in"><span class="st-dot"></span><span>${rtSrc&&rtStatus==='on'?'<b>🔴 ผลสดเรียลไทม์</b> · ':''}ผลการแข่งขันอัปเดตอัตโนมัติ · ล่าสุด ${fmtStamp(publishedAt)}</span></div>`}
  else{el.className='';el.innerHTML=''}}
 function toggleAdmin(){
  if(admin){admin=false;try{localStorage.removeItem(ADMIN_KEY)}catch(e){}if(publishedStr)state=JSON.parse(publishedStr);toast('ออกจากระบบผู้ดูแลแล้ว');render();return}
@@ -929,13 +983,14 @@ $('#clearToken').addEventListener('click',()=>{try{localStorage.removeItem(TOKEN
 $('#manualPublish').addEventListener('click',()=>{const {text}=publishPayload();download(text,'data.json','application/json;charset=utf-8');window.open(`https://github.com/${REPO.owner}/${REPO.name}/upload/${REPO.branch}`,'_blank','noopener');toast('ดาวน์โหลด data.json แล้ว — ลากไฟล์ไปวางในหน้า GitHub แล้วกด Commit changes')});
 $$('#tokenModal [data-close]').forEach(b=>b.addEventListener('click',()=>$('#tokenModal').close()));
 // viewers pick up newly published results automatically
-const pollPublished=async()=>{if(admin||document.hidden||evDrag)return;const p=await fetchPublished();if(p&&p.publishedAt!==publishedAt){usePublished(p);state=JSON.parse(publishedStr);render();toast('มีผลการแข่งขันอัปเดตใหม่')}};setInterval(pollPublished,20000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)pollPublished()});
+const pollPublished=async()=>{if(admin||document.hidden||evDrag||(rtSrc&&rtStatus==='on'))return;const p=await fetchPublished();if(p&&p.publishedAt!==publishedAt&&!(rtAt&&Date.parse(p.publishedAt)<=rtAt)){usePublished(p);state=JSON.parse(publishedStr);render();toast('มีผลการแข่งขันอัปเดตใหม่')}};setInterval(pollPublished,20000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)pollPublished()});
 async function boot(){const p=await fetchPublished();if(p)usePublished(p);
  const hasLocal=(()=>{try{return Boolean(localStorage.getItem(KEY))}catch(e){return false}})();
  if(admin){if(!hasLocal&&p){state=JSON.parse(publishedStr);store()}else if(hasLocal)store();
   // no times yet in this browser: schedule automatically by the competition plan and rules
   if(!allEvents().some(hasDate))autoSchedule(false,true)}
  else if(p)state=JSON.parse(publishedStr);
+ if(!admin)rtSubscribe();
  
  render()}
 boot();
