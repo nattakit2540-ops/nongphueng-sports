@@ -354,6 +354,9 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 @media print{.view-sw,.daily .toolbar,[data-rday]{display:none!important}.daily .card{break-inside:avoid;border:1px solid #ddd;box-shadow:none}.daily .card:before{display:none}.daily-tbl{min-width:0}}
 .pl-fixed{grid-column:span 1;font-size:12px;color:var(--pink-d);font-weight:600}
 .blk.soft{outline:2px dashed #f59e0b;background:#fff8eb}
+.sport-view .pick{margin-top:6px}.sv-head{display:flex;align-items:center;gap:14px;margin:18px 0 6px;padding:16px 18px;border-radius:20px;background:linear-gradient(90deg,#fff6fa,#f1f9ff);border:1px solid var(--line)}.sv-head>.ic{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#fff;box-shadow:0 4px 14px rgba(236,72,153,.15)}.sv-head h2{font:700 20px/1.25 var(--display);margin:0}.sv-head p{margin:3px 0 0;font-size:13px;color:var(--muted)}.sv-head .btn{margin-left:auto}
+@media (max-width:640px){.sv-head{flex-wrap:wrap}.sv-head .btn{margin-left:0}}
+@media print{.sport-view .pick,.sport-view .bracket-bar,.sv-head .btn{display:none!important}}
 /* responsive */
 @media(max-width:1100px){.champs{grid-template-columns:repeat(2,1fr)}.sports{grid-template-columns:repeat(3,1fr)}.next{grid-template-columns:repeat(2,1fr)}.fx{grid-template-columns:70px minmax(0,1fr) minmax(0,2fr) 104px 38px}.fx-venue{display:none}}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
@@ -504,7 +507,7 @@ const DIVS=[{id:'primary_male',name:'ประถมชาย',short:'ชาย'
  ...['p','s'].flatMap(lv=>[['sgl_m','เดี่ยวชาย','m'],['sgl_f','เดี่ยวหญิง','f'],['dbl_m','คู่ชาย','m'],['dbl_f','คู่หญิง','f'],['team_m','ทีมชาย','m'],['team_f','ทีมหญิง','f'],['team_x','ทีมผสม','x']].map(([k,n,g])=>({id:`${lv}_${k}`,name:`${LEVELS[lv]} ${n}`,short:n,lv,g})))];
 const BASIC=['primary_male','primary_female','secondary_male','secondary_female'];
 const SPORTS=[{id:'football',name:'ฟุตบอล',en:'Football',duration:60,durByDiv:{primary_male:60,primary_female:60,secondary_male:60,secondary_female:60},venue:'สนามฟุตบอล',courts:1,divs:BASIC},{id:'futsal',name:'ฟุตซอล',en:'Futsal',duration:60,venue:'สนามฟุตซอล',courts:1,divs:BASIC},{id:'volleyball',name:'วอลเลย์บอล',en:'Volleyball',duration:45,venue:'สนามวอลเลย์บอล',courts:1,divs:BASIC},
- {id:'tabletennis',name:'ปิงปอง',en:'Table Tennis',duration:15,venue:'โต๊ะปิงปอง',courts:2,byLevel:true,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_x','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_x']},
+ {id:'tabletennis',name:'ปิงปอง',en:'Table Tennis',duration:15,venue:'โต๊ะปิงปอง',courts:1,byLevel:true,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_x','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_x']},
  {id:'petanque',name:'เปตอง',en:'Pétanque',duration:45,venue:'สนามเปตอง',courts:8,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_m','p_team_f','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_m','s_team_f']},
  {id:'takraw',name:'ตะกร้อ',en:'Sepak Takraw',duration:30,venue:'สนามตะกร้อ',courts:1,divs:BASIC}];
 const DEF_DAYS={football:['2026-12-15','2026-12-17','2026-12-18'],futsal:['2026-12-15','2026-12-17','2026-12-18'],volleyball:['2026-12-15','2026-12-17','2026-12-18'],takraw:['2026-12-15','2026-12-17','2026-12-18'],tabletennis:['2026-12-14'],petanque:['2026-12-14']};
@@ -513,7 +516,7 @@ const SCHOOLS_DEF={p:'โรงเรียนชุมชนบ้านหน�
 const PLAN_DEF=[
  {id:'pq_td',label:'เปตอง ประเภททีมและคู่ (ทุกรอบ)',sports:['petanque'],kinds:['team','dbl'],rounds:[0,1,2],def:['2026-12-14','09:00','17:00']},
  {id:'pq_s',label:'เปตอง ประเภทเดี่ยว (ทุกรอบ)',sports:['petanque'],kinds:['sgl'],rounds:[0,1,2],def:['2026-12-14','09:00','17:00']},
- {id:'tt',label:'ปิงปอง ทุกประเภท (ทุกรอบ)',sports:['tabletennis'],rounds:[0,1,2],def:['2026-12-14','09:00','17:00']},
+ {id:'tt',label:'ปิงปอง ทุกประเภท (ทุกรอบ) · พักกลางวัน 12:00–13:00',sports:['tabletennis'],rounds:[0,1,2],brk:['12:00','13:00'],def:['2026-12-14','09:30','17:00']},
  {id:'r1',label:'ฟุตบอล ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบแรก',sports:TEAM_SPORTS,rounds:[0],def:['2026-12-15','09:00','17:00']},
  {id:'semi',label:'ฟุตบอล ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบรองชนะเลิศ',sports:TEAM_SPORTS,rounds:[1],def:['2026-12-17','09:00','12:00']},
  {id:'fin3',label:'ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบชิง',sports:['futsal','volleyball','takraw'],rounds:[2],def:['2026-12-17','13:00','17:00']},
@@ -551,7 +554,7 @@ const DEFAULT_NAME='แข่งขันกีฬาอำเภอเกษต
 function defaultState(){return migrate({version:3,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,sports:{}},brackets:{}})}
 const validSeeds=a=>{if(!Array.isArray(a)||a.length!==6)return false;const t=a.filter(x=>x!==null);return t.every(x=>Number.isInteger(x)&&x>=0&&x<6)&&new Set(t).size===t.length};
 // upgrades older saved data (v2: 4 divisions per sport) to the current set of events
-const DATA_REV=10;
+const DATA_REV=12;
 function migrate(v){if(!v||typeof v!=='object'||(v.version!==2&&v.version!==3)||typeof v.eventName!=='string'||!v.settings||typeof v.settings!=='object')return null;
  if((Number(v.rev)||0)<DATA_REV){const bs={};for(const [k,b] of Object.entries(v.brackets||{}))if(b&&typeof b==='object')bs[k]={...b,schedules:{}};
   v={...v,rev:DATA_REV,brackets:bs,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,lockedDays:[],sports:{}}}}
@@ -601,7 +604,7 @@ function warnings(events){const problems=[],active=events.filter(hasDate),map=ne
  return problems}
 const outOfFrame=(e,date,time)=>{const sl=slotOf(e),t=atTime(time);return !sl.dates.includes(date)||t<atTime(sl.from)||t+e.duration>atTime(sl.to)};
 function validateTrial(e,ns,items,byKey,loose){const z=state.settings,minute=atTime(ns.time),start=minutesStamp(ns.date,ns.time),end=start+e.duration;
- const sl=slotOf(e);if(!Number.isFinite(start))return 'วันหรือเวลาไม่ถูกต้อง';if(loose){if(!compDays().includes(ns.date))return 'วันนี้ไม่ใช่วันแข่งขัน'}else if(outOfFrame(e,ns.date,ns.time))return `ไม่อยู่ในกำหนดการ (${sl.dates.map(dShort).join(', ')} เวลา ${sl.from}–${sl.to} น.)`;
+ const sl=slotOf(e);if(!Number.isFinite(start))return 'วันหรือเวลาไม่ถูกต้อง';if(loose){if(!compDays().includes(ns.date))return 'วันนี้ไม่ใช่วันแข่งขัน'}else if(outOfFrame(e,ns.date,ns.time))return `ไม่อยู่ในกำหนดการ (${sl.dates.map(dShort).join(', ')} เวลา ${sl.from}–${sl.to} น.)`;{const br=planRule(e.s,e.d,e.round);if(br&&br.brk&&minute<atTime(br.brk[1])&&minute+e.duration>atTime(br.brk[0]))return `ตรงกับช่วงพักกลางวัน (${br.brk[0]}–${br.brk[1]} น.)`}
  for(const pid of e.parents){const parent=byKey.get(pid);if(!parent||!hasDate(parent))return `ต้องจัดเวลาคู่ที่ ${parent?parent.number:''} (รอบก่อนหน้า) ก่อน`;if(start<schedRange(parent).end+Number(z.rest))return `ต้องเริ่มหลังคู่ที่ ${parent.number} จบ (${toTime(atTime(parent.schedule.time)+parent.duration)} น.) และพัก ${z.rest} นาที`}
  for(const o of items){if(e.key===o.key||!hasDate(o))continue;const r=schedRange(o);if(ns.venue&&o.schedule.venue&&ns.venue.trim().toLocaleLowerCase()===o.schedule.venue.trim().toLocaleLowerCase()&&start<r.end&&r.start<end)return `สนามไม่ว่าง — ${labelEvent(o)} ใช้${o.schedule.venue.split(' · ')[0]} เวลา ${spanTxt(o)}`;
   if(sharesTeam(e,o)&&start<r.end+Number(z.rest)&&r.start<end+Number(z.rest)){const t=e.participants.find(x=>o.participants.includes(x));return `${t!==undefined?TEAMS[t]:'ทีมในคู่นี้'} มีการแข่งขัน${sport(o.s).name} ${div(o.d).name} (คู่ ${o.number}) เวลา ${spanTxt(o)}${Number(z.rest)?` · ต้องพักอย่างน้อย ${z.rest} นาที`:''}`}
@@ -763,7 +766,7 @@ function boardHTML(){const days=compDays();if(!days.includes(boardDay))boardDay=
  ${locked?'<div class="notice"><i></i><span>วันนี้ล็อกแล้ว ย้ายนัดไม่ได้ จนกว่าจะปลดล็อก</span></div>':''}
  <div class="bwrap"><div class="tray" data-tray="1"><div class="tray-h">ยังไม่ลงเวลา <b>${tray.length}</b> นัด</div>${tray.length?[...groups].map(([g,list])=>`<div class="tray-g">${g}</div>${list.map(chip).join('')}`).join(''):'<p class="tiny">วางครบทุกนัดของวันนี้แล้ว ✓</p>'}</div>
  ${gridHTML(d,!locked)}</div></section>`}
-let schedMode='list',venueDay=null;
+let schedMode='sport',venueDay=null;
 let reportDay=null;
 function dailyEvents(d){return allEvents().filter(e=>e.schedule.date===d).sort((a,b)=>SPORTS.findIndex(x=>x.id===a.s)-SPORTS.findIndex(x=>x.id===b.s)||sport(a.s).divs.indexOf(a.d)-sport(b.s).divs.indexOf(b.d)||a.number-b.number)}
 function dailyReportHTML(){const days=compDays(),all=allEvents();if(!days.includes(reportDay)){const t=new Date(),today=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;reportDay=days.includes(today)?today:days[0]}
@@ -780,6 +783,14 @@ function dailyReportHTML(){const days=compDays(),all=allEvents();if(!days.includ
 function exportDayCSV(){const d=reportDay,es=dailyEvents(d);const head=['วันที่','ชนิดกีฬา','ประเภท','คู่ที่','รอบ','เวลา','สนาม','ทีมที่ 1','คะแนน 1','คะแนน 2','ทีมที่ 2','ผู้ชนะ'];
  const rows=[head,...es.map(e=>[d,sport(e.s).name,div(e.d).name,e.number,ROUND[e.round],e.schedule.time,e.schedule.venue||'',teamLabel(e,0),e.completed?e.result.a:'',e.completed?e.result.b:'',teamLabel(e,1),e.completed?TEAMS[e.winner]:'ยังไม่แข่ง'])];
  download('﻿'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),`รายงานผล_${d}.csv`,'text/csv;charset=utf-8');toast('ส่งออกรายงานประจำวันแล้ว')}
+function sportViewHTML(){const s=sport(activeSport),all=allEvents().filter(e=>e.s===activeSport);
+ const list=all.filter(e=>e.d===activeDivision).sort((a,b)=>byTime(a,b)||a.number-b.number);
+ const groups=new Map();list.forEach(e=>{const g=e.schedule.date||'';if(!groups.has(g))groups.set(g,[]);groups.get(g).push(e)});
+ const days=[...new Set(all.filter(hasDate).map(e=>e.schedule.date))].sort(),venues=[...new Set(all.map(e=>(e.schedule.venue||'').split(' · ')[0]).filter(Boolean))];
+ return `<div class="sport-view"><div class="pick">${SPORTS.map(x=>`<button class="pk ${x.id===activeSport?'active':''}" data-sport="${x.id}" data-pick-sport="${x.id}" aria-pressed="${x.id===activeSport}"><span class="ic">${ic(x.id)}</span>${x.name}</button>`).join('')}</div>
+ <div class="bracket-bar"><div class="lvls">${['p','s'].map(lv=>`<div class="lvl"><span class="lvl-l">${LEVELS[lv]}</span><div class="seg">${s.divs.filter(d=>div(d).lv===lv).map(d=>`<button class="${d===activeDivision?'active':''}" data-pick-div="${d}" aria-pressed="${d===activeDivision}">${div(d).short}</button>`).join('')}</div></div>`).join('')}</div></div>
+ <div class="sv-head" data-sport="${s.id}"><span class="ic">${ic(s.id)}</span><div><h2>${s.name} · ${div(activeDivision).name}</h2><p>${list.length} นัด · ${days.map(dShort).join(', ')||'ยังไม่กำหนดวัน'}${venues.length?` · ${safe(venues.join(', '))}`:''}</p></div><button class="btn btn-sm" data-goto="${s.id}">${ic('arrow')}ดูผังการแข่งขัน</button></div>
+ ${[...groups].map(([d,items])=>`<div class="group-h"><h3>${d?dLong(d):'ยังไม่กำหนดเวลา'}</h3><span>${items.length} Matches</span></div><div class="fx-list">${items.map(fxHTML).join('')}</div>`).join('')||'<div class="empty">ยังไม่มีการแข่งขัน</div>'}</div>`}
 function venueViewHTML(){const days=compDays(),es=allEvents();if(!days.includes(venueDay)){venueDay=days.find(x=>es.some(e=>e.schedule.date===x))||days[0]}
  return `<div class="days">${days.map((x,i)=>`<button class="day ${x===venueDay?'active':''}" data-vday="${x}"><small>Day ${i+1}</small><b>${TH_D[pd(x).w].slice(0,3)}. ${dShort(x)}</b><i>${es.filter(e=>e.schedule.date===x).length} นัด</i></button>`).join('')}</div>
  <p class="tiny" style="margin:0 0 10px">ตารางเวลาแยกตามสนาม · แตะที่นัดเพื่อดูรายละเอียด</p>${gridHTML(venueDay,false)}`}
@@ -807,8 +818,8 @@ function scheduleHTML(){const es=allEvents(),z=state.settings,issues=warnings(es
  const opt=(v,list)=>list.map(([a,b])=>`<option value="${a}" ${v===a?'selected':''}>${b}</option>`).join('');
  return `<section class="wrap"><div class="page-h"><div><span class="kicker">Match Schedule</span><h1>ตารางแข่งขัน</h1><p class="lead">${fmtDays(compDays())} · ${es.length} นัด ทุกชนิดกีฬา</p></div><div class="toolbar"><button class="btn btn-sm btn-volt admin-only" data-act="autotime">${ic('shuffle')}จัดเวลาอัตโนมัติ</button><button class="btn btn-sm admin-only" data-view-link="board">${ic('edit')}ปรับเวลาเอง (ลากวาง)</button><button class="btn btn-sm" data-act="csv">${ic('download')}Excel</button><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์</button></div></div>
  <div class="notice ${issues.length?'warn':''}"><i></i><span>${issues.length?`พบข้อขัดแย้ง ${issues.length} รายการ — ${admin?'ย้ายนัดที่มีกรอบแดงได้ที่หน้า “จัดเวลา”':'ผู้ดูแลกำลังปรับตาราง'}`:`ไม่มีทีมหรือสนามชนกัน${miss?` · ยังไม่จัดเวลา ${miss} นัด`:' · จัดครบทุกนัดแล้ว'}${admin&&softKeys(es).size?` · ${softKeys(es).size} นัดอยู่นอกกรอบเวลาที่วางไว้ (กรอบส้มในหน้าจัดเวลา)`:''}`}</span></div>
- ${reportHTML()}<div class="seg view-sw"><button class="${schedMode==='list'?'active':''}" data-svmode="list">รายการ</button><button class="${schedMode==='venue'?'active':''}" data-svmode="venue">ตามสนาม</button><button class="${schedMode==='report'?'active':''}" data-svmode="report">รายงานประจำวัน</button></div>
- ${schedMode==='venue'?venueViewHTML():schedMode==='report'?dailyReportHTML():''}<div class="list-part" ${schedMode!=='list'?'hidden':''}><div class="days">${dayBtn('all','All days','ทั้งหมด',es.length)}${dates.map((d,i)=>dayBtn(d,`Day ${i+1}`,dShort(d),es.filter(e=>e.schedule.date===d).length)).join('')}</div>
+ ${reportHTML()}<div class="seg view-sw"><button class="${schedMode==='sport'?'active':''}" data-svmode="sport">ตามกีฬา</button><button class="${schedMode==='list'?'active':''}" data-svmode="list">ตามวัน</button><button class="${schedMode==='venue'?'active':''}" data-svmode="venue">ตามสนาม</button><button class="${schedMode==='report'?'active':''}" data-svmode="report">รายงานประจำวัน</button></div>
+ ${schedMode==='sport'?sportViewHTML():schedMode==='venue'?venueViewHTML():schedMode==='report'?dailyReportHTML():''}<div class="list-part" ${schedMode!=='list'?'hidden':''}><div class="days">${dayBtn('all','All days','ทั้งหมด',es.length)}${dates.map((d,i)=>dayBtn(d,`Day ${i+1}`,dShort(d),es.filter(e=>e.schedule.date===d).length)).join('')}</div>
  <div class="filters"><select class="input" id="fSport" aria-label="ชนิดกีฬา">${opt(filter.sport,[['all','ทุกชนิดกีฬา'],...SPORTS.map(s=>[s.id,s.name])])}</select><select class="input" id="fDiv" aria-label="ประเภท">${opt(filter.division,[['all','ทุกประเภท'],...DIVS.filter(d=>SPORTS.some(x=>x.divs.includes(d.id))).map(d=>[d.id,d.name])])}</select><div class="search">${ic('search')}<input class="input" id="fText" placeholder="ค้นหาทีม สนาม หรือชนิดกีฬา" value="${safe(filter.text)}" aria-label="ค้นหา"></div></div>
  <div id="fixtures"></div></div></section>`}
 function bindSchedule(){
