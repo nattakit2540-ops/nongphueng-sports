@@ -515,8 +515,9 @@ const DEF_DAYS={football:['2026-12-15','2026-12-17','2026-12-18'],futsal:['2026-
 const TEAM_SPORTS=['football','futsal','volleyball','takraw'];
 const SCHOOLS_DEF={p:'โรงเรียนชุมชนบ้านหนองผึ้ง (ประพันธ์คุรุราษฎร์อุทิศ)',s:'โรงเรียนหนองผึ้งวิทยาคาร'};
 const PLAN_DEF=[
- {id:'pq_td',label:'เปตอง ประเภททีมและคู่ (ทุกรอบ)',sports:['petanque'],kinds:['team','dbl'],rounds:[0,1,2],def:['2026-12-14','09:00','17:00']},
- {id:'pq_s',label:'เปตอง ประเภทเดี่ยว (ทุกรอบ)',sports:['petanque'],kinds:['sgl'],rounds:[0,1,2],def:['2026-12-14','09:00','17:00']},
+ {id:'pq_td',label:'เปตอง ประเภททีมและคู่ — ช่วงเช้า (รอบแรก รอบรองฯ)',sports:['petanque'],kinds:['team','dbl'],rounds:[0,1],def:['2026-12-14','09:00','12:00']},
+ {id:'pq_tdf',label:'เปตอง ประเภททีมและคู่ — รอบชิง ช่วงบ่าย',sports:['petanque'],kinds:['team','dbl'],rounds:[2],def:['2026-12-14','13:00','17:00']},
+ {id:'pq_s',label:'เปตอง ประเภทเดี่ยว — ช่วงบ่าย (ทุกรอบ)',sports:['petanque'],kinds:['sgl'],rounds:[0,1,2],def:['2026-12-14','13:00','17:00']},
  {id:'tt',label:'ปิงปอง ทุกประเภท (ทุกรอบ)',sports:['tabletennis'],rounds:[0,1,2],def:['2026-12-14','09:30','17:00']},
  {id:'r1',label:'ฟุตบอล ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบแรก',sports:TEAM_SPORTS,rounds:[0],def:['2026-12-15','09:00','17:00']},
  {id:'semiFF',label:'ฟุตบอลหญิง ประถม/มัธยม — รอบรองฯ คู่ที่ 2 (ยกมาแข่งวันที่ 15)',sports:['football'],gender:'f',matches:['M2'],rounds:[1],def:['2026-12-15','09:00','17:00']},
@@ -557,7 +558,7 @@ const DEFAULT_NAME='แข่งขันกีฬาอำเภอเกษต
 function defaultState(){return migrate({version:3,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',lunchFrom:'12:00',lunchTo:'13:00',lunchGrace:30,interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,sports:{}},brackets:{}})}
 const validSeeds=a=>{if(!Array.isArray(a)||a.length!==6)return false;const t=a.filter(x=>x!==null);return t.every(x=>Number.isInteger(x)&&x>=0&&x<6)&&new Set(t).size===t.length};
 // upgrades older saved data (v2: 4 divisions per sport) to the current set of events
-const DATA_REV=16;
+const DATA_REV=18;
 function migrate(v){if(!v||typeof v!=='object'||(v.version!==2&&v.version!==3)||typeof v.eventName!=='string'||!v.settings||typeof v.settings!=='object')return null;
  if((Number(v.rev)||0)<DATA_REV){const bs={};for(const [k,b] of Object.entries(v.brackets||{}))if(b&&typeof b==='object')bs[k]={...b,schedules:{}};
   v={...v,rev:DATA_REV,brackets:bs,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',lunchFrom:'12:00',lunchTo:'13:00',lunchGrace:30,interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,lockedDays:[],sports:{}}}}
