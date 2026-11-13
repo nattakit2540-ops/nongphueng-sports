@@ -503,7 +503,7 @@ const LEVELS={p:'ประถม',s:'มัธยม'};
 const DIVS=[{id:'primary_male',name:'ประถมชาย',short:'ชาย',lv:'p',g:'m'},{id:'primary_female',name:'ประถมหญิง',short:'หญิง',lv:'p',g:'f'},{id:'secondary_male',name:'มัธยมชาย',short:'ชาย',lv:'s',g:'m'},{id:'secondary_female',name:'มัธยมหญิง',short:'หญิง',lv:'s',g:'f'},
  ...['p','s'].flatMap(lv=>[['sgl_m','เดี่ยวชาย','m'],['sgl_f','เดี่ยวหญิง','f'],['dbl_m','คู่ชาย','m'],['dbl_f','คู่หญิง','f'],['team_m','ทีมชาย','m'],['team_f','ทีมหญิง','f'],['team_x','ทีมผสม','x']].map(([k,n,g])=>({id:`${lv}_${k}`,name:`${LEVELS[lv]} ${n}`,short:n,lv,g})))];
 const BASIC=['primary_male','primary_female','secondary_male','secondary_female'];
-const SPORTS=[{id:'football',name:'ฟุตบอล',en:'Football',duration:30,durByDiv:{primary_male:50,primary_female:40,secondary_male:60,secondary_female:50},venue:'สนามฟุตบอล',courts:1,divs:BASIC},{id:'futsal',name:'ฟุตซอล',en:'Futsal',duration:25,venue:'สนามฟุตซอล',courts:1,divs:BASIC},{id:'volleyball',name:'วอลเลย์บอล',en:'Volleyball',duration:45,venue:'สนามวอลเลย์บอล',courts:1,divs:BASIC},
+const SPORTS=[{id:'football',name:'ฟุตบอล',en:'Football',duration:60,durByDiv:{primary_male:60,primary_female:60,secondary_male:60,secondary_female:60},venue:'สนามฟุตบอล',courts:1,divs:BASIC},{id:'futsal',name:'ฟุตซอล',en:'Futsal',duration:60,venue:'สนามฟุตซอล',courts:1,divs:BASIC},{id:'volleyball',name:'วอลเลย์บอล',en:'Volleyball',duration:45,venue:'สนามวอลเลย์บอล',courts:1,divs:BASIC},
  {id:'tabletennis',name:'ปิงปอง',en:'Table Tennis',duration:15,venue:'โต๊ะปิงปอง',courts:2,byLevel:true,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_x','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_x']},
  {id:'petanque',name:'เปตอง',en:'Pétanque',duration:45,venue:'สนามเปตอง',courts:8,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_m','p_team_f','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_m','s_team_f']},
  {id:'takraw',name:'ตะกร้อ',en:'Sepak Takraw',duration:30,venue:'สนามตะกร้อ',courts:1,divs:BASIC}];
@@ -551,7 +551,7 @@ const DEFAULT_NAME='แข่งขันกีฬาอำเภอเกษต
 function defaultState(){return migrate({version:3,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,sports:{}},brackets:{}})}
 const validSeeds=a=>{if(!Array.isArray(a)||a.length!==6)return false;const t=a.filter(x=>x!==null);return t.every(x=>Number.isInteger(x)&&x>=0&&x<6)&&new Set(t).size===t.length};
 // upgrades older saved data (v2: 4 divisions per sport) to the current set of events
-const DATA_REV=8;
+const DATA_REV=9;
 function migrate(v){if(!v||typeof v!=='object'||(v.version!==2&&v.version!==3)||typeof v.eventName!=='string'||!v.settings||typeof v.settings!=='object')return null;
  if((Number(v.rev)||0)<DATA_REV){const bs={};for(const [k,b] of Object.entries(v.brackets||{}))if(b&&typeof b==='object')bs[k]={...b,schedules:{}};
   v={...v,rev:DATA_REV,brackets:bs,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,lockedDays:[],sports:{}}}}
