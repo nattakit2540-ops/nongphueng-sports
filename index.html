@@ -786,7 +786,7 @@ function exportDayCSV(){const d=reportDay,es=dailyEvents(d);const head=['วั�
 function sportViewHTML(){const s=sport(activeSport),all=allEvents().filter(e=>e.s===activeSport);
  const list=all.filter(e=>e.d===activeDivision).sort((a,b)=>byTime(a,b)||a.number-b.number);
  const groups=new Map();list.forEach(e=>{const g=e.schedule.date||'';if(!groups.has(g))groups.set(g,[]);groups.get(g).push(e)});
- const days=[...new Set(all.filter(hasDate).map(e=>e.schedule.date))].sort(),venues=[...new Set(all.map(e=>(e.schedule.venue||'').split(' · ')[0]).filter(Boolean))];
+ const days=[...new Set(list.filter(hasDate).map(e=>e.schedule.date))].sort(),venues=[...new Set(list.map(e=>(e.schedule.venue||'').split(' · ')[0]).filter(Boolean))];
  return `<div class="sport-view"><div class="pick">${SPORTS.map(x=>`<button class="pk ${x.id===activeSport?'active':''}" data-sport="${x.id}" data-pick-sport="${x.id}" aria-pressed="${x.id===activeSport}"><span class="ic">${ic(x.id)}</span>${x.name}</button>`).join('')}</div>
  <div class="bracket-bar"><div class="lvls">${['p','s'].map(lv=>`<div class="lvl"><span class="lvl-l">${LEVELS[lv]}</span><div class="seg">${s.divs.filter(d=>div(d).lv===lv).map(d=>`<button class="${d===activeDivision?'active':''}" data-pick-div="${d}" aria-pressed="${d===activeDivision}">${div(d).short}</button>`).join('')}</div></div>`).join('')}</div></div>
  <div class="sv-head" data-sport="${s.id}"><span class="ic">${ic(s.id)}</span><div><h2>${s.name} · ${div(activeDivision).name}</h2><p>${list.length} นัด · ${days.map(dShort).join(', ')||'ยังไม่กำหนดวัน'}${venues.length?` · ${safe(venues.join(', '))}`:''}</p></div><button class="btn btn-sm" data-goto="${s.id}">${ic('arrow')}ดูผังการแข่งขัน</button></div>
