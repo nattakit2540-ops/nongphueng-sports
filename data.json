@@ -1,5 +1,5 @@
 {
- "publishedAt": "2026-11-14T02:00:00.000Z",
+ "publishedAt": "2026-11-14T03:00:00.000Z",
  "state": {
   "version": 3,
   "eventName": "แข่งขันกีฬาอำเภอเกษตรวิสัย “หนองผึ้งเกมส์”",
@@ -20,7 +20,7 @@
    "interval": 5,
    "rest": 15,
    "strict": false,
-   "sepIndiv": false,
+   "sepIndiv": true,
    "sepEvents": false,
    "lockedDays": [],
    "sports": {
@@ -1540,6 +1540,6 @@
     ]
    }
   },
-  "rev": 18
+  "rev": 19
  }
 }
