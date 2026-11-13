@@ -287,6 +287,13 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 .seed-chip .grip{color:var(--muted);font-size:17px;line-height:1}
 .seed-chip .name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
 .seed-chip.dragging{opacity:.35}
+.seed-pool{border:1.5px dashed var(--sky);background:linear-gradient(90deg,#f5fbff,#fff7fb);border-radius:16px;padding:10px 12px 12px;margin-bottom:16px;transition:border-color .2s,background .2s}
+.seed-pool.over{border-color:var(--pink);background:var(--pink-l)}
+.pool-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.seed-ph{display:flex;align-items:center;justify-content:center;min-height:42px;border-radius:12px;color:var(--muted);font-size:13px;background:rgba(242,244,251,.7)}
+.seed-ph.done{grid-column:1/-1;color:var(--ok);font-weight:600;background:none}
+.seed-slot.vacant{border-color:var(--sky)}
+.seed-count{display:inline-block;margin-left:8px;font:600 13px var(--num);letter-spacing:1px;padding:2px 10px;border-radius:99px;background:#fff5e0;color:#a35f00;vertical-align:middle}.seed-count.ok{background:#e3f8ef;color:var(--ok)}
 .seed-chip.ghost{position:fixed;z-index:300;pointer-events:none;cursor:grabbing;transform:rotate(-2deg) scale(1.04);box-shadow:0 20px 40px -12px rgba(255,111,174,.6);border-color:var(--pink)}
 .shake{animation:shake .4s}@keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-4px)}}
 /* responsive */
@@ -307,7 +314,7 @@ body{padding-bottom:100px}.toast{bottom:104px}
 .fx{grid-template-columns:58px minmax(0,1fr) 38px;grid-template-areas:"time meta edit" "teams teams teams" "venue venue status";gap:12px;padding:15px}
 .fx-time{grid-area:time}.fx-meta{grid-area:meta}.fx .icon-btn{grid-area:edit}.fx-teams{grid-area:teams;background:linear-gradient(90deg,#fff6fa,#f1f9ff);border-radius:14px;padding:10px}.fx-venue{grid-area:venue;display:flex}.fx-status{grid-area:status;justify-self:end}
 .fx-time b{font-size:22px}.m-only{display:inline}
-.fields{grid-template-columns:1fr}.sport-row{grid-template-columns:84px 62px 54px 1fr;gap:6px}.seed-cols{grid-template-columns:1fr}.champs{grid-template-columns:1fr}.card{padding:20px}
+.fields{grid-template-columns:1fr}.sport-row{grid-template-columns:84px 62px 54px 1fr;gap:6px}.pool-chips{grid-template-columns:1fr}.seed-cols{grid-template-columns:1fr}.champs{grid-template-columns:1fr}.card{padding:20px}
 .mh,.mb{padding-left:18px;padding-right:18px}.mf{padding:14px 18px}.si{height:62px;font-size:36px}
 .foot{padding-bottom:110px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;translate:none}.lb path.draw{stroke-dashoffset:0}}
@@ -441,7 +448,7 @@ const SPORTS=[{id:'football',name:'ฟุตบอล',en:'Football',duration:60
  {id:'tabletennis',name:'ปิงปอง',en:'Table Tennis',duration:30,venue:'สนามปิงปอง',courts:3,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_x','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_x']},
  {id:'petanque',name:'เปตอง',en:'Pétanque',duration:45,venue:'สนามเปตอง',courts:4,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_m','p_team_f','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_m','s_team_f']},
  {id:'takraw',name:'ตะกร้อ',en:'Sepak Takraw',duration:45,venue:'สนามตะกร้อ',courts:1,divs:BASIC}];
-const NDIV=SPORTS.reduce((n,x)=>n+x.divs.length,0),SEED0=[0,1,2,3,4,5];
+const NDIV=SPORTS.reduce((n,x)=>n+x.divs.length,0),SEED0=[null,null,null,null,null,null];
 const MATCH={M1:{number:1,round:0,sides:[{team:0},{team:1}],parents:[]},M2:{number:2,round:1,sides:[{winner:'M1'},{team:2}],parents:['M1']},M3:{number:3,round:0,sides:[{team:3},{team:4}],parents:[]},M4:{number:4,round:1,sides:[{winner:'M3'},{team:5}],parents:['M3']},M5:{number:5,round:2,sides:[{winner:'M2'},{winner:'M4'}],parents:['M2','M4']}};
 const MATCH_ORDER=['M1','M3','M2','M4','M5'];
 const ROUND=['รอบแรก','รอบรองชนะเลิศ','รอบชิงชนะเลิศ'];
@@ -464,7 +471,7 @@ const dateList=(a,b)=>{let out=[],t=Date.parse(a+'T00:00:00Z'),end=Date.parse(b+
 /* ---------- data ---------- */
 const DEFAULT_NAME='แข่งขันกีฬาอำเภอเกษตรวิสัย “หนองผึ้งเกมส์”';
 function defaultState(){return migrate({version:3,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-15',dateTo:'2026-12-18',timeFrom:'08:00',timeTo:'17:00',interval:15,rest:15,strict:false,sports:{}},brackets:{}})}
-const validSeeds=a=>Array.isArray(a)&&a.length===6&&[...a].sort().join()==='0,1,2,3,4,5';
+const validSeeds=a=>{if(!Array.isArray(a)||a.length!==6)return false;const t=a.filter(x=>x!==null);return t.every(x=>Number.isInteger(x)&&x>=0&&x<6)&&new Set(t).size===t.length};
 // upgrades older saved data (v2: 4 divisions per sport) to the current set of events
 function migrate(v){if(!v||typeof v!=='object'||(v.version!==2&&v.version!==3)||typeof v.eventName!=='string'||!v.settings||typeof v.settings!=='object')return null;
  const brackets={},src=v.brackets&&typeof v.brackets==='object'?v.brackets:{};
@@ -477,11 +484,12 @@ let state=load(),view='home',activeSport='football',activeDivision='primary_male
 if(['การแข่งขันกีฬา “หนองผึ้งเกมส์”','การแข่งขันกีฬาอำเภอ'].includes(state.eventName))state.eventName=DEFAULT_NAME;
 function heroTitle(){const n=state.eventName,i=n.indexOf('“');return i>0?`${safe(n.slice(0,i).trim())}<span class="h1-sub">${safe(n.slice(i))}</span>`:safe(n)}
 const bdata=(s,d)=>state.brackets[key(s,d,'_')];
-const seedOf=(s,d,slot)=>(bdata(s,d).seeds||SEED0)[slot];
+const seedOf=(s,d,slot)=>{const v=(bdata(s,d).seeds||SEED0)[slot];return v===undefined?null:v};
+const sideLabel=(m,i)=>{const w=MATCH[m].sides[i].winner;return w?`ผู้ชนะคู่ที่ ${MATCH[w].number}`:'รอจัดทีม'};
 const venueList=sid=>{const o=state.settings.sports[sid],v=o.venue||sport(sid).venue,n=Number(o.courts)||1;return n>1?Array.from({length:n},(_,i)=>`${v} ${i+1}`):[v]};
 function fixDiv(){const s=sport(activeSport);if(!s.divs.includes(activeDivision))activeDivision=s.divs[0]}
 function outcome(s,d,m,cache){const k=key(s,d,m);if(cache.has(k))return cache.get(k);const cfg=MATCH[m],b=bdata(s,d);const sides=cfg.sides.map(x=>x.team!==undefined?seedOf(s,d,x.team):(outcome(s,d,x.winner,cache).winner));const r=b.results[m]||{};const [a,z]=sides;let winner=null,completed=false;if(a!==null&&z!==null&&Number.isInteger(r.a)&&Number.isInteger(r.b)&&r.a>=0&&r.b>=0){if(r.a>r.b)winner=a;else if(r.b>r.a)winner=z;else if(r.tieWinner==='a')winner=a;else if(r.tieWinner==='b')winner=z;completed=winner!==null}const res={a,b:z,winner,completed,result:r};cache.set(k,res);return res}
-function possibilities(s,d,m,cache,pcache){const k=key(s,d,m);if(pcache.has(k))return pcache.get(k);const cfg=MATCH[m];const sets=cfg.sides.map(x=>{if(x.team!==undefined)return [seedOf(s,d,x.team)];const o=outcome(s,d,x.winner,cache);return o.completed?[o.winner]:possibilities(s,d,x.winner,cache,pcache)});const r=[...new Set(sets.flat())];pcache.set(k,r);return r}
+function possibilities(s,d,m,cache,pcache){const k=key(s,d,m);if(pcache.has(k))return pcache.get(k);const cfg=MATCH[m];const sets=cfg.sides.map(x=>{if(x.team!==undefined){const t=seedOf(s,d,x.team);return t===null?[]:[t]}const o=outcome(s,d,x.winner,cache);return o.completed?[o.winner]:possibilities(s,d,x.winner,cache,pcache)});const r=[...new Set(sets.flat())];pcache.set(k,r);return r}
 function allEvents(){const oc=new Map(),pc=new Map(),res=[];SPORTS.forEach(s=>{const venues=venueList(s.id);s.divs.forEach(d=>MATCH_ORDER.forEach(m=>{const o=outcome(s.id,d,m,oc),b=bdata(s.id,d);res.push({key:key(s.id,d,m),s:s.id,d,venues,m,round:MATCH[m].round,number:MATCH[m].number,participants:possibilities(s.id,d,m,oc,pc),sides:[o.a,o.b],winner:o.winner,completed:o.completed,result:o.result,schedule:{...(b.schedules[m]||{})},parents:MATCH[m].parents.map(p=>key(s.id,d,p)),duration:Number(state.settings.sports[s.id].duration)||s.duration,defaultVenue:venues[0]})}))});return res}
 function store(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){alert('ไม่สามารถบันทึกในเบราว์เซอร์ได้ กรุณาสำรอง JSON: '+e.message)}}
 function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3200)}
@@ -489,7 +497,7 @@ const hasDate=e=>Boolean(e.schedule.date&&e.schedule.time);
 const tStamp=e=>hasDate(e)?minutesStamp(e.schedule.date,e.schedule.time):Infinity;
 const byTime=(a,b)=>{const x=tStamp(a),y=tStamp(b);return x===y?0:x-y};
 const labelEvent=e=>`${sport(e.s).name} ${div(e.d).name} คู่ ${e.number}`;
-const teamLabel=(e,i)=>e.sides[i]===null?`ผู้ชนะคู่ที่ ${MATCH[MATCH[e.m].sides[i].winner].number}`:TEAMS[e.sides[i]];
+const teamLabel=(e,i)=>e.sides[i]===null?sideLabel(e.m,i):TEAMS[e.sides[i]];
 const schedRange=e=>({start:minutesStamp(e.schedule.date,e.schedule.time),end:minutesStamp(e.schedule.date,e.schedule.time)+e.duration});
 function sharesTeam(a,b){if(!state.settings.strict){const x=div(a.d),y=div(b.d);if(x.lv!==y.lv||!(x.g===y.g||x.g==='x'||y.g==='x'))return false}return a.participants.some(t=>b.participants.includes(t))}
 function warnings(events){const problems=[],active=events.filter(hasDate),map=new Map(events.map(e=>[e.key,e])),z=state.settings;
@@ -531,8 +539,8 @@ function render(){if(!admin&&view==='settings')view='home';fixDiv();renderStatus
  tick();reveal(app)}
 const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 const io=!REDUCED&&'IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.06,rootMargin:'0px 0px -30px 0px'}):null;
-const RV='.hero,.sec-h,.sp,.nx,.tbl-wrap,.ch-card,.seed,.page-h,.pick,.bracket-bar,.notice,.days,.filters,.group-h,.fx,.card,.actions';
-function reveal(root){if(!io)return;root.querySelectorAll(RV).forEach(el=>{if(el.classList.contains('rv'))return;const sib=[...el.parentElement.children].filter(c=>c.matches(RV));el.style.transitionDelay=Math.min(sib.indexOf(el),8)*60+'ms';el.classList.add('rv');el.addEventListener('transitionend',()=>{el.style.transitionDelay=''},{once:true});io.observe(el)})}
+const RV='.hero,.sec-h,.sp,.nx,.tbl-wrap,.ch-card,.page-h,.pick,.bracket-bar,.notice,.days,.filters,.group-h,.fx,.card,.actions';
+function reveal(root){if(!io)return;root.querySelectorAll(RV).forEach(el=>{if(el.classList.contains('rv')||el.closest('.seed'))return;const sib=[...el.parentElement.children].filter(c=>c.matches(RV));el.style.transitionDelay=Math.min(sib.indexOf(el),8)*60+'ms';el.classList.add('rv');el.addEventListener('transitionend',()=>{el.style.transitionDelay=''},{once:true});io.observe(el)})}
 function confetti(){if(REDUCED)return;const box=document.createElement('div'),em=['💗','💖','💕','❤️','💞','🌸','🌺','🌷','🌼','💮'];box.className='confetti';for(let i=0;i<110;i++){const p=document.createElement('i');p.textContent=em[i%em.length];p.style.left=Math.random()*100+'vw';p.style.fontSize=(16+Math.random()*22)+'px';p.style.setProperty('--dx',(Math.random()*240-120)+'px');p.style.setProperty('--r',(Math.random()*540-270)+'deg');p.style.animationDuration=(3+Math.random()*2.6)+'s';p.style.animationDelay=Math.random()*1.4+'s';box.appendChild(p)}document.body.appendChild(box);setTimeout(()=>box.remove(),8000)}
 function setView(v){view=v;render();window.scrollTo({top:0,behavior:'smooth'})}
 
@@ -566,7 +574,7 @@ const BARMS=[['M1',0,0,110],['M1',1,0,210],['M2',0,300,160],['M2',1,0,290],['M3'
 function bracketBoard(){const oc=new Map(),O=m=>outcome(activeSport,activeDivision,m,oc),sch=bdata(activeSport,activeDivision).schedules;let paths='',labels='',nodes='';
  for(const [m,side,sx,sy] of BARMS){const dl=Math.round((BJ[m].x-300)*1.3),o=O(m),j=BJ[m],t=side?o.b:o.a,tbd=t===null,win=o.completed&&t===o.winner,lose=o.completed&&!win;
   const cls=win?'win':lose?'lose':(!tbd&&sx?'adv':'');paths+=`<path pathLength="1" class="${cls} ${cls==='adv'?'':'draw'}" style="animation-delay:${dl}ms" d="M${sx} ${sy}H${j.x}V${j.y}"/>`;
-  const left=sx?sx+30:0,w=j.x-left-12,name=tbd?`ผู้ชนะคู่ที่ ${MATCH[MATCH[m].sides[side].winner].number}`:TEAMS[t];
+  const left=sx?sx+30:0,w=j.x-left-12,name=tbd?sideLabel(m,side):TEAMS[t];
   labels+=`<button class="bl ${win?'win':''} ${lose?'lose':''} ${tbd?'tbd':''}" style="left:${left}px;top:${sy-35}px;width:${w}px;animation-delay:${dl+120}ms" data-match="${m}" title="${safe(name)}"><span class="code">${tbd?'–':CODES[t]}</span><span class="name">${safe(name)}</span>${o.completed?`<span class="score">${side?o.result.b:o.result.a}</span>`:''}</button>`}
  const f=O('M5');paths+=`<path pathLength="1" class="draw ${f.completed?'win':''}" style="animation-delay:950ms" d="M860 370H1080"/>`;
  labels+=`<div class="champ-l ${f.completed?'won':''}" style="left:886px;top:326px">${ic('trophy')}<span>${f.completed?safe(TEAMS[f.winner]):'รอผู้ชนะเลิศ'}</span></div>`;
@@ -576,14 +584,23 @@ function bracketBoard(){const oc=new Map(),O=m=>outcome(activeSport,activeDivisi
  return `<div class="lb-wrap"><div class="lb">${heads}<svg viewBox="0 0 1080 612" width="1080" height="612" aria-hidden="true"><defs><linearGradient id="lbg" x1="0" y1="0" x2="1080" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff6fae"/><stop offset="1" stop-color="#3fb8ff"/></linearGradient></defs>${paths}</svg>${labels}${nodes}</div></div>`}
 
 const SEED_LBL=['คู่ 1 · ทีมที่ 1','คู่ 1 · ทีมที่ 2','รอพบผู้ชนะคู่ 1 (คู่ 2)','คู่ 3 · ทีมที่ 1','คู่ 3 · ทีมที่ 2','รอพบผู้ชนะคู่ 3 (คู่ 4)'];
-function seedPanel(){const sd=bdata(activeSport,activeDivision).seeds;
- const slot=i=>`<div class="seed-slot" data-slot="${i}"><span class="seed-lbl">${SEED_LBL[i]}</span><div class="seed-chip" data-slot="${i}" title="ลากไปวางอีกช่องเพื่อสลับ"><span class="grip" aria-hidden="true">⠿</span><span class="code">${CODES[sd[i]]}</span><span class="name">${safe(TEAMS[sd[i]])}</span></div></div>`;
- return `<div class="seed card"><div class="seed-head"><div><h3>จัดสายการแข่งขัน</h3><p class="d">${sport(activeSport).name} · ${div(activeDivision).name} — ลากชื่อทีมไปวางอีกช่องเพื่อสลับตำแหน่ง</p></div><div class="toolbar"><button class="btn btn-sm" data-seed="draw">${ic('shuffle')}จับสลาก</button><button class="btn btn-sm" data-seed="reset">ค่าเริ่มต้น</button></div></div><div class="seed-cols"><div class="seed-col"><h4>สายบน</h4>${[0,1,2].map(slot).join('')}</div><div class="seed-col"><h4>สายล่าง</h4>${[3,4,5].map(slot).join('')}</div></div></div>`}
-function setSeeds(arr){const b=bdata(activeSport,activeDivision);if(!admin||arr.join()===b.seeds.join())return;if(Object.keys(b.results).length&&!confirm('ประเภทนี้มีผลการแข่งขันแล้ว การเปลี่ยนสายจะล้างผลคะแนนทั้งหมดของประเภทนี้ ยืนยันหรือไม่?'))return;b.results={};b.seeds=arr;store();render();toast('จัดสายการแข่งขันแล้ว')}
+const chipHTML=(t,attr)=>`<div class="seed-chip" ${attr} title="ลากไปวางในช่องที่ต้องการ"><span class="grip" aria-hidden="true">⠿</span><span class="code">${CODES[t]}</span><span class="name">${safe(TEAMS[t])}</span></div>`;
+function seedPanel(){const sd=bdata(activeSport,activeDivision).seeds,pool=[0,1,2,3,4,5].filter(t=>!sd.includes(t)),filled=6-pool.length;
+ const slot=i=>`<div class="seed-slot ${sd[i]===null?'vacant':''}" data-slot="${i}"><span class="seed-lbl">${SEED_LBL[i]}</span>${sd[i]===null?'<div class="seed-ph">ลากทีมมาวางที่นี่</div>':chipHTML(sd[i],`data-from="${i}"`)}</div>`;
+ return `<div class="seed card"><div class="seed-head"><div><h3>จัดสายการแข่งขัน <span class="seed-count ${filled===6?'ok':''}">${filled}/6 ทีม</span></h3><p class="d">${sport(activeSport).name} · ${div(activeDivision).name} — ลากทีมจากด้านล่างไปวางในช่องสายบน/สายล่าง ลากระหว่างช่องเพื่อสลับ หรือลากกลับมาที่กล่องทีมเพื่อเอาออก</p></div><div class="toolbar"><button class="btn btn-sm btn-danger" data-seed="clear" ${filled?'':'disabled'}>ล้างทั้งหมด</button></div></div>
+ <div class="seed-pool" data-pool="1"><span class="seed-lbl">ทีมที่ยังไม่ได้จัด (${pool.length})</span><div class="pool-chips">${pool.length?pool.map(t=>chipHTML(t,`data-from="pool" data-team="${t}"`)).join(''):'<span class="seed-ph done">จัดครบทุกทีมแล้ว ✓</span>'}</div></div>
+ <div class="seed-cols"><div class="seed-col"><h4>สายบน</h4>${[0,1,2].map(slot).join('')}</div><div class="seed-col"><h4>สายล่าง</h4>${[3,4,5].map(slot).join('')}</div></div></div>`}
+function setSeeds(arr){const b=bdata(activeSport,activeDivision);if(!admin||arr.join()===b.seeds.join())return;if(Object.keys(b.results).length&&!confirm('ประเภทนี้มีผลการแข่งขันแล้ว การเปลี่ยนสายจะล้างผลคะแนนทั้งหมดของประเภทนี้ ยืนยันหรือไม่?'))return;b.results={};b.seeds=arr;store();render();
+ const clash=warnings(allEvents()).filter(w=>w.startsWith('ทีมชนกัน')).length;toast(clash?`จัดสายแล้ว · พบเวลาทีมชนกัน ${clash} รายการ — กด “เติมคู่ที่ยังไม่มีเวลา” หรือสุ่มตารางใหม่ในหน้าตารางแข่ง`:'จัดสายการแข่งขันแล้ว')}
 let drag=null;
-document.addEventListener('pointerdown',e=>{const chip=e.target.closest('.seed-chip');if(!chip||!admin||e.button>0)return;e.preventDefault();const r=chip.getBoundingClientRect(),g=chip.cloneNode(true);g.classList.add('ghost');g.style.width=r.width+'px';g.style.left=r.left+'px';g.style.top=r.top+'px';document.body.appendChild(g);chip.classList.add('dragging');drag={chip,g,from:+chip.dataset.slot,dx:e.clientX-r.left,dy:e.clientY-r.top,over:null}});
-document.addEventListener('pointermove',e=>{if(!drag)return;e.preventDefault();drag.g.style.left=e.clientX-drag.dx+'px';drag.g.style.top=e.clientY-drag.dy+'px';const el=document.elementFromPoint(e.clientX,e.clientY),t=el?el.closest('.seed-slot'):null;if(drag.over!==t){if(drag.over)drag.over.classList.remove('over');if(t)t.classList.add('over');drag.over=t}},{passive:false});
-function endDrag(){if(!drag)return;const {chip,g,from,over}=drag;drag=null;g.remove();chip.classList.remove('dragging');if(over){over.classList.remove('over');const to=+over.dataset.slot;if(to!==from){const sd=[...bdata(activeSport,activeDivision).seeds];[sd[from],sd[to]]=[sd[to],sd[from]];setSeeds(sd)}}}
+document.addEventListener('pointerdown',e=>{const chip=e.target.closest('.seed-chip');if(!chip||!admin||e.button>0)return;e.preventDefault();const r=chip.getBoundingClientRect(),g=chip.cloneNode(true);g.classList.add('ghost');g.style.width=r.width+'px';g.style.left=r.left+'px';g.style.top=r.top+'px';document.body.appendChild(g);chip.classList.add('dragging');
+ const from=chip.dataset.from;drag={chip,g,from:from==='pool'?'pool':+from,team:from==='pool'?+chip.dataset.team:bdata(activeSport,activeDivision).seeds[+from],dx:e.clientX-r.left,dy:e.clientY-r.top,over:null}});
+document.addEventListener('pointermove',e=>{if(!drag)return;e.preventDefault();drag.g.style.left=e.clientX-drag.dx+'px';drag.g.style.top=e.clientY-drag.dy+'px';const el=document.elementFromPoint(e.clientX,e.clientY),t=el?el.closest('.seed-slot,.seed-pool'):null;if(drag.over!==t){if(drag.over)drag.over.classList.remove('over');if(t)t.classList.add('over');drag.over=t}},{passive:false});
+function endDrag(){if(!drag)return;const {chip,g,from,team,over}=drag;drag=null;g.remove();chip.classList.remove('dragging');if(!over)return;over.classList.remove('over');
+ const sd=[...bdata(activeSport,activeDivision).seeds];
+ if(over.dataset.pool){if(from==='pool')return;sd[from]=null}                       // back to the pool
+ else{const to=+over.dataset.slot;if(to===from)return;if(from==='pool')sd[to]=team;else[sd[from],sd[to]]=[sd[to],sd[from]]} // place or swap
+ setSeeds(sd)}
 document.addEventListener('pointerup',endDrag);document.addEventListener('pointercancel',endDrag);
 function bracketHTML(){return `<section class="wrap"><div class="page-h"><div><span class="kicker">Tournament Bracket</span><h1>ผังการแข่งขัน</h1><p class="lead">แพ้คัดออก 6 ทีม · คู่ 1→2 สายบน, คู่ 3→4 สายล่าง, ผู้ชนะคู่ 2 และ 4 ชิงชนะเลิศในคู่ 5</p></div><div class="toolbar"><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์ผัง</button></div></div>
  <div class="pick">${SPORTS.map(x=>`<button class="pk ${x.id===activeSport?'active':''}" data-sport="${x.id}" data-pick-sport="${x.id}" aria-pressed="${x.id===activeSport}"><span class="ic">${ic(x.id)}</span>${x.name}</button>`).join('')}</div>
@@ -630,13 +647,13 @@ function applySettings(gen){const f=$('#fromDate').value,t=$('#toDate').value,fr
  state.settings=settings;if(gen)autoSchedule(false);else{store();toast('บันทึกการตั้งค่าแล้ว')}render()}
 
 /* ---------- match dialog ---------- */
-function openMatch(s,d,m){editing={s,d,m};const o=outcome(s,d,m,new Map()),sc=bdata(s,d).schedules[m]||{};const texts=[o.a,o.b].map((n,i)=>n===null?`ผู้ชนะคู่ที่ ${MATCH[MATCH[m].sides[i].winner].number}`:TEAMS[n]);const known=o.a!==null&&o.b!==null;
+function openMatch(s,d,m){editing={s,d,m};const o=outcome(s,d,m,new Map()),sc=bdata(s,d).schedules[m]||{};const texts=[o.a,o.b].map((n,i)=>n===null?sideLabel(m,i):TEAMS[n]);const known=o.a!==null&&o.b!==null;
  $('#modalTitle').textContent=`${sport(s).name} · ${div(d).name} · คู่ที่ ${MATCH[m].number}`;$('#modalSub').textContent=ROUND[MATCH[m].round];$('#teamA').textContent=texts[0];$('#teamB').textContent=texts[1];
  $('#scoreA').value=o.result.a??'';$('#scoreB').value=o.result.b??'';['#scoreA','#scoreB','#tieWinner'].forEach(q=>$(q).disabled=!known);
  $('#tieWinner').value=o.result.tieWinner||'';$('#tieWinner').options[1].textContent='ทีมที่ 1: '+texts[0];$('#tieWinner').options[2].textContent='ทีมที่ 2: '+texts[1];
  $('#matchDate').value=sc.date||'';$('#matchTime').value=sc.time||'';$('#matchVenue').value=sc.venue||state.settings.sports[s].venue;
  $('#durationNote').textContent=`ระยะเวลาแข่งขัน ${state.settings.sports[s].duration} นาที · พักขั้นต่ำก่อนนัดถัดไป ${state.settings.rest} นาที`;
- const note=$('#modalNotice');note.hidden=known;if(!known)note.textContent='ยังไม่ทราบผู้ชนะจากคู่ก่อนหน้า จึงยังบันทึกคะแนนไม่ได้ แต่กำหนดวัน เวลา และสนามล่วงหน้าได้';
+ const note=$('#modalNotice');note.hidden=known;if(!known)note.textContent=texts.includes('รอจัดทีม')?'ยังไม่ได้จัดทีมลงสายของประเภทนี้ (จัดได้ที่หน้าผังการแข่งขัน) แต่กำหนดวัน เวลา และสนามล่วงหน้าได้':'ยังไม่ทราบผู้ชนะจากคู่ก่อนหน้า จึงยังบันทึกคะแนนไม่ได้ แต่กำหนดวัน เวลา และสนามล่วงหน้าได้';
  const ro=!admin;if(ro)['#scoreA','#scoreB','#tieWinner'].forEach(q=>$(q).disabled=true);['#matchDate','#matchTime','#matchVenue'].forEach(q=>$(q).disabled=ro);$('#matchModal').classList.toggle('ro',ro);if(ro){note.hidden=false;note.textContent='ดูข้อมูลได้อย่างเดียว — การบันทึกผลทำได้เฉพาะผู้ดูแลการแข่งขัน'}$('#clearScore').disabled=!o.completed;$('#matchModal').showModal()}
 function clearDescendantScores(s,d,m){const deps=[m],removed=[];while(deps.length){const x=deps.shift();for(const [id,cfg] of Object.entries(MATCH))if(cfg.parents.includes(x)&&!removed.includes(id)){removed.push(id);deps.push(id)}}removed.forEach(id=>delete bdata(s,d).results[id]);return removed}
 function saveMatch(ev){ev.preventDefault();if(!editing||!admin)return;const {s,d,m}=editing,b=bdata(s,d),old=b.results[m]||{},o=outcome(s,d,m,new Map());const sa=$('#scoreA').value.trim(),sb=$('#scoreB').value.trim();
@@ -670,7 +687,7 @@ document.addEventListener('click',e=>{const menu=$('#menu');if(menu.open&&!e.tar
  else if(ds.day){filter.day=ds.day;render()}
  else if(ds.open){const [s,d,m]=ds.open.split('|');openMatch(s,d,m)}
  else if(ds.match)openMatch(activeSport,activeDivision,ds.match);
- else if(ds.seed){setSeeds(ds.seed==='reset'?[...SEED0]:shuffle([...SEED0]))}
+ else if(ds.seed==='clear'){if(confirm('ล้างทีมออกจากสายทั้งหมดของประเภทนี้?'))setSeeds([...SEED0])}
  else if(ds.act){menu.open=false;act(ds.act)}});
 $('#fileRestore').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const data=migrate(JSON.parse(await f.text()));if(!data)throw new Error('ไฟล์ไม่ใช่ข้อมูลสำรองของระบบนี้');if(confirm('นำเข้าข้อมูลสำรองนี้แทนข้อมูลปัจจุบันทั้งหมด?')){state=data;store();render();toast('นำเข้าข้อมูลสำรองแล้ว')}}catch(ex){alert('นำเข้าไม่สำเร็จ: '+ex.message)}finally{e.target.value=''}});
 $('#matchForm').addEventListener('submit',saveMatch);$('#clearScore').addEventListener('click',clearScore);$('#modalClose').addEventListener('click',()=>$('#matchModal').close());$('#cancelModal').addEventListener('click',()=>$('#matchModal').close());

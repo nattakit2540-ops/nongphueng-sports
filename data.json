@@ -1,5 +1,5 @@
 {
- "publishedAt": "2026-11-13T08:00:00.000Z",
+ "publishedAt": "2026-11-13T09:00:00.000Z",
  "state": {
   "version": 3,
   "eventName": "แข่งขันกีฬาอำเภอเกษตรวิสัย “หนองผึ้งเกมส์”",
@@ -75,12 +75,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "football|primary_female|_": {
@@ -113,12 +113,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "football|secondary_male|_": {
@@ -151,12 +151,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "football|secondary_female|_": {
@@ -189,12 +189,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "futsal|primary_male|_": {
@@ -227,12 +227,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "futsal|primary_female|_": {
@@ -265,12 +265,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "futsal|secondary_male|_": {
@@ -303,12 +303,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "futsal|secondary_female|_": {
@@ -341,12 +341,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "volleyball|primary_male|_": {
@@ -379,12 +379,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "volleyball|primary_female|_": {
@@ -417,12 +417,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "volleyball|secondary_male|_": {
@@ -455,12 +455,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "volleyball|secondary_female|_": {
@@ -493,12 +493,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|p_sgl_m|_": {
@@ -531,12 +531,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|p_sgl_f|_": {
@@ -569,12 +569,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|p_dbl_m|_": {
@@ -607,12 +607,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|p_dbl_f|_": {
@@ -645,12 +645,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|p_team_x|_": {
@@ -683,12 +683,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|s_sgl_m|_": {
@@ -721,12 +721,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|s_sgl_f|_": {
@@ -759,12 +759,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|s_dbl_m|_": {
@@ -797,12 +797,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|s_dbl_f|_": {
@@ -835,12 +835,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "tabletennis|s_team_x|_": {
@@ -873,12 +873,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|p_sgl_m|_": {
@@ -911,12 +911,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|p_sgl_f|_": {
@@ -949,12 +949,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|p_dbl_m|_": {
@@ -987,12 +987,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|p_dbl_f|_": {
@@ -1025,12 +1025,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|p_team_m|_": {
@@ -1063,12 +1063,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|p_team_f|_": {
@@ -1101,12 +1101,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|s_sgl_m|_": {
@@ -1139,12 +1139,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|s_sgl_f|_": {
@@ -1177,12 +1177,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|s_dbl_m|_": {
@@ -1215,12 +1215,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|s_dbl_f|_": {
@@ -1253,12 +1253,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|s_team_m|_": {
@@ -1291,12 +1291,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "petanque|s_team_f|_": {
@@ -1329,12 +1329,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "takraw|primary_male|_": {
@@ -1367,12 +1367,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "takraw|primary_female|_": {
@@ -1405,12 +1405,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "takraw|secondary_male|_": {
@@ -1443,12 +1443,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    },
    "takraw|secondary_female|_": {
@@ -1481,12 +1481,12 @@
      }
     },
     "seeds": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ]
    }
   }
