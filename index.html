@@ -307,6 +307,11 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 .sport-days{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:0 0 12px;margin-bottom:4px;border-bottom:1px solid var(--soft)}
 .sport-days>span{font-size:12px;color:var(--muted);margin-right:4px}
 .daychip.sm span{min-width:62px;padding:5px 8px;border-radius:10px;font-size:12.5px}
+.plan-row{display:grid;grid-template-columns:minmax(0,1fr) 124px 116px 116px;gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--soft)}
+.plan-row.head{border-top:0;font:600 11.5px var(--num);letter-spacing:2px;text-transform:uppercase;color:var(--pink-d);padding-top:0}
+.pl-l{font:500 13.5px/1.35 var(--display)}
+.mini{display:flex;flex-direction:column;gap:3px;width:104px}.mini small{font-size:11.5px;color:var(--muted)}.mini .input{height:38px}
+.sr-note{display:block;font:400 11px var(--body);color:var(--muted)}.sr-name{flex-wrap:wrap}
 /* responsive */
 @media(max-width:1100px){.champs{grid-template-columns:repeat(2,1fr)}.sports{grid-template-columns:repeat(3,1fr)}.next{grid-template-columns:repeat(2,1fr)}.fx{grid-template-columns:70px minmax(0,1fr) minmax(0,2fr) 104px 38px}.fx-venue{display:none}}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
@@ -325,7 +330,7 @@ body{padding-bottom:100px}.toast{bottom:104px}
 .fx{grid-template-columns:58px minmax(0,1fr) 38px;grid-template-areas:"time meta edit" "teams teams teams" "venue venue status";gap:12px;padding:15px}
 .fx-time{grid-area:time}.fx-meta{grid-area:meta}.fx .icon-btn{grid-area:edit}.fx-teams{grid-area:teams;background:linear-gradient(90deg,#fff6fa,#f1f9ff);border-radius:14px;padding:10px}.fx-venue{grid-area:venue;display:flex}.fx-status{grid-area:status;justify-self:end}
 .fx-time b{font-size:22px}.m-only{display:inline}
-.fields{grid-template-columns:1fr}.sport-row{grid-template-columns:84px 62px 54px 1fr;gap:6px}.pool-chips{grid-template-columns:1fr}.seed-cols{grid-template-columns:1fr}.champs{grid-template-columns:1fr}.card{padding:20px}
+.fields{grid-template-columns:1fr}.sport-row{grid-template-columns:84px 62px 54px 1fr;gap:6px}.pool-chips{grid-template-columns:1fr}.plan-row{grid-template-columns:1fr 1fr 1fr}.plan-row .pl-l{grid-column:1/-1}.plan-row.head{display:none}.seed-cols{grid-template-columns:1fr}.champs{grid-template-columns:1fr}.card{padding:20px}
 .mh,.mb{padding-left:18px;padding-right:18px}.mf{padding:14px 18px}.si{height:62px;font-size:36px}
 .foot{padding-bottom:110px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;translate:none}.lb path.draw{stroke-dashoffset:0}}
@@ -455,11 +460,23 @@ const LEVELS={p:'ประถม',s:'มัธยม'};
 const DIVS=[{id:'primary_male',name:'ประถมชาย',short:'ชาย',lv:'p',g:'m'},{id:'primary_female',name:'ประถมหญิง',short:'หญิง',lv:'p',g:'f'},{id:'secondary_male',name:'มัธยมชาย',short:'ชาย',lv:'s',g:'m'},{id:'secondary_female',name:'มัธยมหญิง',short:'หญิง',lv:'s',g:'f'},
  ...['p','s'].flatMap(lv=>[['sgl_m','เดี่ยวชาย','m'],['sgl_f','เดี่ยวหญิง','f'],['dbl_m','คู่ชาย','m'],['dbl_f','คู่หญิง','f'],['team_m','ทีมชาย','m'],['team_f','ทีมหญิง','f'],['team_x','ทีมผสม','x']].map(([k,n,g])=>({id:`${lv}_${k}`,name:`${LEVELS[lv]} ${n}`,short:n,lv,g})))];
 const BASIC=['primary_male','primary_female','secondary_male','secondary_female'];
-const SPORTS=[{id:'football',name:'ฟุตบอล',en:'Football',duration:60,venue:'สนามฟุตบอล',courts:1,divs:BASIC},{id:'futsal',name:'ฟุตซอล',en:'Futsal',duration:45,venue:'สนามฟุตซอล',courts:1,divs:BASIC},{id:'volleyball',name:'วอลเลย์บอล',en:'Volleyball',duration:60,venue:'สนามวอลเลย์บอล',courts:1,divs:BASIC},
- {id:'tabletennis',name:'ปิงปอง',en:'Table Tennis',duration:30,venue:'สนามปิงปอง',courts:6,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_x','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_x']},
+const SPORTS=[{id:'football',name:'ฟุตบอล',en:'Football',duration:30,durByDiv:{primary_male:25,primary_female:20,secondary_male:30,secondary_female:25},venue:'สนามฟุตบอล',courts:1,divs:BASIC},{id:'futsal',name:'ฟุตซอล',en:'Futsal',duration:25,venue:'สนามฟุตซอล',courts:1,divs:BASIC},{id:'volleyball',name:'วอลเลย์บอล',en:'Volleyball',duration:45,venue:'สนามวอลเลย์บอล',courts:1,divs:BASIC},
+ {id:'tabletennis',name:'ปิงปอง',en:'Table Tennis',duration:15,venue:'โต๊ะปิงปอง',courts:2,byLevel:true,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_x','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_x']},
  {id:'petanque',name:'เปตอง',en:'Pétanque',duration:45,venue:'สนามเปตอง',courts:8,divs:['p_sgl_m','p_sgl_f','p_dbl_m','p_dbl_f','p_team_m','p_team_f','s_sgl_m','s_sgl_f','s_dbl_m','s_dbl_f','s_team_m','s_team_f']},
- {id:'takraw',name:'ตะกร้อ',en:'Sepak Takraw',duration:45,venue:'สนามตะกร้อ',courts:1,divs:BASIC}];
+ {id:'takraw',name:'ตะกร้อ',en:'Sepak Takraw',duration:30,venue:'สนามตะกร้อ',courts:1,divs:BASIC}];
 const DEF_DAYS={football:['2026-12-15','2026-12-17','2026-12-18'],futsal:['2026-12-15','2026-12-17','2026-12-18'],volleyball:['2026-12-15','2026-12-17','2026-12-18'],takraw:['2026-12-15','2026-12-17','2026-12-18'],tabletennis:['2026-12-14'],petanque:['2026-12-14']};
+const TEAM_SPORTS=['football','futsal','volleyball','takraw'];
+const SCHOOLS_DEF={p:'โรงเรียนชุมชนบ้านหนองผึ้ง (ประพันธ์คุรุราษฎร์อุทิศ)',s:'โรงเรียนหนองผึ้งวิทยาคาร'};
+const PLAN_DEF=[
+ {id:'pq_td',label:'เปตอง ประเภททีมและคู่ (ทุกรอบ)',sports:['petanque'],kinds:['team','dbl'],rounds:[0,1,2],def:['2026-12-14','09:00','17:00']},
+ {id:'pq_s',label:'เปตอง ประเภทเดี่ยว (ทุกรอบ)',sports:['petanque'],kinds:['sgl'],rounds:[0,1,2],def:['2026-12-14','09:00','17:00']},
+ {id:'tt',label:'ปิงปอง ทุกประเภท (ทุกรอบ)',sports:['tabletennis'],rounds:[0,1,2],def:['2026-12-14','09:00','17:00']},
+ {id:'r1',label:'ฟุตบอล ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบแรก',sports:TEAM_SPORTS,rounds:[0],def:['2026-12-15','09:00','17:00']},
+ {id:'semi',label:'ฟุตบอล ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบรองชนะเลิศ',sports:TEAM_SPORTS,rounds:[1],def:['2026-12-17','09:00','12:00']},
+ {id:'fin3',label:'ฟุตซอล วอลเลย์บอล ตะกร้อ — รอบชิง',sports:['futsal','volleyball','takraw'],rounds:[2],def:['2026-12-17','13:00','17:00']},
+ {id:'finFF',label:'ฟุตบอลหญิง — รอบชิง',sports:['football'],gender:'f',rounds:[2],def:['2026-12-17','13:00','17:00']},
+ {id:'finFM',label:'ฟุตบอลชาย — รอบชิง',sports:['football'],gender:'m',rounds:[2],def:['2026-12-18','13:00','17:00']}];
+const divKind=id=>/_sgl_/.test(id)?'sgl':/_dbl_/.test(id)?'dbl':/_team_/.test(id)?'team':'basic';
 const NDIV=SPORTS.reduce((n,x)=>n+x.divs.length,0),SEED0=[null,null,null,null,null,null];
 const MATCH={M1:{number:1,round:0,sides:[{team:0},{team:1}],parents:[]},M2:{number:2,round:1,sides:[{winner:'M1'},{team:2}],parents:['M1']},M3:{number:3,round:0,sides:[{team:3},{team:4}],parents:[]},M4:{number:4,round:1,sides:[{winner:'M3'},{team:5}],parents:['M3']},M5:{number:5,round:2,sides:[{winner:'M2'},{winner:'M4'}],parents:['M2','M4']}};
 const MATCH_ORDER=['M1','M3','M2','M4','M5'];
@@ -484,14 +501,16 @@ const dateList=(a,b)=>{let out=[],t=Date.parse(a+'T00:00:00Z'),end=Date.parse(b+
 
 /* ---------- data ---------- */
 const DEFAULT_NAME='แข่งขันกีฬาอำเภอเกษตรวิสัย “หนองผึ้งเกมส์”';
-function defaultState(){return migrate({version:3,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'08:00',timeTo:'17:00',interval:15,rest:15,strict:false,sepIndiv:true,sports:{}},brackets:{}})}
+function defaultState(){return migrate({version:3,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:true,sepEvents:false,sports:{}},brackets:{}})}
 const validSeeds=a=>{if(!Array.isArray(a)||a.length!==6)return false;const t=a.filter(x=>x!==null);return t.every(x=>Number.isInteger(x)&&x>=0&&x<6)&&new Set(t).size===t.length};
 // upgrades older saved data (v2: 4 divisions per sport) to the current set of events
 function migrate(v){if(!v||typeof v!=='object'||(v.version!==2&&v.version!==3)||typeof v.eventName!=='string'||!v.settings||typeof v.settings!=='object')return null;
  const brackets={},src=v.brackets&&typeof v.brackets==='object'?v.brackets:{};
  SPORTS.forEach(s=>s.divs.forEach(d=>{const k=key(s.id,d,'_'),b=src[k];brackets[k]=b&&typeof b==='object'&&b.results&&b.schedules?{results:b.results,schedules:b.schedules,seeds:validSeeds(b.seeds)?b.seeds:[...SEED0]}:{results:{},schedules:{},seeds:[...SEED0]}}));
- const old=v.settings.sports||{},sports={};SPORTS.forEach(s=>{const o=old[s.id]||{};sports[s.id]={duration:Number(o.duration)||s.duration,venue:String(o.venue||s.venue),courts:Math.min(8,Math.max(1,Number(o.courts)||s.courts)),days:Array.isArray(o.days)?o.days.filter(d=>typeof d==='string'):[...(DEF_DAYS[s.id]||[])]}});
- return {...v,version:3,settings:{...v.settings,sports},brackets}}
+ const old=v.settings.sports||{},sports={};SPORTS.forEach(s=>{const o=old[s.id]||{};const dbd=o.durByDiv&&typeof o.durByDiv==='object'?o.durByDiv:(s.durByDiv||{});sports[s.id]={duration:Number(o.duration)||s.duration,durByDiv:{...dbd},byLevel:o.byLevel===undefined?!!s.byLevel:!!o.byLevel,venue:String(o.venue||s.venue),courts:Math.min(16,Math.max(1,Number(o.courts)||s.courts)),days:Array.isArray(o.days)?o.days.filter(d=>typeof d==='string'):[...(DEF_DAYS[s.id]||[])]}});
+ const op=v.settings.plan||{},plan={};PLAN_DEF.forEach(r=>{const o=op[r.id];plan[r.id]=o&&/^\d{4}-\d\d-\d\d$/.test(o.date)&&/^\d\d:\d\d$/.test(o.from)&&/^\d\d:\d\d$/.test(o.to)?{date:o.date,from:o.from,to:o.to}:{date:r.def[0],from:r.def[1],to:r.def[2]}});
+ const os=v.settings.schools||{},schools={p:typeof os.p==='string'?os.p:SCHOOLS_DEF.p,s:typeof os.s==='string'?os.s:SCHOOLS_DEF.s};
+ return {...v,version:3,settings:{...v.settings,sports,plan,schools},brackets}}
 const validState=v=>Boolean(migrate(v));
 function load(){try{const v=migrate(JSON.parse(localStorage.getItem(KEY)));if(v)return v}catch(e){console.warn(e)}return defaultState()}
 let state=load(),view='home',activeSport='football',activeDivision='primary_male',editing=null,toastTimer=null,filter={sport:'all',division:'all',day:'all',text:''};
@@ -499,14 +518,17 @@ if(['การแข่งขันกีฬา “หนองผึ้งเ�
 function heroTitle(){const n=state.eventName,i=n.indexOf('“');return i>0?`${safe(n.slice(0,i).trim())}<span class="h1-sub">${safe(n.slice(i))}</span>`:safe(n)}
 const bdata=(s,d)=>state.brackets[key(s,d,'_')];
 const sportDays=sid=>{const g=compDays(),o=(state.settings.sports[sid]||{}).days,pick=Array.isArray(o)?g.filter(d=>o.includes(d)):[];return pick.length?pick:g};
+function planFor(e){const g=div(e.d).g,k=divKind(e.d);for(const r of PLAN_DEF){if(!r.sports.includes(e.s)||!r.rounds.includes(e.round))continue;if(r.gender&&r.gender!==g)continue;if(r.kinds&&!r.kinds.includes(k))continue;return state.settings.plan&&state.settings.plan[r.id]}return null}
+function slotOf(e){const z=state.settings,p=planFor(e);return p?{dates:[p.date],from:p.from,to:p.to}:{dates:sportDays(e.s),from:z.timeFrom,to:z.timeTo}}
 const compDays=()=>{const z=state.settings,all=dateList(z.dateFrom,z.dateTo);if(!Array.isArray(z.days)||!z.days.length)return all;const pick=all.filter(d=>z.days.includes(d));return pick.length?pick:all};
 const seedOf=(s,d,slot)=>{const v=(bdata(s,d).seeds||SEED0)[slot];return v===undefined?null:v};
 const sideLabel=(m,i)=>{const w=MATCH[m].sides[i].winner;return w?`ผู้ชนะคู่ที่ ${MATCH[w].number}`:'รอจัดทีม'};
-const venueList=sid=>{const o=state.settings.sports[sid],v=o.venue||sport(sid).venue,n=Number(o.courts)||1;return n>1?Array.from({length:n},(_,i)=>`${v} ${i+1}`):[v]};
+const durOf=(sid,d)=>{const o=state.settings.sports[sid]||{};return Number((o.durByDiv||{})[d])||Number(o.duration)||sport(sid).duration};
+const venueList=(sid,lv)=>{const o=state.settings.sports[sid],v0=o.venue||sport(sid).venue,v=o.byLevel&&lv?`${v0} ${LEVELS[lv]}`:v0,n=Number(o.courts)||1,base=n>1?Array.from({length:n},(_,i)=>`${v} ${i+1}`):[v],sc=TEAM_SPORTS.includes(sid)&&lv&&state.settings.schools?String(state.settings.schools[lv]||'').trim():'';return sc?base.map(x=>`${x} · ${sc}`):base};
 function fixDiv(){const s=sport(activeSport);if(!s.divs.includes(activeDivision))activeDivision=s.divs[0]}
 function outcome(s,d,m,cache){const k=key(s,d,m);if(cache.has(k))return cache.get(k);const cfg=MATCH[m],b=bdata(s,d);const sides=cfg.sides.map(x=>x.team!==undefined?seedOf(s,d,x.team):(outcome(s,d,x.winner,cache).winner));const r=b.results[m]||{};const [a,z]=sides;let winner=null,completed=false;if(a!==null&&z!==null&&Number.isInteger(r.a)&&Number.isInteger(r.b)&&r.a>=0&&r.b>=0){if(r.a>r.b)winner=a;else if(r.b>r.a)winner=z;else if(r.tieWinner==='a')winner=a;else if(r.tieWinner==='b')winner=z;completed=winner!==null}const res={a,b:z,winner,completed,result:r};cache.set(k,res);return res}
-function possibilities(s,d,m,cache,pcache){const k=key(s,d,m);if(pcache.has(k))return pcache.get(k);const cfg=MATCH[m];const sets=cfg.sides.map(x=>{if(x.team!==undefined){const t=seedOf(s,d,x.team);return t===null?[]:[t]}const o=outcome(s,d,x.winner,cache);return o.completed?[o.winner]:possibilities(s,d,x.winner,cache,pcache)});const r=[...new Set(sets.flat())];pcache.set(k,r);return r}
-function allEvents(){const oc=new Map(),pc=new Map(),res=[];SPORTS.forEach(s=>{const venues=venueList(s.id);s.divs.forEach(d=>MATCH_ORDER.forEach(m=>{const o=outcome(s.id,d,m,oc),b=bdata(s.id,d);res.push({key:key(s.id,d,m),s:s.id,d,venues,m,round:MATCH[m].round,number:MATCH[m].number,participants:possibilities(s.id,d,m,oc,pc),sides:[o.a,o.b],winner:o.winner,completed:o.completed,result:o.result,schedule:{...(b.schedules[m]||{})},parents:MATCH[m].parents.map(p=>key(s.id,d,p)),duration:Number(state.settings.sports[s.id].duration)||s.duration,defaultVenue:venues[0]})}))});return res}
+function possibilities(s,d,m,cache,pcache){const k=key(s,d,m);if(pcache.has(k))return pcache.get(k);const cfg=MATCH[m];const sets=cfg.sides.map(x=>{if(x.team!==undefined){const t=seedOf(s,d,x.team);return t===null?[]:[t]}const o=outcome(s,d,x.winner,cache);return o.completed?[o.winner]:[]});const r=[...new Set(sets.flat())];pcache.set(k,r);return r}
+function allEvents(){const oc=new Map(),pc=new Map(),res=[];SPORTS.forEach(s=>{s.divs.forEach(d=>{const venues=venueList(s.id,div(d).lv);MATCH_ORDER.forEach(m=>{const o=outcome(s.id,d,m,oc),b=bdata(s.id,d);res.push({key:key(s.id,d,m),s:s.id,d,venues,m,round:MATCH[m].round,number:MATCH[m].number,participants:possibilities(s.id,d,m,oc,pc),sides:[o.a,o.b],winner:o.winner,completed:o.completed,result:o.result,schedule:{...(b.schedules[m]||{})},parents:MATCH[m].parents.map(p=>key(s.id,d,p)),duration:durOf(s.id,d),defaultVenue:venues[0]})})})});return res}
 function store(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){alert('ไม่สามารถบันทึกในเบราว์เซอร์ได้ กรุณาสำรอง JSON: '+e.message)}}
 function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3200)}
 const hasDate=e=>Boolean(e.schedule.date&&e.schedule.time);
@@ -516,15 +538,15 @@ const labelEvent=e=>`${sport(e.s).name} ${div(e.d).name} คู่ ${e.number}`;
 const teamLabel=(e,i)=>e.sides[i]===null?sideLabel(e.m,i):TEAMS[e.sides[i]];
 const schedRange=e=>({start:minutesStamp(e.schedule.date,e.schedule.time),end:minutesStamp(e.schedule.date,e.schedule.time)+e.duration});
 const INDIV=['tabletennis','petanque'];
-function sharesTeam(a,b){if(state.settings.sepIndiv&&a.s!==b.s&&(INDIV.includes(a.s)||INDIV.includes(b.s)))return false;if(!state.settings.strict){const x=div(a.d),y=div(b.d);if(x.lv!==y.lv||!(x.g===y.g||x.g==='x'||y.g==='x'))return false}return a.participants.some(t=>b.participants.includes(t))}
+function sharesTeam(a,b){if(state.settings.sepIndiv&&a.s!==b.s&&(INDIV.includes(a.s)||INDIV.includes(b.s)))return false;if(state.settings.sepEvents&&a.s===b.s&&a.d!==b.d&&INDIV.includes(a.s))return false;if(!state.settings.strict){const x=div(a.d),y=div(b.d);if(x.lv!==y.lv||!(x.g===y.g||x.g==='x'||y.g==='x'))return false}return a.participants.some(t=>b.participants.includes(t))}
 function warnings(events){const problems=[],active=events.filter(hasDate),map=new Map(events.map(e=>[e.key,e])),z=state.settings;
  for(const e of events){const t=e.schedule;if(Boolean(t.date)!==Boolean(t.time)){problems.push(`${labelEvent(e)}: วันและเวลาต้องระบุพร้อมกัน`);continue}if(!hasDate(e))continue;
-  const start=minutesStamp(t.date,t.time);if(!Number.isFinite(start)||!sportDays(e.s).includes(t.date)||atTime(t.time)<atTime(z.timeFrom)||atTime(t.time)+e.duration>atTime(z.timeTo))problems.push(`${labelEvent(e)}: อยู่นอกวันหรือช่วงเวลาที่กำหนด`);
+  const start=minutesStamp(t.date,t.time);const sl=slotOf(e);if(!Number.isFinite(start)||!sl.dates.includes(t.date)||atTime(t.time)<atTime(sl.from)||atTime(t.time)+e.duration>atTime(sl.to))problems.push(`${labelEvent(e)}: อยู่นอกวันหรือช่วงเวลาที่กำหนด`);
   for(const p of e.parents){const parent=map.get(p);if(!parent||!hasDate(parent)){problems.push(`${labelEvent(e)}: ยังไม่กำหนดเวลาคู่ก่อนหน้า`);continue}if(start<schedRange(parent).end+Number(z.rest))problems.push(`${labelEvent(e)}: แข่งก่อนคู่ ${parent.number} จบและพักครบ`)}}
  for(let i=0;i<active.length;i++){const a=active[i],ra=schedRange(a);for(let j=i+1;j<active.length;j++){const b=active[j],rb=schedRange(b);const p1=(a.schedule.venue||'').trim().toLocaleLowerCase(),p2=(b.schedule.venue||'').trim().toLocaleLowerCase();if(p1&&p1===p2&&ra.start<rb.end&&rb.start<ra.end)problems.push(`สนามชนกัน: ${labelEvent(a)} ↔ ${labelEvent(b)} (${a.schedule.venue})`);if(sharesTeam(a,b)&&ra.start<rb.end+Number(z.rest)&&rb.start<ra.end+Number(z.rest))problems.push(`ทีมชนกัน: ${labelEvent(a)} ↔ ${labelEvent(b)} (รวมเวลาพัก ${z.rest} นาที)`)}}
  return problems}
 function validateTrial(e,ns,items,byKey){const z=state.settings,minute=atTime(ns.time),start=minutesStamp(ns.date,ns.time),end=start+e.duration;
- if(!Number.isFinite(start)||!sportDays(e.s).includes(ns.date)||minute<atTime(z.timeFrom)||minute+e.duration>atTime(z.timeTo))return 'วัน/เวลาไม่อยู่ในช่วงการแข่งขัน';
+ const sl=slotOf(e);if(!Number.isFinite(start)||!sl.dates.includes(ns.date)||minute<atTime(sl.from)||minute+e.duration>atTime(sl.to))return `ไม่อยู่ในกำหนดการ (${sl.dates.map(dShort).join(', ')} เวลา ${sl.from}–${sl.to} น.)`;
  for(const pid of e.parents){const parent=byKey.get(pid);if(!parent||!hasDate(parent))return 'ต้องจัดเวลาคู่ก่อนหน้าให้เรียบร้อย';if(start<schedRange(parent).end+Number(z.rest))return 'ต้องเริ่มหลังคู่ก่อนหน้าจบและมีเวลาพัก'}
  for(const o of items){if(e.key===o.key||!hasDate(o))continue;const r=schedRange(o);if(ns.venue&&o.schedule.venue&&ns.venue.trim().toLocaleLowerCase()===o.schedule.venue.trim().toLocaleLowerCase()&&start<r.end&&r.start<end)return `สนามซ้ำกับ ${labelEvent(o)}`;
   if(sharesTeam(e,o)&&start<r.end+Number(z.rest)&&r.start<end+Number(z.rest))return `ทีมอาจแข่งชนกับ ${labelEvent(o)}`;
@@ -543,12 +565,15 @@ function autoSchedule(keepExisting=false,silent=false){const z=state.settings,da
  let best=null;
  // a few randomised attempts; keep the one that places the most matches
  for(let attempt=0;attempt<6&&!(best&&!best.failed.length);attempt++){const events=allEvents();if(!keepExisting)events.forEach(e=>e.schedule={});const byKey=new Map(events.map(e=>[e.key,e]));const failed=[];
- for(let round=0;round<3;round++){const batch=shuffle(events.filter(e=>e.round===round)).sort((a,b)=>b.duration-a.duration);for(let i=0;i<batch.length;i++){const e=batch[i];if(hasDate(e))continue;let placed=false,preferred=[];const dates=sportDays(e.s);
+ // latest start so that the next round(s) on the same day still fit before their window closes
+ const childOf=new Map();events.forEach(c=>c.parents.forEach(pk=>childOf.set(pk,c)));
+ const latestStart=(e,date)=>{let L=atTime(slotOf(e).to)-e.duration;const c=childOf.get(e.key);if(c&&slotOf(c).dates.includes(date))L=Math.min(L,latestStart(c,date)-Number(z.rest)-e.duration);return L};
+ for(let round=0;round<3;round++){const batch=shuffle(events.filter(e=>e.round===round)).sort((a,b)=>b.duration-a.duration);for(let i=0;i<batch.length;i++){const e=batch[i];if(hasDate(e))continue;let placed=false,preferred=[];const sl=slotOf(e),dates=sl.dates;
   // first round early, semifinals in the middle, finals over the last days (latest first);
   // finals reserve every team that could still reach them, so they need more than one day
   if(dates.length>=3){const n=dates.length,c1=Math.max(1,Math.round(n*.45)),c2=Math.max(c1+1,Math.round(n*.7));if(round===0){const pre=dates.slice(0,c1);preferred=[pre[i%pre.length],...pre]}else if(round===1){const mid=dates.slice(c1-1,c2);preferred=[mid[i%mid.length],...mid]}else preferred=dates.slice(c2-1).reverse()}else if(dates.length===2)preferred=round===0?[dates[0]]:[dates[1]];else preferred=[...dates];
   const scan=[...new Set([...preferred,...dates])];
-  outer:for(const date of scan){for(let min=atTime(z.timeFrom);min+e.duration<=atTime(z.timeTo);min+=Number(z.interval)||15){for(const venue of e.venues){const trial={date,time:toTime(min),venue};if(!validateTrial(e,trial,events,byKey)){e.schedule=trial;placed=true;break outer}}}}
+  outer:for(const date of scan){const lastStart=latestStart(e,date);for(let min=atTime(sl.from);min<=lastStart;min+=Number(z.interval)||15){for(const venue of e.venues){const trial={date,time:toTime(min),venue};if(!validateTrial(e,trial,events,byKey)){e.schedule=trial;placed=true;break outer}}}}
   if(!placed)failed.push(e)}}
  if(!best||failed.length<best.failed.length)best={events,failed}}
  const {events,failed}=best;
@@ -657,11 +682,18 @@ function settingsHTML(){const z=state.settings,es=allEvents(),errs=warnings(es),
   <label class="f"><span>วันแรก</span><input type="date" class="input" id="fromDate" value="${z.dateFrom}"></label><label class="f"><span>วันสุดท้าย</span><input type="date" class="input" id="toDate" value="${z.dateTo}"></label>
   <div class="f wide"><span>วันที่มีการแข่งขัน</span><div class="daychips" id="dayChips">${dayChips(z.dateFrom,z.dateTo,compDays())}</div></div>
   <label class="f"><span>เริ่มแข่งขัน</span><input type="time" class="input" id="fromTime" value="${z.timeFrom}"></label><label class="f"><span>สิ้นสุดแข่งขัน</span><input type="time" class="input" id="toTime" value="${z.timeTo}"></label>
-  <label class="f"><span>ช่วงเวลาที่ใช้จัด</span><select class="input" id="interval">${[15,30,60].map(n=>`<option value="${n}" ${Number(z.interval)===n?'selected':''}>ทุก ${n} นาที</option>`).join('')}</select></label><label class="f"><span>พักก่อนนัดถัดไป (นาที)</span><input type="number" class="input" id="rest" min="0" max="120" step="5" value="${z.rest}"></label></div>
+  <label class="f"><span>ช่วงเวลาที่ใช้จัด</span><select class="input" id="interval">${[5,10,15,30].map(n=>`<option value="${n}" ${Number(z.interval)===n?'selected':''}>ทุก ${n} นาที</option>`).join('')}</select></label><label class="f"><span>พักก่อนนัดถัดไป (นาที)</span><input type="number" class="input" id="rest" min="0" max="120" step="5" value="${z.rest}"></label></div>
   <label class="check"><input type="checkbox" id="sepIndiv" ${z.sepIndiv?'checked':''}><span><b>ปิงปองและเปตองใช้นักกีฬาคนละชุด</b> — ไม่ต้องกันเวลาชนกับกีฬาประเภททีม (ฟุตบอล ฟุตซอล วอลเลย์บอล ตะกร้อ) และไม่ต้องกันเวลาระหว่างปิงปองกับเปตอง</span></label>
+  <label class="check"><input type="checkbox" id="sepEvents" ${z.sepEvents?'checked':''}><span><b>ปิงปอง/เปตอง แต่ละประเภทใช้นักกีฬาคนละคน</b> — เช่น ผู้เล่นเดี่ยวไม่ได้ลงคู่หรือทีม จึงไม่ต้องกันเวลาระหว่างประเภทในกีฬาเดียวกัน</span></label>
   <label class="check"><input type="checkbox" id="strict" ${z.strict?'checked':''}><span><b>โหมดเคร่งครัด</b> — ทีมชื่อเดียวกันห้ามแข่งชนเวลากัน แม้คนละรุ่นหรือคนละเพศ (อาจต้องใช้วันมากขึ้น)</span></label></div>
  <div class="card"><h3>สนามและเวลาต่อนัด</h3><p class="d">สนามชื่อเดียวกันจะไม่ถูกจัดให้แข่งพร้อมกัน ถ้ามีหลายสนาม ระบบจะตั้งชื่อเป็น เช่น สนามเปตอง 1, 2, 3 · “วันแข่ง” ของแต่ละกีฬาต้องอยู่ในวันที่มีการแข่งขัน (ถ้าไม่เลือกเลย จะใช้ทุกวันแข่ง)</p><div class="sport-row head"><span>ชนิดกีฬา</span><span>นาที/นัด</span><span>จำนวนสนาม</span><span>ชื่อสนาม</span></div>
-  ${SPORTS.map(s=>`<div class="sport-row" data-sport="${s.id}"><span class="sr-name"><span class="sdot"></span>${s.name}</span><input class="input" type="number" min="15" max="240" step="5" id="dur-${s.id}" value="${Number(z.sports[s.id].duration)}" aria-label="นาทีต่อนัด ${s.name}"><input class="input" type="number" min="1" max="8" step="1" id="courts-${s.id}" value="${Number(z.sports[s.id].courts)||1}" aria-label="จำนวนสนาม ${s.name}"><input class="input" id="venue-${s.id}" value="${safe(z.sports[s.id].venue)}" maxlength="120" aria-label="สนาม ${s.name}"></div><div class="sport-days" data-sport="${s.id}"><span>วันแข่ง</span>${sportChips(s.id,z.dateFrom,z.dateTo)}</div>`).join('')}</div></div>
+  ${SPORTS.map(s=>`<div class="sport-row" data-sport="${s.id}"><span class="sr-name"><span class="sdot"></span>${s.name}${z.sports[s.id].byLevel?'<small class="sr-note">สนามแยกประถม/มัธยม</small>':''}</span><input class="input" type="number" min="5" max="240" step="5" id="dur-${s.id}" value="${Number(z.sports[s.id].duration)}" aria-label="นาทีต่อนัด ${s.name}"><input class="input" type="number" min="1" max="16" step="1" id="courts-${s.id}" value="${Number(z.sports[s.id].courts)||1}" aria-label="จำนวนสนาม ${s.name}"><input class="input" id="venue-${s.id}" value="${safe(z.sports[s.id].venue)}" maxlength="120" aria-label="สนาม ${s.name}"></div>${s.id==='football'?`<div class="sport-days"><span>นาทีแยกตามประเภท</span>${s.divs.map(d=>`<label class="mini"><small>${div(d).name}</small><input class="input" type="number" min="5" max="240" step="5" id="dd-${s.id}-${d}" value="${durOf(s.id,d)}" aria-label="นาทีต่อนัด ${s.name} ${div(d).name}"></label>`).join('')}</div>`:''}`).join('')}</div></div>
+ <div class="grid2" style="margin-top:16px"><div class="card"><h3>กำหนดการแข่งขัน</h3><p class="d">วันและช่วงเวลาของแต่ละรอบ ระบบจะจัดเวลาแต่ละนัดให้อยู่ในช่วงนี้เท่านั้น (เช้า 09:00–12:00 · บ่าย 13:00–17:00)</p>
+  <div class="plan-row head"><span>รายการ</span><span>วัน</span><span>เริ่ม</span><span>ถึง</span></div>
+  ${PLAN_DEF.map(r=>{const pl=z.plan[r.id];return `<div class="plan-row"><span class="pl-l">${r.label}</span><select class="input" id="plan-d-${r.id}" aria-label="วัน ${r.label}">${dateList(z.dateFrom,z.dateTo).map(d=>`<option value="${d}" ${pl.date===d?'selected':''}>${TH_D[pd(d).w].slice(0,3)}. ${dShort(d)}</option>`).join('')}</select><input type="time" class="input" id="plan-f-${r.id}" value="${pl.from}" aria-label="เริ่ม ${r.label}"><input type="time" class="input" id="plan-t-${r.id}" value="${pl.to}" aria-label="ถึง ${r.label}"></div>`}).join('')}</div>
+ <div class="card"><h3>สถานที่แข่งขัน</h3><p class="d">ใช้กับฟุตบอล ฟุตซอล วอลเลย์บอล และตะกร้อ (ปิงปองและเปตองใช้ชื่อสนามตามตารางด้านบน)</p><div class="fields">
+  <label class="f wide"><span>ระดับประถมศึกษา</span><input class="input" id="school-p" value="${safe(z.schools.p)}" maxlength="120"></label>
+  <label class="f wide"><span>ระดับมัธยมศึกษา</span><input class="input" id="school-s" value="${safe(z.schools.s)}" maxlength="120"></label></div></div></div>
  <div class="actions"><button class="btn btn-dark" id="saveSettings">บันทึกการตั้งค่า</button><button class="btn btn-volt" id="saveAndGen">${ic('shuffle')}บันทึกและสุ่มตารางใหม่</button><button class="btn btn-danger" id="resetSchedules">ล้างวันเวลาทั้งหมด</button></div>
  <div class="grid2"><div class="card"><h3>ตรวจสอบตาราง</h3><p class="d">จัดเวลาแล้ว ${planned}/${es.length} นัด</p><div class="notice ${errs.length?'warn':''}" style="margin:0 0 12px"><i></i><span>${errs.length?`พบปัญหา ${errs.length} รายการ`:'ไม่พบทีมหรือสนามชนกัน'}</span></div>${errs.length?`<ul class="warn-list">${errs.slice(0,80).map(m=>`<li>${safe(m)}</li>`).join('')}</ul>`:''}</div>
  <div class="card"><h3>ข้อมูล</h3><p class="d">ผลที่บันทึกจะอยู่ในเครื่องนี้ก่อน กด “เผยแพร่ขึ้นเว็บ” เพื่อให้ทุกคนที่เปิดเว็บเห็นผล (ผู้ชมจะเห็นภายในประมาณ 1–2 นาที)</p><div class="actions" style="margin:0"><button class="btn btn-sm btn-volt" data-act="publish">เผยแพร่ขึ้นเว็บ</button><button class="btn btn-sm" data-act="pull">ดึงข้อมูลล่าสุดจากเว็บ</button><button class="btn btn-sm" data-act="token">เชื่อมต่อ GitHub</button><button class="btn btn-sm" data-act="rename">แก้ไขชื่องาน</button><button class="btn btn-sm" data-act="backup">${ic('download')}สำรองข้อมูล</button><button class="btn btn-sm" data-act="restore">นำเข้าข้อมูล</button><button class="btn btn-sm" data-act="csv">ส่งออก Excel</button></div></div></div></section>`}
@@ -672,8 +704,9 @@ function bindSettings(){const redraw=()=>{const cur=[...document.querySelectorAl
 function applySettings(gen){const f=$('#fromDate').value,t=$('#toDate').value,from=$('#fromTime').value,to=$('#toTime').value,days=dateList(f,t),rest=Number($('#rest').value);
  if(!days.length||days.length>31){alert('กรุณากำหนดวันที่เริ่มและสิ้นสุดถูกต้อง (สูงสุด 31 วัน)');return}if(!from||!to||atTime(to)<=atTime(from)){alert('กรุณากำหนดเวลาเริ่ม–สิ้นสุดให้ถูกต้อง');return}if(!Number.isInteger(rest)||rest<0||rest>120){alert('เวลาพักต้องเป็น 0–120 นาที');return}
  const picked=[...document.querySelectorAll('#dayChips input:checked')].map(i=>i.value).filter(d=>days.includes(d)).sort();if(!picked.length){alert('กรุณาเลือกวันที่มีการแข่งขันอย่างน้อย 1 วัน');return}
- const settings={dateFrom:f,dateTo:t,days:picked,timeFrom:from,timeTo:to,rest,interval:Number($('#interval').value),strict:$('#strict').checked,sepIndiv:$('#sepIndiv').checked,sports:{}};
- for(const s of SPORTS){const duration=Number($('#dur-'+s.id).value),courts=Number($('#courts-'+s.id).value),venue=$('#venue-'+s.id).value.trim();if(!Number.isInteger(duration)||duration<15||duration>240||!Number.isInteger(courts)||courts<1||courts>8||!venue){alert('ตรวจสอบระยะเวลา จำนวนสนาม และชื่อสนามของ '+s.name);return}const sd=[...document.querySelectorAll(`input[data-sd="${s.id}"]:checked`)].map(i=>i.value).filter(d=>picked.includes(d));settings.sports[s.id]={duration,venue,courts,days:sd}}
+ const z0=state.settings,plan={};for(const r of PLAN_DEF){const d=$('#plan-d-'+r.id).value,a=$('#plan-f-'+r.id).value,b=$('#plan-t-'+r.id).value;if(!d||!a||!b||atTime(b)<=atTime(a)){alert('ตรวจสอบวันและเวลาของ: '+r.label);return}if(!picked.includes(d)){alert(r.label+' — วันที่เลือกไม่ได้เป็นวันแข่งขัน');return}plan[r.id]={date:d,from:a,to:b}}
+ const settings={plan,schools:{p:$('#school-p').value.trim(),s:$('#school-s').value.trim()},dateFrom:f,dateTo:t,days:picked,timeFrom:from,timeTo:to,rest,interval:Number($('#interval').value),strict:$('#strict').checked,sepIndiv:$('#sepIndiv').checked,sepEvents:$('#sepEvents').checked,sports:{}};
+ for(const s of SPORTS){const duration=Number($('#dur-'+s.id).value),courts=Number($('#courts-'+s.id).value),venue=$('#venue-'+s.id).value.trim();if(!Number.isInteger(duration)||duration<5||duration>240||!Number.isInteger(courts)||courts<1||courts>16||!venue){alert('ตรวจสอบระยะเวลา จำนวนสนาม และชื่อสนามของ '+s.name);return}const sd=[...document.querySelectorAll(`input[data-sd="${s.id}"]:checked`)].map(i=>i.value).filter(d=>picked.includes(d));const durByDiv={};s.divs.forEach(d=>{const el=document.getElementById(`dd-${s.id}-${d}`);if(el&&Number(el.value)>0)durByDiv[d]=Number(el.value)});settings.sports[s.id]={duration,durByDiv,byLevel:!!z0.sports[s.id].byLevel,venue,courts,days:sd}}
  state.settings=settings;if(gen)autoSchedule(false);else{store();toast('บันทึกการตั้งค่าแล้ว')}render()}
 
 /* ---------- match dialog ---------- */
@@ -681,8 +714,8 @@ function openMatch(s,d,m){editing={s,d,m};const o=outcome(s,d,m,new Map()),sc=bd
  $('#modalTitle').textContent=`${sport(s).name} · ${div(d).name} · คู่ที่ ${MATCH[m].number}`;$('#modalSub').textContent=ROUND[MATCH[m].round];$('#teamA').textContent=texts[0];$('#teamB').textContent=texts[1];
  $('#scoreA').value=o.result.a??'';$('#scoreB').value=o.result.b??'';['#scoreA','#scoreB','#tieWinner'].forEach(q=>$(q).disabled=!known);
  $('#tieWinner').value=o.result.tieWinner||'';$('#tieWinner').options[1].textContent='ทีมที่ 1: '+texts[0];$('#tieWinner').options[2].textContent='ทีมที่ 2: '+texts[1];
- $('#matchDate').value=sc.date||'';$('#matchTime').value=sc.time||'';$('#matchVenue').value=sc.venue||state.settings.sports[s].venue;
- $('#durationNote').textContent=`ระยะเวลาแข่งขัน ${state.settings.sports[s].duration} นาที · พักขั้นต่ำก่อนนัดถัดไป ${state.settings.rest} นาที`;
+ $('#matchDate').value=sc.date||'';$('#matchTime').value=sc.time||'';$('#matchVenue').value=sc.venue||venueList(s,div(d).lv)[0];
+ $('#durationNote').textContent=`ระยะเวลาแข่งขัน ${durOf(s,d)} นาที · พักขั้นต่ำก่อนนัดถัดไป ${state.settings.rest} นาที`;
  const note=$('#modalNotice');note.hidden=known;if(!known)note.textContent=texts.includes('รอจัดทีม')?'ยังไม่ได้จัดทีมลงสายของประเภทนี้ (จัดได้ที่หน้าผังการแข่งขัน) แต่กำหนดวัน เวลา และสนามล่วงหน้าได้':'ยังไม่ทราบผู้ชนะจากคู่ก่อนหน้า จึงยังบันทึกคะแนนไม่ได้ แต่กำหนดวัน เวลา และสนามล่วงหน้าได้';
  const ro=!admin;if(ro)['#scoreA','#scoreB','#tieWinner'].forEach(q=>$(q).disabled=true);['#matchDate','#matchTime','#matchVenue'].forEach(q=>$(q).disabled=ro);$('#matchModal').classList.toggle('ro',ro);if(ro){note.hidden=false;note.textContent='ดูข้อมูลได้อย่างเดียว — การบันทึกผลทำได้เฉพาะผู้ดูแลการแข่งขัน'}$('#clearScore').disabled=!o.completed;$('#matchModal').showModal()}
 function clearDescendantScores(s,d,m){const deps=[m],removed=[];while(deps.length){const x=deps.shift();for(const [id,cfg] of Object.entries(MATCH))if(cfg.parents.includes(x)&&!removed.includes(id)){removed.push(id);deps.push(id)}}removed.forEach(id=>delete bdata(s,d).results[id]);return removed}
@@ -696,7 +729,7 @@ function saveMatch(ev){ev.preventDefault();if(!editing||!admin)return;const {s,d
  if(changed){const down=Object.keys(MATCH).filter(x=>x!==m&&MATCH[x].round>MATCH[m].round&&b.results[x]);if(down.length&&!confirm('การเปลี่ยนคะแนนอาจเปลี่ยนทีมในรอบถัดไป ระบบจะล้างผลรอบถัดไปที่เกี่ยวข้อง ยืนยันหรือไม่?'))return;clearDescendantScores(s,d,m);if(next)b.results[m]=next;else delete b.results[m]}
  if(date)b.schedules[m]={date,time,venue};else delete b.schedules[m];
  const fresh=warnings(allEvents()).filter(x=>!before.has(x));if(fresh.length){b.results=prevR;b.schedules=prevS;alert('ไม่สามารถบันทึกได้ เพราะทำให้ตารางมีปัญหาใหม่:\n\n'+fresh.slice(0,3).join('\n')+'\n\nกรุณาปรับเวลาแข่งขันก่อน');return}
- store();$('#matchModal').close();editing=null;render();if(m==='M5'&&next){confetti();toast('ยินดีด้วย! ได้ผู้ชนะเลิศแล้ว 🏆')}else toast('บันทึกข้อมูลการแข่งขันแล้ว')}
+ const fx=changed&&next?fixClashes([s,d]):{moved:0};store();$('#matchModal').close();editing=null;render();if(m==='M5'&&next){confetti();toast('ยินดีด้วย! ได้ผู้ชนะเลิศแล้ว 🏆')}else toast(fx.moved?`บันทึกผลแล้ว · ทีมที่เข้ารอบชนเวลา จึงย้ายเวลา ${fx.moved} นัดอัตโนมัติ${fx.left?` · ยังหาเวลาไม่ได้ ${fx.left} นัด`:''}`:'บันทึกข้อมูลการแข่งขันแล้ว')}
 function clearScore(){if(!editing)return;const {s,d,m}=editing;if(!confirm('ล้างคะแนนคู่นี้และคะแนนรอบถัดไปที่เกี่ยวข้อง? วันและเวลาจะไม่ถูกล้าง'))return;clearDescendantScores(s,d,m);delete bdata(s,d).results[m];store();$('#matchModal').close();editing=null;render();toast('ล้างผลคะแนนแล้ว')}
 
 /* ---------- export / import ---------- */
