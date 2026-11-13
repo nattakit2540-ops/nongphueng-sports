@@ -312,6 +312,31 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 .pl-l{font:500 13.5px/1.35 var(--display)}
 .mini{display:flex;flex-direction:column;gap:3px;width:104px}.mini small{font-size:11.5px;color:var(--muted)}.mini .input{height:38px}
 .sr-note{display:block;font:400 11px var(--body);color:var(--muted)}.sr-name{flex-wrap:wrap}
+.plan-chips{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 12px}
+.bwrap{display:grid;grid-template-columns:270px minmax(0,1fr);gap:14px;align-items:start}
+.tray{position:sticky;top:84px;max-height:calc(100vh - 100px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;transition:outline-color .2s;outline:2px dashed transparent}
+.tray.over{outline-color:var(--pink);background:#fff8fc}
+.tray-h{font:600 15px var(--display);margin-bottom:6px}.tray-h b{color:var(--pink-d)}
+.tray-g{font:600 11.5px var(--num);letter-spacing:1px;color:var(--pink-d);margin:12px 0 6px}
+.tchip{display:grid;gap:2px;padding:8px 10px;border:1px solid var(--line2);border-left:4px solid var(--c);border-radius:12px;background:#fff;margin-bottom:6px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;font-size:12px;color:var(--ink2);transition:transform .15s,border-color .15s}
+.tchip:hover{transform:translateX(2px);border-color:var(--c)}.tchip b{display:flex;align-items:center;gap:6px;font:600 12.5px var(--display);color:var(--ink)}
+.bboard{background:#fff;border:1px solid var(--line);border-radius:20px;overflow-x:auto}
+.board2{display:flex;min-width:max-content;padding-bottom:10px}
+.ruler{position:sticky;left:0;z-index:3;background:#fff;width:50px;flex:none;padding-top:52px;border-right:1px solid var(--line)}
+.ruler-in{position:relative}.ruler span{position:absolute;right:6px;transform:translateY(-50%);font:600 11px var(--num);color:var(--muted)}
+.bcol{width:146px;flex:none;border-right:1px solid var(--soft)}
+.bcol-h{height:52px;background:#fafbff;border-bottom:1px solid var(--line);padding:6px 8px;font:600 12.5px/1.25 var(--display);overflow:hidden}
+.bcol-h small{display:block;font:400 10.5px var(--body);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bcol-b{position:relative;background-image:repeating-linear-gradient(to bottom,#eef1f8 0 1px,transparent 1px 30px),repeating-linear-gradient(to bottom,#dfe4f1 0 1px,transparent 1px 60px);transition:background-color .15s}
+.bcol-b.over{background-color:#fff4fa}
+.blk{position:absolute;left:4px;right:4px;border-radius:9px;background:color-mix(in srgb,var(--c) 15%,#fff);border-left:4px solid var(--c);padding:3px 6px;font-size:10.5px;line-height:1.3;overflow:hidden;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 2px 6px -3px rgba(0,0,0,.25)}
+.blk b{display:block;font:600 11px var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink2)}
+.blk.bad{outline:2px solid var(--danger);background:#fff0f2}.blk.done{opacity:.75}
+.blk:not([data-drag-ev]),.tchip:not([data-drag-ev]){cursor:default}
+.dragging{opacity:.3}
+.drag-ghost{position:fixed!important;z-index:400;pointer-events:none;margin:0;opacity:.95;box-shadow:0 18px 34px -10px rgba(0,0,0,.35);transform:rotate(-1.5deg)}
+.ghost-time{position:absolute;right:4px;top:3px;font:700 11px var(--num);font-style:normal;background:var(--ink);color:#fff;border-radius:6px;padding:1px 6px}
 /* responsive */
 @media(max-width:1100px){.champs{grid-template-columns:repeat(2,1fr)}.sports{grid-template-columns:repeat(3,1fr)}.next{grid-template-columns:repeat(2,1fr)}.fx{grid-template-columns:70px minmax(0,1fr) minmax(0,2fr) 104px 38px}.fx-venue{display:none}}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
@@ -330,7 +355,7 @@ body{padding-bottom:100px}.toast{bottom:104px}
 .fx{grid-template-columns:58px minmax(0,1fr) 38px;grid-template-areas:"time meta edit" "teams teams teams" "venue venue status";gap:12px;padding:15px}
 .fx-time{grid-area:time}.fx-meta{grid-area:meta}.fx .icon-btn{grid-area:edit}.fx-teams{grid-area:teams;background:linear-gradient(90deg,#fff6fa,#f1f9ff);border-radius:14px;padding:10px}.fx-venue{grid-area:venue;display:flex}.fx-status{grid-area:status;justify-self:end}
 .fx-time b{font-size:22px}.m-only{display:inline}
-.fields{grid-template-columns:1fr}.sport-row{grid-template-columns:84px 62px 54px 1fr;gap:6px}.pool-chips{grid-template-columns:1fr}.plan-row{grid-template-columns:1fr 1fr 1fr}.plan-row .pl-l{grid-column:1/-1}.plan-row.head{display:none}.seed-cols{grid-template-columns:1fr}.champs{grid-template-columns:1fr}.card{padding:20px}
+.fields{grid-template-columns:1fr}.sport-row{grid-template-columns:84px 62px 54px 1fr;gap:6px}.pool-chips{grid-template-columns:1fr}.bwrap{grid-template-columns:1fr}.tray{position:static;max-height:300px}.plan-row{grid-template-columns:1fr 1fr 1fr}.plan-row .pl-l{grid-column:1/-1}.plan-row.head{display:none}.seed-cols{grid-template-columns:1fr}.champs{grid-template-columns:1fr}.card{padding:20px}
 .mh,.mb{padding-left:18px;padding-right:18px}.mf{padding:14px 18px}.si{height:62px;font-size:36px}
 .foot{padding-bottom:110px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;translate:none}.lb path.draw{stroke-dashoffset:0}}
@@ -353,6 +378,7 @@ body{background:#fff}.topbar,.foot,.toolbar,.filters,.days,.icon-btn,.hero-cta,.
       <button class="tab" data-view="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg><span>หน้าแรก</span></button>
       <button class="tab" data-view="bracket"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h5v4H3zM3 15.5h5v4H3zM16 10h5v4h-5zM8 6.5h3v11H8M11 12h5"/></svg><span>ผังการแข่งขัน</span></button>
       <button class="tab" data-view="schedule"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>ตารางแข่ง</span></button>
+      <button class="tab admin-only" data-view="board"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h3v3H8z"/></svg><span>จัดเวลา</span></button>
       <button class="tab admin-only" data-view="settings"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg><span>ตั้งค่า</span></button>
     </nav>
     <details class="menu" id="menu">
@@ -581,10 +607,11 @@ function autoSchedule(keepExisting=false,silent=false){const z=state.settings,da
  store();const n=events.filter(hasDate).length;if(!silent)toast(`จัดตารางแล้ว ${n}/${events.length} นัด${failed.length?` · ยังไม่ลงเวลา ${failed.length} นัด`:''}`);return n}
 
 /* ---------- views ---------- */
-function render(){if(!admin&&view==='settings')view='home';fixDiv();renderStatus();$$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===view));const app=$('#app');
+function render(){if(!admin&&(view==='settings'||view==='board'))view='home';fixDiv();renderStatus();$$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===view));const app=$('#app');
  if(view==='home')app.innerHTML=homeHTML();
  else if(view==='bracket'){app.innerHTML=bracketHTML()}
  else if(view==='schedule'){app.innerHTML=scheduleHTML();bindSchedule();renderFixtures()}
+ else if(view==='board'){app.innerHTML=boardHTML()}
  else{app.innerHTML=settingsHTML();bindSettings()}
  tick();reveal(app)}
 const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -640,8 +667,7 @@ function seedPanel(){const sd=bdata(activeSport,activeDivision).seeds,pool=[0,1,
  return `<div class="seed card"><div class="seed-head"><div><h3>จัดสายการแข่งขัน <span class="seed-count ${filled===6?'ok':''}">${filled}/6 ทีม</span></h3><p class="d">${sport(activeSport).name} · ${div(activeDivision).name} — ลากทีมจากด้านล่างไปวางในช่องสายบน/สายล่าง ลากระหว่างช่องเพื่อสลับ หรือลากกลับมาที่กล่องทีมเพื่อเอาออก</p></div><div class="toolbar"><button class="btn btn-sm btn-danger" data-seed="clear" ${filled?'':'disabled'}>ล้างทั้งหมด</button></div></div>
  <div class="seed-pool" data-pool="1"><span class="seed-lbl">ทีมที่ยังไม่ได้จัด (${pool.length})</span><div class="pool-chips">${pool.length?pool.map(t=>chipHTML(t,`data-from="pool" data-team="${t}"`)).join(''):'<span class="seed-ph done">จัดครบทุกทีมแล้ว ✓</span>'}</div></div>
  <div class="seed-cols"><div class="seed-col"><h4>สายบน</h4>${[0,1,2].map(slot).join('')}</div><div class="seed-col"><h4>สายล่าง</h4>${[3,4,5].map(slot).join('')}</div></div></div>`}
-function setSeeds(arr){const b=bdata(activeSport,activeDivision);if(!admin||arr.join()===b.seeds.join())return;if(Object.keys(b.results).length&&!confirm('ประเภทนี้มีผลการแข่งขันแล้ว การเปลี่ยนสายจะล้างผลคะแนนทั้งหมดของประเภทนี้ ยืนยันหรือไม่?'))return;b.results={};b.seeds=arr;const r=fixClashes([activeSport,activeDivision]);store();render();
- toast(r.moved?`จัดสายแล้ว · ย้ายเวลา ${r.moved} นัดอัตโนมัติ เพื่อไม่ให้ทีมเดียวกันแข่งชนเวลากัน${r.left?` · ยังหาเวลาไม่ได้ ${r.left} นัด`:''}`:'จัดสายการแข่งขันแล้ว · ไม่มีทีมแข่งชนเวลา')}
+function setSeeds(arr){const b=bdata(activeSport,activeDivision);if(!admin||arr.join()===b.seeds.join())return;if(Object.keys(b.results).length&&!confirm('ประเภทนี้มีผลการแข่งขันแล้ว การเปลี่ยนสายจะล้างผลคะแนนทั้งหมดของประเภทนี้ ยืนยันหรือไม่?'))return;b.results={};b.seeds=arr;store();render();const bad=clashKeys(allEvents()).size;toast(bad?`จัดสายแล้ว · มี ${bad} นัดที่เวลาชนกัน — ปรับได้ที่หน้า “จัดเวลา”`:'จัดสายการแข่งขันแล้ว')}
 let drag=null;
 document.addEventListener('pointerdown',e=>{const chip=e.target.closest('.seed-chip');if(!chip||!admin||e.button>0)return;e.preventDefault();const r=chip.getBoundingClientRect(),g=chip.cloneNode(true);g.classList.add('ghost');g.style.width=r.width+'px';g.style.left=r.left+'px';g.style.top=r.top+'px';document.body.appendChild(g);chip.classList.add('dragging');
  const from=chip.dataset.from;drag={chip,g,from:from==='pool'?'pool':+from,team:from==='pool'?+chip.dataset.team:bdata(activeSport,activeDivision).seeds[+from],dx:e.clientX-r.left,dy:e.clientY-r.top,over:null}});
@@ -657,15 +683,57 @@ function bracketHTML(){return `<section class="wrap"><div class="page-h"><div><s
  <div class="bracket-bar"><div class="lvls">${['p','s'].map(lv=>`<div class="lvl"><span class="lvl-l">${LEVELS[lv]}</span><div class="seg">${sport(activeSport).divs.filter(d=>div(d).lv===lv).map(d=>`<button class="${d===activeDivision?'active':''}" data-pick-div="${d}" aria-pressed="${d===activeDivision}">${div(d).short}</button>`).join('')}</div></div>`).join('')}</div><div class="legend"><span><i class="lg done"></i>เส้นทางผู้ชนะ</span><span><i class="lg"></i>รอแข่งขัน</span></div></div>
  ${admin?seedPanel():''}${bracketBoard()}<p class="hint"><span class="m-only">← ปัดซ้าย–ขวาเพื่อดูผังเต็ม → · </span>${admin?'แตะหมายเลขคู่ หรือชื่อทีม เพื่อบันทึกผล หรือแก้ไขวัน เวลา และสนาม':'แตะหมายเลขคู่เพื่อดูรายละเอียด วัน เวลา และสนาม'}</p></section>`}
 
+/* ---------- day-by-day schedule board (admin) ---------- */
+const PX=2;let boardDay=null;
+function clashKeys(es){const rest=Number(state.settings.rest),act=es.filter(hasDate),bad=new Set(),byKey=new Map(es.map(e=>[e.key,e]));
+ for(let i=0;i<act.length;i++){const a=act[i],ra=schedRange(a);for(let j=i+1;j<act.length;j++){const b=act[j],rb=schedRange(b);const v1=(a.schedule.venue||'').trim(),v2=(b.schedule.venue||'').trim();
+  if((v1&&v1===v2&&ra.start<rb.end&&rb.start<ra.end)||(sharesTeam(a,b)&&ra.start<rb.end+rest&&rb.start<ra.end+rest)){bad.add(a.key);bad.add(b.key)}}}
+ for(const e of act){const sl=slotOf(e),t=atTime(e.schedule.time);if(!sl.dates.includes(e.schedule.date)||t<atTime(sl.from)||t+e.duration>atTime(sl.to))bad.add(e.key);
+  for(const pk of e.parents){const pe=byKey.get(pk);if(pe&&hasDate(pe)&&schedRange(e).start<schedRange(pe).end+rest)bad.add(e.key)}}
+ return bad}
+const sideShort=(e,i)=>e.sides[i]!==null?CODES[e.sides[i]]:(MATCH[e.m].sides[i].winner?`ผชน.คู่${MATCH[MATCH[e.m].sides[i].winner].number}`:'รอจัดทีม');
+function boardHTML(){const days=compDays();if(!days.includes(boardDay))boardDay=days[0];const d=boardDay,z=state.settings,es=allEvents(),locked=(z.lockedDays||[]).includes(d);
+ const todays=es.filter(e=>slotOf(e).dates.includes(d)||e.schedule.date===d),clash=clashKeys(es);
+ let t0=atTime(z.timeFrom),t1=atTime(z.timeTo);todays.forEach(e=>{const sl=slotOf(e);t0=Math.min(t0,atTime(sl.from));t1=Math.max(t1,atTime(sl.to))});
+ const cols=[];todays.forEach(e=>e.venues.forEach(v=>{if(!cols.includes(v))cols.push(v)}));todays.forEach(e=>{const v=e.schedule.venue;if(e.schedule.date===d&&v&&!cols.includes(v))cols.push(v)});
+ const placed=todays.filter(e=>e.schedule.date===d&&e.schedule.time),tray=todays.filter(e=>!hasDate(e)),H=(t1-t0)*PX,drag=locked?'':'data-drag-ev';
+ const ruler=[];for(let m=Math.ceil(t0/30)*30;m<=t1;m+=30)ruler.push(`<span style="top:${(m-t0)*PX}px">${toTime(m)}</span>`);
+ const blk=e=>`<div class="blk ${clash.has(e.key)?'bad':''} ${e.completed?'done':''}" data-sport="${e.s}" ${drag}="${e.key}" style="top:${(atTime(e.schedule.time)-t0)*PX}px;height:${Math.max(e.duration*PX,24)}px" title="${safe(labelEvent(e)+' · '+teamLabel(e,0)+' พบ '+teamLabel(e,1)+(clash.has(e.key)?' · ⚠ เวลาชน/ผิดกำหนดการ':''))}"><b>${e.schedule.time} ${sport(e.s).name}</b><span>${div(e.d).name} · คู่ ${e.number}</span><span>${sideShort(e,0)} – ${sideShort(e,1)}</span></div>`;
+ const groups=new Map();tray.sort((a,b)=>a.round-b.round||a.s.localeCompare(b.s)||a.d.localeCompare(b.d)||a.number-b.number).forEach(e=>{const sl=slotOf(e),g=`${sport(e.s).name} · ${ROUND[e.round]} (${sl.from}–${sl.to})`;if(!groups.has(g))groups.set(g,[]);groups.get(g).push(e)});
+ const chip=e=>`<div class="tchip" data-sport="${e.s}" ${drag}="${e.key}"><b><span class="sdot"></span>${div(e.d).name} · คู่ ${e.number}</b><span>${sideShort(e,0)} พบ ${sideShort(e,1)} · ${e.duration} นาที</span></div>`;
+ const plans=PLAN_DEF.filter(r=>z.plan[r.id]&&z.plan[r.id].date===d).map(r=>`<span class="chip">${r.label} ${z.plan[r.id].from}–${z.plan[r.id].to}</span>`).join('');
+ return `<section class="wrap"><div class="page-h"><div><span class="kicker">Schedule board</span><h1>จัดเวลาแข่งขัน</h1><p class="lead">เลือกวัน แล้วลากนัดจากรายการด้านซ้ายไปวางที่สนามและเวลา (ปรับทีละ 5 นาที) · ลากนัดในตารางเพื่อย้าย หรือลากกลับไปด้านซ้ายเพื่อเอาออก · ระบบตรวจกำหนดการ ลำดับรอบ สนามชน และทีมชนให้ทุกครั้ง</p></div>
+ <div class="toolbar"><button class="btn btn-sm ${locked?'btn-dark':''}" data-act="lockday">${locked?'🔒 ล็อกแล้ว · กดเพื่อปลดล็อก':'ล็อกตารางวันนี้'}</button><button class="btn btn-sm btn-danger" data-act="clearday" ${locked||!placed.length?'disabled':''}>นำออกทั้งวัน</button></div></div>
+ <div class="days">${days.map((x,i)=>{const n=es.filter(e=>slotOf(e).dates.includes(x)).length,p=es.filter(e=>e.schedule.date===x).length,lk=(z.lockedDays||[]).includes(x);return `<button class="day ${x===d?'active':''}" data-bday="${x}"><small>Day ${i+1}${lk?' 🔒':''}</small><b>${TH_D[pd(x).w].slice(0,3)}. ${dShort(x)}</b><i>วางแล้ว ${p}/${n} นัด</i></button>`}).join('')}</div>
+ ${plans?`<div class="plan-chips">${plans}</div>`:''}
+ ${clash.size?`<div class="notice warn"><i></i><span>มี ${clash.size} นัดที่ชนกันหรือผิดกำหนดการ (กรอบแดง) — ลากย้ายเพื่อแก้</span></div>`:''}
+ ${locked?'<div class="notice"><i></i><span>วันนี้ล็อกแล้ว ย้ายนัดไม่ได้ จนกว่าจะปลดล็อก</span></div>':''}
+ <div class="bwrap"><div class="tray" data-tray="1"><div class="tray-h">ยังไม่ลงเวลา <b>${tray.length}</b> นัด</div>${tray.length?[...groups].map(([g,list])=>`<div class="tray-g">${g}</div>${list.map(chip).join('')}`).join(''):'<p class="tiny">วางครบทุกนัดของวันนี้แล้ว ✓</p>'}</div>
+ <div class="bboard">${cols.length?`<div class="board2"><div class="ruler"><div class="ruler-in" style="height:${H}px">${ruler.join('')}</div></div>${cols.map(v=>{const [n1,n2]=v.split(' · ');return `<div class="bcol"><div class="bcol-h" title="${safe(v)}">${safe(n1)}${n2?`<small>${safe(n2)}</small>`:''}</div><div class="bcol-b" data-venue="${safe(v)}" data-t0="${t0}" style="height:${H}px">${placed.filter(e=>e.schedule.venue===v).map(blk).join('')}</div></div>`}).join('')}</div>`:'<div class="empty">ไม่มีรายการแข่งขันในวันนี้</div>'}</div></div></section>`}
+let evDrag=null;
+function boardDropTime(target,top){const r=target.getBoundingClientRect();return Math.max(+target.dataset.t0,+target.dataset.t0+Math.round((top-r.top)/PX/5)*5)}
+document.addEventListener('pointerdown',e=>{const el=e.target.closest('[data-drag-ev]');if(!el||!admin||e.button>0)return;e.preventDefault();const r=el.getBoundingClientRect(),g=el.cloneNode(true);g.removeAttribute('data-drag-ev');g.classList.add('drag-ghost');g.style.cssText=`left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px`;const tag=document.createElement('em');tag.className='ghost-time';g.appendChild(tag);document.body.appendChild(g);el.classList.add('dragging');evDrag={el,g,tag,k:el.dataset.dragEv,dx:e.clientX-r.left,dy:e.clientY-r.top,over:null}});
+document.addEventListener('pointermove',e=>{if(!evDrag)return;e.preventDefault();const {g,tag}=evDrag,top=e.clientY-evDrag.dy;g.style.left=e.clientX-evDrag.dx+'px';g.style.top=top+'px';
+ if(e.clientY>innerHeight-50)scrollBy(0,14);else if(e.clientY<90)scrollBy(0,-14);
+ const el=document.elementFromPoint(e.clientX,e.clientY),t=el?el.closest('.bcol-b,.tray'):null;if(evDrag.over!==t){if(evDrag.over)evDrag.over.classList.remove('over');if(t)t.classList.add('over');evDrag.over=t}
+ tag.textContent=t&&t.classList.contains('bcol-b')?toTime(boardDropTime(t,top))+' น.':t?'เอาออก':''},{passive:false});
+function endEvDrag(e){if(!evDrag)return;const {el,g,k,over,dy}=evDrag;evDrag=null;g.remove();el.classList.remove('dragging');if(!over)return;over.classList.remove('over');
+ const [s,d,m]=k.split('|'),b=bdata(s,d);
+ if(over.dataset.tray){if(!b.schedules[m])return;delete b.schedules[m];store();render();toast('นำออกจากตารางเวลาแล้ว');return}
+ const es=allEvents(),ev=es.find(x=>x.key===k),byKey=new Map(es.map(x=>[x.key,x])),venue=over.dataset.venue,trial={date:boardDay,time:toTime(boardDropTime(over,e.clientY-dy)),venue};
+ if(!ev.venues.includes(venue)){toast(`วางไม่ได้: สนามนี้ไม่ใช่ของ ${sport(s).name} ${div(d).name}`);return}
+ const err=validateTrial(ev,trial,es,byKey);if(err){toast('วางไม่ได้: '+err);return}
+ b.schedules[m]=trial;store();render();toast(`${labelEvent(ev)} · ${dShort(trial.date)} ${trial.time} น.`)}
+document.addEventListener('pointerup',endEvDrag);document.addEventListener('pointercancel',()=>{if(!evDrag)return;evDrag.g.remove();evDrag.el.classList.remove('dragging');if(evDrag.over)evDrag.over.classList.remove('over');evDrag=null});
 function scheduleHTML(){const es=allEvents(),z=state.settings,issues=warnings(es),miss=es.filter(e=>!hasDate(e)).length,dates=[...new Set(es.filter(hasDate).map(e=>e.schedule.date))].sort();if(filter.day!=='all'&&!dates.includes(filter.day))filter.day='all';
  const dayBtn=(id,top,main,n)=>`<button class="day ${filter.day===id?'active':''}" data-day="${id}"><small>${top}</small><b>${main}</b><i>${n} นัด</i></button>`;
  const opt=(v,list)=>list.map(([a,b])=>`<option value="${a}" ${v===a?'selected':''}>${b}</option>`).join('');
- return `<section class="wrap"><div class="page-h"><div><span class="kicker">Match Schedule</span><h1>ตารางแข่งขัน</h1><p class="lead">${fmtDays(compDays())} · ${es.length} นัด ทุกชนิดกีฬา</p></div><div class="toolbar"><button class="btn btn-sm btn-dark admin-only" id="reshuffle">${ic('shuffle')}สุ่มตารางใหม่</button><button class="btn btn-sm admin-only" id="fixClash">แก้เวลาทีมชนกัน</button><button class="btn btn-sm admin-only" id="fillEmpty">เติมคู่ที่ยังไม่มีเวลา</button><button class="btn btn-sm" data-act="csv">${ic('download')}Excel</button><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์</button></div></div>
- <div class="notice ${issues.length?'warn':''}"><i></i><span>${issues.length?`พบข้อขัดแย้ง ${issues.length} รายการ — ${admin?'กด “แก้เวลาทีมชนกัน” หรือดูรายละเอียดที่หน้าตั้งค่า':'ผู้ดูแลกำลังปรับตาราง'}`:`ไม่มีทีมหรือสนามชนกัน${miss?` · ยังไม่จัดเวลา ${miss} นัด`:' · จัดครบทุกนัดแล้ว'}`}</span></div>
+ return `<section class="wrap"><div class="page-h"><div><span class="kicker">Match Schedule</span><h1>ตารางแข่งขัน</h1><p class="lead">${fmtDays(compDays())} · ${es.length} นัด ทุกชนิดกีฬา</p></div><div class="toolbar"><button class="btn btn-sm btn-dark admin-only" data-view-link="board">${ic('edit')}จัดเวลา (ลากวาง)</button><button class="btn btn-sm" data-act="csv">${ic('download')}Excel</button><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์</button></div></div>
+ <div class="notice ${issues.length?'warn':''}"><i></i><span>${issues.length?`พบข้อขัดแย้ง ${issues.length} รายการ — ${admin?'ย้ายนัดที่มีกรอบแดงได้ที่หน้า “จัดเวลา”':'ผู้ดูแลกำลังปรับตาราง'}`:`ไม่มีทีมหรือสนามชนกัน${miss?` · ยังไม่จัดเวลา ${miss} นัด`:' · จัดครบทุกนัดแล้ว'}`}</span></div>
  <div class="days">${dayBtn('all','All days','ทั้งหมด',es.length)}${dates.map((d,i)=>dayBtn(d,`Day ${i+1}`,dShort(d),es.filter(e=>e.schedule.date===d).length)).join('')}</div>
  <div class="filters"><select class="input" id="fSport" aria-label="ชนิดกีฬา">${opt(filter.sport,[['all','ทุกชนิดกีฬา'],...SPORTS.map(s=>[s.id,s.name])])}</select><select class="input" id="fDiv" aria-label="ประเภท">${opt(filter.division,[['all','ทุกประเภท'],...DIVS.filter(d=>SPORTS.some(x=>x.divs.includes(d.id))).map(d=>[d.id,d.name])])}</select><div class="search">${ic('search')}<input class="input" id="fText" placeholder="ค้นหาทีม สนาม หรือชนิดกีฬา" value="${safe(filter.text)}" aria-label="ค้นหา"></div></div>
  <div id="fixtures"></div></section>`}
-function bindSchedule(){$('#reshuffle').addEventListener('click',()=>{if(confirm('สุ่มตารางแข่งขันใหม่ทั้งหมด? วันเวลาที่แก้ไขเองจะถูกแทนที่ แต่ผลคะแนนยังอยู่')){autoSchedule(false);render()}});$('#fillEmpty').addEventListener('click',()=>{autoSchedule(true);render()});$('#fixClash').addEventListener('click',()=>{const r=fixClashes(null);render();toast(r.moved?`ย้ายเวลา ${r.moved} นัด${r.left?` · ยังหาเวลาไม่ได้ ${r.left} นัด`:''}${r.clash?` · ยังชน ${r.clash} รายการ`:' · ไม่มีทีมชนกันแล้ว'}`:'ไม่พบทีมแข่งชนเวลา')});
+function bindSchedule(){
  $('#fSport').addEventListener('change',e=>{filter.sport=e.target.value;renderFixtures()});$('#fDiv').addEventListener('change',e=>{filter.division=e.target.value;renderFixtures()});$('#fText').addEventListener('input',e=>{filter.text=e.target.value;renderFixtures()})}
 function renderFixtures(){const box=$('#fixtures');if(!box)return;const q=filter.text.trim().toLocaleLowerCase();
  const list=allEvents().filter(e=>(filter.sport==='all'||e.s===filter.sport)&&(filter.division==='all'||e.d===filter.division)&&(filter.day==='all'||e.schedule.date===filter.day)&&(!q||`${sport(e.s).name} ${div(e.d).name} ${teamLabel(e,0)} ${teamLabel(e,1)} ${e.schedule.venue||''} คู่ ${e.number}`.toLocaleLowerCase().includes(q))).sort((a,b)=>byTime(a,b)||a.round-b.round||a.s.localeCompare(b.s)||a.d.localeCompare(b.d));
@@ -694,12 +762,12 @@ function settingsHTML(){const z=state.settings,es=allEvents(),errs=warnings(es),
  <div class="card"><h3>สถานที่แข่งขัน</h3><p class="d">ใช้กับฟุตบอล ฟุตซอล วอลเลย์บอล และตะกร้อ (ปิงปองและเปตองใช้ชื่อสนามตามตารางด้านบน)</p><div class="fields">
   <label class="f wide"><span>ระดับประถมศึกษา</span><input class="input" id="school-p" value="${safe(z.schools.p)}" maxlength="120"></label>
   <label class="f wide"><span>ระดับมัธยมศึกษา</span><input class="input" id="school-s" value="${safe(z.schools.s)}" maxlength="120"></label></div></div></div>
- <div class="actions"><button class="btn btn-dark" id="saveSettings">บันทึกการตั้งค่า</button><button class="btn btn-volt" id="saveAndGen">${ic('shuffle')}บันทึกและสุ่มตารางใหม่</button><button class="btn btn-danger" id="resetSchedules">ล้างวันเวลาทั้งหมด</button></div>
+ <div class="actions"><button class="btn btn-dark" id="saveSettings">บันทึกการตั้งค่า</button><button class="btn btn-danger" id="resetSchedules">ล้างวันเวลาทั้งหมด</button></div>
  <div class="grid2"><div class="card"><h3>ตรวจสอบตาราง</h3><p class="d">จัดเวลาแล้ว ${planned}/${es.length} นัด</p><div class="notice ${errs.length?'warn':''}" style="margin:0 0 12px"><i></i><span>${errs.length?`พบปัญหา ${errs.length} รายการ`:'ไม่พบทีมหรือสนามชนกัน'}</span></div>${errs.length?`<ul class="warn-list">${errs.slice(0,80).map(m=>`<li>${safe(m)}</li>`).join('')}</ul>`:''}</div>
  <div class="card"><h3>ข้อมูล</h3><p class="d">ผลที่บันทึกจะอยู่ในเครื่องนี้ก่อน กด “เผยแพร่ขึ้นเว็บ” เพื่อให้ทุกคนที่เปิดเว็บเห็นผล (ผู้ชมจะเห็นภายในประมาณ 1–2 นาที)</p><div class="actions" style="margin:0"><button class="btn btn-sm btn-volt" data-act="publish">เผยแพร่ขึ้นเว็บ</button><button class="btn btn-sm" data-act="pull">ดึงข้อมูลล่าสุดจากเว็บ</button><button class="btn btn-sm" data-act="token">เชื่อมต่อ GitHub</button><button class="btn btn-sm" data-act="rename">แก้ไขชื่องาน</button><button class="btn btn-sm" data-act="backup">${ic('download')}สำรองข้อมูล</button><button class="btn btn-sm" data-act="restore">นำเข้าข้อมูล</button><button class="btn btn-sm" data-act="csv">ส่งออก Excel</button></div></div></div></section>`}
 function dayChips(f,t,on){const all=dateList(f,t);if(!all.length||all.length>31)return '<span class="tiny">กรุณาเลือกวันแรกและวันสุดท้ายให้ถูกต้อง</span>';return all.map(d=>{const p=pd(d);return `<label class="daychip"><input type="checkbox" value="${d}" ${on.includes(d)?'checked':''}><span><small>${TH_D[p.w]}</small>${dShort(d)}</span></label>`}).join('')}
 function sportChips(sid,f,t){const all=dateList(f,t);if(!all.length||all.length>31)return '';const on=sportDays(sid);return all.map(d=>`<label class="daychip sm"><input type="checkbox" data-sd="${sid}" value="${d}" ${on.includes(d)?'checked':''}><span>${dShort(d)}</span></label>`).join('')}
-function bindSettings(){const redraw=()=>{const cur=[...document.querySelectorAll('#dayChips input:checked')].map(i=>i.value),all=dateList($('#fromDate').value,$('#toDate').value);$('#dayChips').innerHTML=dayChips($('#fromDate').value,$('#toDate').value,cur.length?cur:all);SPORTS.forEach(s=>{const el=document.querySelector(`.sport-days[data-sport="${s.id}"]`);if(el)el.innerHTML='<span>วันแข่ง</span>'+sportChips(s.id,$('#fromDate').value,$('#toDate').value)})};$('#fromDate').addEventListener('change',redraw);$('#toDate').addEventListener('change',redraw);$('#saveSettings').addEventListener('click',()=>applySettings(false));$('#saveAndGen').addEventListener('click',()=>{if(confirm('บันทึกและสุ่มเวลาใหม่ทั้งหมด? วันเวลาเดิมจะเปลี่ยน แต่ผลคะแนนยังอยู่'))applySettings(true)});
+function bindSettings(){const redraw=()=>{const cur=[...document.querySelectorAll('#dayChips input:checked')].map(i=>i.value),all=dateList($('#fromDate').value,$('#toDate').value);$('#dayChips').innerHTML=dayChips($('#fromDate').value,$('#toDate').value,cur.length?cur:all);SPORTS.forEach(s=>{const el=document.querySelector(`.sport-days[data-sport="${s.id}"]`);if(el)el.innerHTML='<span>วันแข่ง</span>'+sportChips(s.id,$('#fromDate').value,$('#toDate').value)})};$('#fromDate').addEventListener('change',redraw);$('#toDate').addEventListener('change',redraw);$('#saveSettings').addEventListener('click',()=>applySettings(false));
  $('#resetSchedules').addEventListener('click',()=>{if(!confirm('ลบวันและเวลาแข่งขันทั้งหมด? ผลคะแนนจะยังอยู่'))return;SPORTS.forEach(s=>s.divs.forEach(d=>bdata(s.id,d).schedules={}));store();render();toast('ล้างตารางแข่งขันแล้ว')})}
 function applySettings(gen){const f=$('#fromDate').value,t=$('#toDate').value,from=$('#fromTime').value,to=$('#toTime').value,days=dateList(f,t),rest=Number($('#rest').value);
  if(!days.length||days.length>31){alert('กรุณากำหนดวันที่เริ่มและสิ้นสุดถูกต้อง (สูงสุด 31 วัน)');return}if(!from||!to||atTime(to)<=atTime(from)){alert('กรุณากำหนดเวลาเริ่ม–สิ้นสุดให้ถูกต้อง');return}if(!Number.isInteger(rest)||rest<0||rest>120){alert('เวลาพักต้องเป็น 0–120 นาที');return}
@@ -729,7 +797,7 @@ function saveMatch(ev){ev.preventDefault();if(!editing||!admin)return;const {s,d
  if(changed){const down=Object.keys(MATCH).filter(x=>x!==m&&MATCH[x].round>MATCH[m].round&&b.results[x]);if(down.length&&!confirm('การเปลี่ยนคะแนนอาจเปลี่ยนทีมในรอบถัดไป ระบบจะล้างผลรอบถัดไปที่เกี่ยวข้อง ยืนยันหรือไม่?'))return;clearDescendantScores(s,d,m);if(next)b.results[m]=next;else delete b.results[m]}
  if(date)b.schedules[m]={date,time,venue};else delete b.schedules[m];
  const fresh=warnings(allEvents()).filter(x=>!before.has(x));if(fresh.length){b.results=prevR;b.schedules=prevS;alert('ไม่สามารถบันทึกได้ เพราะทำให้ตารางมีปัญหาใหม่:\n\n'+fresh.slice(0,3).join('\n')+'\n\nกรุณาปรับเวลาแข่งขันก่อน');return}
- const fx=changed&&next?fixClashes([s,d]):{moved:0};store();$('#matchModal').close();editing=null;render();if(m==='M5'&&next){confetti();toast('ยินดีด้วย! ได้ผู้ชนะเลิศแล้ว 🏆')}else toast(fx.moved?`บันทึกผลแล้ว · ทีมที่เข้ารอบชนเวลา จึงย้ายเวลา ${fx.moved} นัดอัตโนมัติ${fx.left?` · ยังหาเวลาไม่ได้ ${fx.left} นัด`:''}`:'บันทึกข้อมูลการแข่งขันแล้ว')}
+ store();$('#matchModal').close();editing=null;render();if(m==='M5'&&next){confetti();toast('ยินดีด้วย! ได้ผู้ชนะเลิศแล้ว 🏆')}else{const bad=clashKeys(allEvents()).size;toast(bad?`บันทึกแล้ว · มี ${bad} นัดที่เวลาชนกัน — ปรับได้ที่หน้า “จัดเวลา”`:'บันทึกข้อมูลการแข่งขันแล้ว')}}
 function clearScore(){if(!editing)return;const {s,d,m}=editing;if(!confirm('ล้างคะแนนคู่นี้และคะแนนรอบถัดไปที่เกี่ยวข้อง? วันและเวลาจะไม่ถูกล้าง'))return;clearDescendantScores(s,d,m);delete bdata(s,d).results[m];store();$('#matchModal').close();editing=null;render();toast('ล้างผลคะแนนแล้ว')}
 
 /* ---------- export / import ---------- */
@@ -737,17 +805,20 @@ function download(text,name,type){const blob=new Blob([text],{type}),url=URL.cre
 function exportCSV(){const es=allEvents().sort(byTime);const head=['ชนิดกีฬา','ประเภท','คู่ที่','รอบ','ทีมที่ 1','ทีมที่ 2','วันแข่งขัน (ค.ศ.)','เวลาเริ่ม','ระยะเวลา (นาที)','สนามแข่งขัน','คะแนนทีม 1','คะแนนทีม 2','ผู้ชนะ','สถานะ'];
  const rows=[head,...es.map(e=>[sport(e.s).name,div(e.d).name,e.number,ROUND[e.round],teamLabel(e,0),teamLabel(e,1),e.schedule.date||'',e.schedule.time||'',e.duration,e.schedule.venue||'',e.completed?e.result.a:'',e.completed?e.result.b:'',e.winner==null?'':TEAMS[e.winner],e.completed?'แข่งขันแล้ว':hasDate(e)?'รอแข่งขัน':'ยังไม่กำหนด'])];
  download('﻿'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),'ตารางแข่งขัน_หนองผึ้งเกมส์.csv','text/csv;charset=utf-8');toast('ส่งออกตารางเป็น CSV แล้ว')}
-function act(name){if(name==='publish')publish();else if(name==='token')openToken();else if(name==='admin')toggleAdmin();else if(name==='pull')pullLatest();else if(name==='csv')exportCSV();else if(name==='print')window.print();else if(name==='backup'){download(JSON.stringify(state,null,2),'district-games-backup.json','application/json;charset=utf-8');toast('ดาวน์โหลดไฟล์สำรองแล้ว')}else if(name==='restore')$('#fileRestore').click();else if(name==='rename'){const s=prompt('ชื่อการแข่งขัน',state.eventName);if(s!==null&&s.trim()){state.eventName=s.trim();store();render()}}}
+function act(name){if(name==='lockday'){const L=new Set(state.settings.lockedDays||[]);L.has(boardDay)?L.delete(boardDay):L.add(boardDay);state.settings.lockedDays=[...L];store();render();toast(L.has(boardDay)?`ล็อกตาราง ${dShort(boardDay)} แล้ว`:`ปลดล็อก ${dShort(boardDay)} แล้ว`);return}
+ if(name==='clearday'){if(!confirm(`นำทุกนัดของวันที่ ${dShort(boardDay)} ออกจากตารางเวลา? (นัดที่มีผลแล้วจะไม่ถูกนำออก)`))return;let n=0;SPORTS.forEach(sp=>sp.divs.forEach(d=>{const b=bdata(sp.id,d);for(const m of Object.keys(b.schedules))if(b.schedules[m].date===boardDay&&!b.results[m]){delete b.schedules[m];n++}}));store();render();toast(`นำออก ${n} นัด`);return}
+ if(name==='publish')publish();else if(name==='token')openToken();else if(name==='admin')toggleAdmin();else if(name==='pull')pullLatest();else if(name==='csv')exportCSV();else if(name==='print')window.print();else if(name==='backup'){download(JSON.stringify(state,null,2),'district-games-backup.json','application/json;charset=utf-8');toast('ดาวน์โหลดไฟล์สำรองแล้ว')}else if(name==='restore')$('#fileRestore').click();else if(name==='rename'){const s=prompt('ชื่อการแข่งขัน',state.eventName);if(s!==null&&s.trim()){state.eventName=s.trim();store();render()}}}
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{const menu=$('#menu');if(menu.open&&!e.target.closest('#menu'))menu.open=false;
- const el=e.target.closest('[data-view],[data-view-link],[data-goto],[data-pick-sport],[data-pick-div],[data-day],[data-open],[data-match],[data-seed],[data-act]');if(!el)return;const ds=el.dataset;
+ const el=e.target.closest('[data-view],[data-view-link],[data-goto],[data-pick-sport],[data-pick-div],[data-day],[data-bday],[data-open],[data-match],[data-seed],[data-act]');if(!el)return;const ds=el.dataset;
  if(ds.view)setView(ds.view);
  else if(ds.viewLink){e.preventDefault();setView(ds.viewLink)}
  else if(ds.goto){activeSport=ds.goto;setView('bracket')}
  else if(ds.pickSport){activeSport=ds.pickSport;render()}
  else if(ds.pickDiv){activeDivision=ds.pickDiv;render()}
  else if(ds.day){filter.day=ds.day;render()}
+ else if(ds.bday){boardDay=ds.bday;render()}
  else if(ds.open){const [s,d,m]=ds.open.split('|');openMatch(s,d,m)}
  else if(ds.match)openMatch(activeSport,activeDivision,ds.match);
  else if(ds.seed==='clear'){if(confirm('ล้างทีมออกจากสายทั้งหมดของประเภทนี้?'))setSeeds([...SEED0])}
@@ -803,9 +874,9 @@ $$('#tokenModal [data-close]').forEach(b=>b.addEventListener('click',()=>$('#tok
 setInterval(async()=>{if(admin||document.hidden)return;const p=await fetchPublished();if(p&&p.publishedAt!==publishedAt){usePublished(p);state=JSON.parse(publishedStr);render();toast('มีผลการแข่งขันอัปเดตใหม่')}},60000);
 async function boot(){const p=await fetchPublished();if(p)usePublished(p);
  const hasLocal=(()=>{try{return Boolean(localStorage.getItem(KEY))}catch(e){return false}})();
- if(admin){if(!hasLocal){if(p){state=JSON.parse(publishedStr);store()}else autoSchedule(false,true)}}
+ if(admin){if(!hasLocal&&p){state=JSON.parse(publishedStr);store()}}
  else if(p)state=JSON.parse(publishedStr);
- else if(!hasLocal)autoSchedule(false,true);
+ 
  render()}
 boot();
 })();
