@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ff6fae">
+<meta name="description" content="ตารางแข่งขัน ผังการแข่งขัน และผลการแข่งขัน แข่งขันกีฬาอำเภอเกษตรวิสัย “หนองผึ้งเกมส์” 2026">
+<title>หนองผึ้งเกมส์ · แข่งขันกีฬาอำเภอเกษตรวิสัย 2026</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7-12-7V9z' fill='%23ff6fae'/%3E%3Cpath d='M16 10l5.2 3v6L16 22l-5.2-3v-6z' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f8faff;--surface:#fff;--ink:#1d2547;--ink2:#3d4566;--muted:#8a90a8;--line:#e8ebf5;--line2:#d9def0;--soft:#f2f4fb;--pink:#ff6fae;--pink-d:#e8458f;--pink-l:#ffe4f0;--sky:#4cc3ff;--sky-d:#1597e5;--sky-l:#e0f4ff;--grad:linear-gradient(120deg,#ff6fae 0%,#ff9ccb 35%,#7fd0ff 70%,#3fb8ff 100%);--ok:#22b07d;--warn:#e08a00;--danger:#e0445a;--r:22px;--display:'Prompt','Leelawadee UI',Tahoma,sans-serif;--body:'IBM Plex Sans Thai','Leelawadee UI',Tahoma,Arial,sans-serif;--num:'Barlow Condensed','Prompt',sans-serif;--c:#ff6fae;--ease:cubic-bezier(.2,.75,.2,1)}
+[data-sport="football"]{--c:#22b07d}[data-sport="futsal"]{--c:#3fa2ff}[data-sport="volleyball"]{--c:#f2a516}[data-sport="tabletennis"]{--c:#ff5c8a}[data-sport="petanque"]{--c:#9b7cff}[data-sport="takraw"]{--c:#ff8a4c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:15px/1.6 var(--body);-webkit-font-smoothing:antialiased;background:radial-gradient(900px 520px at 100% 0,rgba(255,170,210,.22),transparent 60%),radial-gradient(800px 520px at 0 100%,rgba(130,205,255,.2),transparent 60%),var(--bg);background-attachment:fixed}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+.ico{width:18px;height:18px;flex:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+.muted{color:var(--muted)}
+.gtext{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+/* top bar */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(248,250,255,.82);backdrop-filter:saturate(1.6) blur(16px);-webkit-backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--line)}
+.topbar-in{display:flex;align-items:center;gap:18px;height:70px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink);margin-right:auto}
+.brand svg{width:38px;height:38px;transition:transform .6s var(--ease)}.brand:hover svg{transform:rotate(60deg)}
+.brand b{display:block;font:700 17px/1.15 var(--display)}
+.brand small{display:block;font:600 11.5px/1.2 var(--num);letter-spacing:3px;color:var(--muted)}
+.tabs{display:flex;gap:2px;background:rgba(255,255,255,.75);border:1px solid var(--line);padding:4px;border-radius:99px}
+.tab{display:flex;align-items:center;gap:7px;border:0;background:none;padding:8px 16px;border-radius:99px;font:500 14px var(--display);color:var(--ink2);transition:color .2s,background .3s,box-shadow .3s}
+.tab:hover{color:var(--pink-d)}.tab.active{background:var(--grad);color:#fff;box-shadow:0 8px 18px -8px rgba(255,111,174,.7)}
+.menu{position:relative}
+.menu summary{list-style:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);display:grid;place-items:center;cursor:pointer;background:#fff;transition:border-color .2s,transform .3s var(--ease)}
+.menu summary:hover{border-color:var(--pink)}.menu[open] summary{transform:rotate(90deg)}
+.menu summary::-webkit-details-marker{display:none}
+.menu-pop{position:absolute;right:0;top:50px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px -10px rgba(60,80,150,.25);padding:6px;min-width:230px;display:grid;z-index:70;animation:popIn .25s var(--ease);transform-origin:top right}
+.menu-pop button{display:flex;align-items:center;gap:10px;text-align:left;border:0;background:none;padding:10px 12px;border-radius:11px;font-size:14px}
+.menu-pop button:hover{background:var(--pink-l);color:var(--pink-d)}.menu-pop hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 20px;border-radius:99px;border:1px solid var(--line2);background:#fff;color:var(--ink);font:500 14.5px var(--display);white-space:nowrap;transition:transform .2s var(--ease),background-position .6s var(--ease),border-color .2s,box-shadow .2s}
+.btn:hover{border-color:var(--pink);transform:translateY(-2px)}.btn:active{transform:scale(.97)}
+.btn-volt{background:var(--grad);background-size:220% 100%;border:0;color:#fff;box-shadow:0 12px 26px -10px rgba(255,111,174,.75)}.btn-volt:hover{background-position:100% 0;box-shadow:0 14px 30px -10px rgba(63,184,255,.75)}
+.btn-volt .ico{transition:transform .3s var(--ease)}.btn-volt:hover .ico{transform:translateX(4px)}
+.btn-dark{background:var(--sky-d);border-color:var(--sky-d);color:#fff;box-shadow:0 10px 22px -12px rgba(21,151,229,.8)}.btn-dark:hover{border-color:var(--sky-d)}
+.btn-ghost{background:rgba(255,255,255,.75);color:var(--ink);border-color:#fff;backdrop-filter:blur(6px)}
+.btn-danger{color:var(--danger);border-color:#f6cdd3}.btn-danger:hover{border-color:var(--danger)}
+.btn-sm{height:38px;padding:0 15px;font-size:13.5px}
+/* hero */
+.hero{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(135deg,#ffffff 0%,#fff3f9 45%,#ecf7ff 100%);color:var(--ink);border:1px solid #fff;border-radius:34px;margin-top:20px;padding:56px 56px 0;box-shadow:0 34px 80px -40px rgba(255,111,174,.55),0 24px 70px -40px rgba(63,184,255,.5)}
+.blob{position:absolute;border-radius:50%;filter:blur(48px);opacity:.55;z-index:-2;animation:float 16s ease-in-out infinite alternate}
+.b1{width:440px;height:440px;background:#ff9cc8;top:-170px;right:-80px}
+.b2{width:400px;height:400px;background:#8fd6ff;bottom:-190px;left:-100px;animation-duration:19s}
+.b3{width:280px;height:280px;background:#ffc3df;bottom:30px;right:32%;animation-duration:13s;opacity:.4}
+.b4{width:240px;height:240px;background:#b5e5ff;top:-60px;left:38%;animation-duration:15s;opacity:.45}
+@keyframes float{0%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-35px) scale(1.14)}100%{transform:translate(-40px,30px) scale(.94)}}
+.fl{position:absolute;z-index:-1;opacity:.32;animation:bob 6s ease-in-out infinite}.fl .ico{width:100%;height:100%;stroke-width:1.5}
+.fl1{width:58px;height:58px;top:13%;right:42%;color:var(--pink)}
+.fl2{width:46px;height:46px;top:16%;right:7%;color:var(--sky-d);animation-duration:7s;animation-delay:-2s}
+.fl3{width:40px;height:40px;bottom:36%;right:44%;color:var(--sky-d);animation-duration:5.5s;animation-delay:-1s}
+.fl4{width:52px;height:52px;bottom:31%;right:3%;color:var(--pink);animation-duration:8s}
+.fl5{width:34px;height:34px;top:7%;left:44%;color:var(--sky-d);animation-duration:6.5s;animation-delay:-3s}
+.fl6{width:42px;height:42px;top:46%;left:52%;color:var(--pink);animation-duration:7.5s;animation-delay:-4s}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-20px) rotate(20deg)}}
+.hero-ghost{position:absolute;right:-12px;bottom:84px;z-index:-1;font:700 clamp(90px,15vw,210px)/.8 var(--num);color:transparent;-webkit-text-stroke:1.5px rgba(255,111,174,.2);letter-spacing:-2px;white-space:nowrap;pointer-events:none;user-select:none}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:end}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:600 13px var(--num);letter-spacing:3.5px;text-transform:uppercase;color:var(--pink-d);background:rgba(255,255,255,.75);border:1px solid #fff;padding:6px 14px 6px 10px;border-radius:99px}
+.eyebrow i{width:9px;height:9px;border-radius:50%;background:var(--grad);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(255,111,174,.55)}100%{box-shadow:0 0 0 10px rgba(255,111,174,0)}}
+.hero h1{font:700 clamp(28px,3.7vw,48px)/1.2 var(--display);margin:18px 0 14px;padding-top:.08em;letter-spacing:-.5px;color:var(--ink);background:linear-gradient(100deg,var(--ink) 0 36%,var(--pink) 46%,var(--sky) 56%,var(--ink) 66% 100%);background-size:280% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 7s ease-in-out infinite}
+.h1-sub{display:block;font-size:1.5em;line-height:1.15;margin-top:4px}
+@keyframes shine{0%{background-position:100% 0}55%,100%{background-position:0 0}}
+.hero-sub{color:var(--ink2);margin:0;max-width:50ch}
+.hero-meta{display:flex;gap:34px;flex-wrap:wrap;margin:30px 0}
+.hero-meta small{display:block;font:600 11.5px var(--num);letter-spacing:2.5px;text-transform:uppercase;color:var(--pink-d)}
+.hero-meta b{font:500 17px var(--display)}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+.cd-label{display:flex;align-items:center;gap:8px;font:600 12px var(--num);letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.live{width:8px;height:8px;border-radius:50%;background:var(--pink);animation:ping 1.4s infinite}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.cd div{background:rgba(255,255,255,.78);backdrop-filter:blur(8px);border:1px solid #fff;border-radius:20px;padding:16px 8px 12px;text-align:center;box-shadow:0 14px 30px -16px rgba(80,110,190,.35);transition:transform .3s var(--ease)}
+.cd div:hover{transform:translateY(-4px)}
+.cd b{display:block;font:700 clamp(36px,4.4vw,56px)/1 var(--num);font-variant-numeric:tabular-nums;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.cd b.pop{animation:tickPop .5s var(--ease)}
+@keyframes tickPop{0%{transform:translateY(-8px) scale(1.15);opacity:.3}100%{transform:none;opacity:1}}
+.cd span{font-size:12px;color:var(--muted)}
+.kpis{position:relative;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(29,37,71,.07);background:rgba(255,255,255,.55);backdrop-filter:blur(6px);margin:48px -56px 0}
+.kpis div{padding:22px 28px 26px}.kpis div+div{border-left:1px solid rgba(29,37,71,.07)}
+.kpis b{display:block;font:700 46px/1 var(--num);color:var(--ink)}.kpis b em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.kpis span{font-size:13px;color:var(--muted)}
+/* sections */
+.sec{margin-top:64px}
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.kicker{display:block;font:600 12.5px var(--num);letter-spacing:3.5px;text-transform:uppercase;color:var(--pink-d)}
+.sec-h h2{font:700 30px/1.2 var(--display);margin:2px 0 0;letter-spacing:-.3px}
+.link{border:0;background:none;font:500 14px var(--display);display:inline-flex;gap:6px;align-items:center;padding:6px 0;color:var(--sky-d);background-image:var(--grad);background-size:100% 2px;background-repeat:no-repeat;background-position:0 100%}
+.link .ico{transition:transform .3s var(--ease)}.link:hover .ico{transform:translateX(4px)}
+.sports{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.sp{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:16px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;min-height:210px;transition:transform .3s var(--ease),border-color .3s,box-shadow .3s}
+.sp:after{content:"";position:absolute;inset:auto -30% -60% auto;width:140px;height:140px;border-radius:50%;background:var(--c);opacity:.07;transition:transform .5s var(--ease)}
+.sp:hover{transform:translateY(-6px);border-color:var(--pink);box-shadow:0 22px 40px -18px rgba(255,111,174,.5)}.sp:hover:after{transform:scale(1.6)}
+.sp-ic{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c)}
+.sp:hover .sp-ic{animation:wiggle .7s var(--ease)}
+@keyframes wiggle{0%{transform:none}30%{transform:rotate(-16deg) scale(1.12)}60%{transform:rotate(12deg) scale(1.12)}100%{transform:none}}
+.sp-ic .ico{width:28px;height:28px}
+.sp-name{display:block;font:600 19px/1.3 var(--display)}.sp-en{display:block;font:600 12px var(--num);letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)}
+.bar{display:block;height:5px;background:var(--soft);border-radius:9px;overflow:hidden;margin-top:auto}.bar i{display:block;height:100%;background:var(--grad);border-radius:9px;transform-origin:left;animation:grow 1.2s var(--ease) .3s backwards}
+@keyframes grow{from{transform:scaleX(0)}}
+.sp-foot{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted)}.sp-foot b{font:600 14px var(--num);color:var(--ink)}
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.nx{display:flex;flex-direction:column;gap:14px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;transition:transform .3s var(--ease),border-color .3s,box-shadow .3s}
+.nx:hover{transform:translateY(-4px);border-color:var(--sky);box-shadow:0 20px 40px -20px rgba(63,184,255,.55)}
+.nx-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.nx-time b{display:block;font:700 32px/1 var(--num);background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.nx-time small{font-size:12.5px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:7px;font:500 12.5px var(--display);padding:5px 11px;border-radius:99px;background:var(--soft);white-space:nowrap}
+.sdot{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none;display:inline-block}
+.nx-teams{display:grid;gap:4px;font-weight:500;font-size:14px}.nx-teams em{font:600 12px var(--num);letter-spacing:2px;color:var(--pink);font-style:normal}
+.nx-foot{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.tbl-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:auto}
+.tbl{width:100%;border-collapse:collapse;min-width:720px}
+.tbl th,.tbl td{padding:15px 18px;text-align:left;border-bottom:1px solid var(--line);font-size:14px}
+.tbl thead th{font:600 12px var(--num);letter-spacing:2.5px;text-transform:uppercase;color:var(--pink-d);background:linear-gradient(90deg,#fff4fa,#eef8ff)}
+.tbl tbody tr{transition:background .2s}.tbl tbody tr:hover{background:#fffafd}
+.tbl tbody th{font:600 15px var(--display);white-space:nowrap}.tbl tbody th .sdot{margin-right:10px}
+.tbl tr:last-child th,.tbl tr:last-child td{border-bottom:0}
+.cw{display:inline-flex;align-items:center;gap:8px;font-weight:600}.cw .ico{color:var(--pink)}
+.empty{padding:48px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:var(--r)}
+/* page header */
+.page-h{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:44px 0 24px}
+.page-h h1{font:700 clamp(32px,4.4vw,48px)/1.15 var(--display);margin:4px 0 6px;letter-spacing:-.5px}
+.lead{margin:0;color:var(--muted);max-width:62ch}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+/* bracket */
+.pick{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none}.pick::-webkit-scrollbar{display:none}
+.pk{display:flex;align-items:center;gap:9px;height:46px;padding:0 18px 0 8px;border-radius:99px;border:1px solid var(--line2);background:#fff;font:500 14.5px var(--display);white-space:nowrap;transition:border-color .2s,transform .25s var(--ease),box-shadow .3s}
+.pk:hover{border-color:var(--pink);transform:translateY(-2px)}
+.pk .ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c);transition:transform .4s var(--ease)}.pk:hover .ic{transform:rotate(-20deg)}
+.pk.active{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 10px 22px -10px rgba(255,111,174,.75)}.pk.active .ic{background:rgba(255,255,255,.28);color:#fff}
+.bracket-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.seg{display:inline-flex;background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:99px;padding:4px;gap:2px;overflow-x:auto;max-width:100%}
+.seg button{border:0;background:none;padding:8px 17px;border-radius:99px;font:500 14px var(--display);color:var(--ink2);white-space:nowrap;transition:background .25s,color .25s}
+.seg button.active{background:var(--sky-l);color:var(--sky-d)}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted)}.legend span{display:flex;align-items:center;gap:7px}
+.lg{width:18px;height:3px;border-radius:3px;background:var(--line2);display:inline-block}.lg.done{background:var(--grad);height:4px}
+.lb-wrap{background:#fff;border:1px solid var(--line);border-radius:28px;overflow-x:auto;margin-top:16px;padding:30px 32px 26px;box-shadow:0 24px 60px -40px rgba(80,110,190,.4)}
+.lb{position:relative;width:1080px;height:612px;margin:0 auto}
+.lb>svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.lb path{fill:none;stroke:#d3d9ea;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.lb path.win{stroke:url(#lbg);stroke-width:4.5;filter:drop-shadow(0 3px 6px rgba(255,111,174,.4))}
+.lb path.lose{stroke:#eceef6}
+.lb path.adv{stroke:url(#lbg);stroke-width:3.5;stroke-dasharray:.035 .03;animation:flow 1.8s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-.13}}
+.lb path.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s cubic-bezier(.6,.1,.3,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.lb-h{position:absolute;top:0;font:600 12px var(--num);letter-spacing:3px;text-transform:uppercase;color:var(--pink-d)}
+.lb-h b{display:block;font:600 16px var(--display);letter-spacing:0;text-transform:none;color:var(--ink)}
+.bl{position:absolute;display:flex;align-items:center;gap:9px;height:30px;padding:0 4px;border:0;background:none;border-radius:9px;text-align:left;font-size:14.5px;transition:background .2s;animation:fadeIn .5s var(--ease) backwards}
+.bl:hover{background:var(--pink-l)}
+.bl .name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.bl .score{font:700 21px/1 var(--num);color:var(--ink)}
+.bl.win .name{font-weight:700}.bl.win .code{background:var(--grad);color:#fff}.bl.win .score{color:var(--pink-d)}
+.bl.lose{color:var(--muted)}.bl.lose .score{color:var(--muted)}.bl.tbd .name{color:var(--muted);font-weight:400}
+.code{font:600 12.5px var(--num);background:var(--soft);border-radius:7px;padding:2px 0;width:38px;text-align:center;color:var(--ink2);flex:none}
+.bn{position:absolute;z-index:2;width:40px;height:40px;border-radius:50%;border:2.5px solid var(--sky);background:#fff;color:var(--ink);font:700 20px/1 var(--num);display:grid;place-items:center;padding:0;transition:transform .25s var(--ease),box-shadow .25s;animation:popIn .55s var(--ease) backwards}
+.bn:hover{transform:scale(1.14);box-shadow:0 0 0 7px var(--pink-l)}
+.bn.done{background:var(--grad);border-color:#fff;color:#fff;box-shadow:0 6px 14px -4px rgba(255,111,174,.6)}
+.bn.final{width:48px;height:48px;font-size:24px;background:var(--grad);border-color:#fff;color:#fff;animation:popIn .55s var(--ease) backwards,ping 2.2s 1.6s infinite}
+@keyframes popIn{0%{transform:scale(0);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}}
+.cap{position:absolute;max-width:230px;font-size:12.5px;line-height:1.45;color:var(--muted);animation:fadeIn .5s var(--ease) backwards}
+.cap b{display:block;font:600 11.5px var(--num);letter-spacing:2px;text-transform:uppercase;color:var(--sky-d)}
+.champ-l{position:absolute;display:flex;align-items:center;gap:8px;height:36px;max-width:196px;padding:0 13px;border-radius:12px;background:var(--soft);color:var(--muted);font:500 14.5px var(--display);animation:fadeIn .6s var(--ease) 1.1s backwards}
+.champ-l span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.champ-l.won{background:var(--grad);background-size:220% 100%;color:#fff;font-weight:700;box-shadow:0 10px 24px -10px rgba(255,111,174,.8);animation:fadeIn .6s var(--ease) 1.1s backwards,slide 3s ease-in-out infinite alternate}
+.champ-l.won .ico{animation:wiggle 2.4s ease-in-out infinite}
+@keyframes slide{to{background-position:100% 0}}
+.m-only{display:none}
+.hint{margin:14px 4px 0;font-size:13px;color:var(--muted)}
+/* schedule */
+.notice{display:flex;gap:10px;align-items:center;padding:13px 16px;border-radius:15px;background:#fff;border:1px solid var(--line);font-size:14px;margin:0 0 16px}
+.notice i{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none;animation:ping 2.4s infinite}.notice.warn i{background:var(--warn)}.notice.warn{background:#fffaf0;border-color:#f6e2b8}
+.days{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 6px;margin-bottom:12px;scrollbar-width:none}.days::-webkit-scrollbar{display:none}
+.day{flex:none;min-width:116px;border:1px solid var(--line2);background:#fff;border-radius:18px;padding:11px 16px;text-align:left;transition:border-color .2s,transform .25s var(--ease),box-shadow .3s}
+.day:hover{border-color:var(--pink);transform:translateY(-2px)}
+.day small{display:block;font:600 11.5px var(--num);letter-spacing:2.5px;text-transform:uppercase;color:var(--pink-d)}
+.day b{display:block;font:600 17px/1.3 var(--display)}.day i{font-style:normal;font-size:12.5px;color:var(--muted)}
+.day.active{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 12px 24px -12px rgba(255,111,174,.8)}.day.active small,.day.active i{color:rgba(255,255,255,.85)}
+.filters{display:grid;grid-template-columns:210px 210px 1fr;gap:10px;margin-bottom:8px}
+.input{height:46px;width:100%;border:1px solid var(--line2);background:#fff;border-radius:14px;padding:0 14px;min-width:0;transition:border-color .2s,box-shadow .2s}
+.input:focus{outline:0;border-color:var(--pink);box-shadow:0 0 0 4px var(--pink-l)}
+.search{position:relative}.search .ico{position:absolute;left:14px;top:14px;color:var(--pink)}.search .input{padding-left:42px}
+.group-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:28px 0 10px}
+.group-h h3{font:600 19px var(--display);margin:0}.group-h span{font:600 13px var(--num);letter-spacing:2px;color:var(--pink-d);text-transform:uppercase}
+.fx-list{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.fx{display:grid;grid-template-columns:78px minmax(0,1.15fr) minmax(0,2.3fr) minmax(0,1fr) 104px 38px;gap:16px;align-items:center;padding:15px 18px;border-left:3px solid transparent}
+.fx+.fx{border-top:1px solid var(--soft)}.fx:hover{background:#fffafd;border-left-color:var(--pink)}
+.fx-time b{display:block;font:700 25px/1 var(--num);font-variant-numeric:tabular-nums;color:var(--sky-d)}.fx-time small{font-size:12px;color:var(--muted)}
+.fx-meta{display:flex;gap:11px;align-items:center;min-width:0}
+.fx-meta strong{display:block;font:600 14.5px/1.35 var(--display)}.fx-meta small{display:block;font-size:12.5px;color:var(--muted)}
+.fx-teams{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;font-size:14px}
+.t{min-width:0;overflow-wrap:anywhere}.t.a{text-align:right}.t.win{font-weight:700;color:var(--pink-d)}.t.tbd{color:var(--muted)}
+.fx-score{font:600 18px var(--num);background:var(--soft);border-radius:11px;padding:5px 0;width:72px;text-align:center}
+.fx-score.done{background:var(--grad);color:#fff}.fx-score.vs{font-size:13px;letter-spacing:2.5px;color:var(--pink)}
+.fx-venue{display:flex;align-items:center;gap:6px;font-size:13.5px;color:var(--ink2);min-width:0}.fx-venue .ico{width:15px;height:15px;color:var(--sky)}
+.badge{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:99px;background:var(--soft);white-space:nowrap}
+.badge:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.badge.done{background:var(--grad);color:#fff}.badge.done:before{background:#fff}
+.badge.plan{background:var(--sky-l);color:var(--sky-d)}.badge.none{background:#fff5e0;color:#a35f00}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);background:#fff;display:grid;place-items:center;transition:border-color .2s,background .2s,color .2s,transform .3s var(--ease)}
+.icon-btn:hover{border-color:transparent;background:var(--grad);color:#fff;transform:rotate(-12deg) scale(1.08)}
+/* settings */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px}
+.card:before{content:"";position:absolute;left:0;top:0;right:0;height:4px;background:var(--grad)}
+.card h3{font:600 19px var(--display);margin:0 0 4px}.card p.d{color:var(--muted);font-size:13.5px;margin:0 0 20px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f span{display:block;font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+.check{display:flex;gap:11px;align-items:flex-start;margin-top:18px;font-size:14px;color:var(--ink2)}.check input{accent-color:var(--pink);width:18px;height:18px;margin-top:3px}
+.sport-row{display:grid;grid-template-columns:130px 92px 1fr;gap:10px;align-items:center;padding:7px 0}
+.sport-row.head{font:600 11.5px var(--num);letter-spacing:2.5px;text-transform:uppercase;color:var(--pink-d);padding-top:0}
+.sr-name{display:flex;align-items:center;gap:9px;font:500 14.5px var(--display)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.warn-list{list-style:none;margin:0;padding:0;max-height:320px;overflow:auto;display:grid;gap:6px}
+.warn-list li{padding:10px 13px;border-radius:11px;background:#fff5f6;border:1px solid #f9d4da;font-size:13px;color:#b02a40}
+/* modal */
+.modal{border:0;padding:0;border-radius:28px;width:min(580px,calc(100vw - 24px));max-height:calc(100vh - 24px);background:#fff;color:var(--ink);box-shadow:0 40px 100px -20px rgba(40,60,130,.45)}
+.modal[open]{animation:modalIn .4s var(--ease)}
+@keyframes modalIn{from{opacity:0;transform:translateY(24px) scale(.96)}}
+.modal::backdrop{background:rgba(29,37,71,.32);backdrop-filter:blur(5px)}
+.mh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:22px 24px 6px}
+.mh h3{font:600 21px/1.3 var(--display);margin:2px 0 0}
+.x{width:40px;height:40px;border-radius:50%;border:1px solid var(--line2);background:#fff;font-size:22px;line-height:1;flex:none;transition:transform .3s var(--ease),border-color .2s}.x:hover{border-color:var(--pink);transform:rotate(90deg)}
+.mb{padding:16px 24px 22px;display:grid;gap:18px}
+.sb{position:relative;overflow:hidden;background:var(--grad);background-size:200% 100%;animation:slide 6s ease-in-out infinite alternate;color:#fff;border-radius:22px;padding:18px;display:grid;grid-template-columns:1fr auto 1fr;grid-template-areas:"ta . tb" "sa c sb";gap:12px 10px;align-items:center;box-shadow:0 18px 36px -18px rgba(255,111,174,.8)}
+.sb .tn{font:600 14px/1.4 var(--display);text-align:center;min-height:40px;display:grid;place-items:center;overflow-wrap:anywhere;text-shadow:0 1px 8px rgba(120,40,90,.25)}
+.sb .tn small{display:block;font:600 11px var(--num);letter-spacing:2.5px;color:rgba(255,255,255,.85)}
+.sb .ta{grid-area:ta}.sb .tb{grid-area:tb}.sb .sa{grid-area:sa}.sb .sbb{grid-area:sb}
+.sb .colon{grid-area:c;font:600 30px var(--num);color:rgba(255,255,255,.8)}
+.si{width:100%;height:72px;background:rgba(255,255,255,.25);border:1.5px solid rgba(255,255,255,.55);border-radius:18px;color:#fff;text-align:center;font:700 42px var(--num);-moz-appearance:textfield;transition:background .2s,transform .2s var(--ease)}
+.si::placeholder{color:rgba(255,255,255,.7)}
+.si::-webkit-outer-spin-button,.si::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.si:focus{outline:0;background:rgba(255,255,255,.38);border-color:#fff;transform:scale(1.03)}.si:disabled{opacity:.5}
+.sub-h{font:600 12.5px var(--num);letter-spacing:3px;text-transform:uppercase;color:var(--pink-d);border-top:1px solid var(--line);padding-top:16px}
+.tiny{font-size:12.5px;color:var(--muted);margin:0}
+.alert{background:#fff5e0;color:#7a4b00;border-radius:12px;padding:11px 14px;font-size:13.5px}
+.mf{display:flex;justify-content:space-between;gap:8px;padding:16px 24px;border-top:1px solid var(--line);background:#fbfcff}
+.mf div{display:flex;gap:8px}
+/* toast, footer, confetti */
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,16px) scale(.96);background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:12px 22px 12px 16px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;max-width:min(480px,92vw);box-shadow:0 20px 44px -14px rgba(60,80,150,.4);z-index:99;opacity:0;pointer-events:none;transition:.35s var(--ease)}
+.toast:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--grad);flex:none}
+.toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
+.foot{margin-top:72px;padding-top:26px;padding-bottom:40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.foot b{font:600 13px var(--display);background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}
+.confetti i{position:absolute;top:-50px;font-style:normal;line-height:1;animation:fall ease-in forwards;will-change:transform;filter:drop-shadow(0 4px 6px rgba(255,111,174,.25))}
+@keyframes fall{0%{transform:translate(0,0) rotate(0) scale(.6)}15%{transform:translate(calc(var(--dx)*.3),12vh) rotate(calc(var(--r)*.15)) scale(1)}50%{transform:translate(calc(var(--dx)*-.5),55vh) rotate(calc(var(--r)*.5))}100%{transform:translate(var(--dx),112vh) rotate(var(--r))}}
+/* scroll reveal */
+.rv{opacity:0;translate:0 26px;transition:opacity .7s ease,translate .8s var(--ease),transform .3s var(--ease),border-color .3s,box-shadow .3s,background .2s}
+.rv.in{opacity:1;translate:0 0}
+/* responsive */
+@media(max-width:1100px){.sports{grid-template-columns:repeat(3,1fr)}.next{grid-template-columns:repeat(2,1fr)}.fx{grid-template-columns:70px minmax(0,1fr) minmax(0,2fr) 104px 38px}.fx-venue{display:none}}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
+@media(max-width:760px){
+.wrap{padding:0 16px}.topbar{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--bg)}.topbar-in{height:62px}
+.tabs{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;justify-content:space-around;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:26px;padding:6px;box-shadow:0 16px 40px -12px rgba(60,80,150,.35)}
+.tab{flex:1;flex-direction:column;gap:2px;font-size:11.5px;padding:8px 4px;color:var(--muted);border-radius:20px}.tab .ico{width:20px;height:20px}
+body{padding-bottom:100px}.toast{bottom:104px}
+.hero{padding:34px 22px 0;border-radius:26px;margin-top:14px}.hero-ghost{bottom:140px}.hero-meta{gap:22px;margin:24px 0}.fl1,.fl5,.fl6{display:none}
+.kpis{grid-template-columns:repeat(2,1fr);margin:34px -22px 0}.kpis div{padding:18px 22px}.kpis div:nth-child(3){border-left:0}.kpis div:nth-child(n+3){border-top:1px solid rgba(29,37,71,.07)}.kpis b{font-size:38px}
+.cd{gap:7px}.cd div{padding:12px 4px 9px;border-radius:15px}
+.sec{margin-top:48px}.sec-h h2{font-size:25px}
+.sports{grid-template-columns:repeat(2,1fr);gap:10px}.sp{min-height:186px;padding:16px}
+.next{grid-template-columns:1fr}
+.page-h{padding:30px 0 18px}
+.fx{grid-template-columns:58px minmax(0,1fr) 38px;grid-template-areas:"time meta edit" "teams teams teams" "venue venue status";gap:12px;padding:15px}
+.fx-time{grid-area:time}.fx-meta{grid-area:meta}.fx .icon-btn{grid-area:edit}.fx-teams{grid-area:teams;background:linear-gradient(90deg,#fff6fa,#f1f9ff);border-radius:14px;padding:10px}.fx-venue{grid-area:venue;display:flex}.fx-status{grid-area:status;justify-self:end}
+.fx-time b{font-size:22px}.m-only{display:inline}
+.fields{grid-template-columns:1fr}.sport-row{grid-template-columns:96px 74px 1fr}.card{padding:20px}
+.mh,.mb{padding-left:18px;padding-right:18px}.mf{padding:14px 18px}.si{height:62px;font-size:36px}
+.foot{padding-bottom:110px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;translate:none}.lb path.draw{stroke-dashoffset:0}}
+@media print{
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{background:#fff}.topbar,.foot,.toolbar,.filters,.days,.icon-btn,.hero-cta,.pick,.legend,.notice,.toast,.hint,.blob,.fl,.confetti{display:none!important}
+.rv{opacity:1!important;translate:none!important}*{animation:none!important}.lb path.draw{stroke-dashoffset:0}
+.lb-wrap{overflow:visible;border:0;padding:0;box-shadow:none}.fx-list,.card{break-inside:avoid}.fx{grid-template-columns:70px 1fr 2fr 1fr 100px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#" data-view-link="home" aria-label="หน้าแรก">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6fae"/><stop offset="1" stop-color="#3fb8ff"/></linearGradient></defs><path d="M16 2l12 7v14l-12 7-12-7V9z" fill="url(#lg1)"/><path d="M16 10l5.2 3v6L16 22l-5.2-3v-6z" fill="#fff"/></svg>
+      <span><b>หนองผึ้งเกมส์</b><small>KASET WISAI 2026</small></span>
+    </a>
+    <nav class="tabs" aria-label="เมนูหลัก">
+      <button class="tab" data-view="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg><span>หน้าแรก</span></button>
+      <button class="tab" data-view="bracket"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h5v4H3zM3 15.5h5v4H3zM16 10h5v4h-5zM8 6.5h3v11H8M11 12h5"/></svg><span>ผังการแข่งขัน</span></button>
+      <button class="tab" data-view="schedule"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>ตารางแข่ง</span></button>
+      <button class="tab" data-view="settings"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg><span>ตั้งค่า</span></button>
+    </nav>
+    <details class="menu" id="menu">
+      <summary aria-label="เมนูเพิ่มเติม"><svg class="ico" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></summary>
+      <div class="menu-pop">
+        <button data-act="rename">แก้ไขชื่องาน</button>
+        <button data-act="csv">ส่งออกตาราง Excel (CSV)</button>
+        <button data-act="print">พิมพ์ / บันทึก PDF</button>
+        <hr>
+        <button data-act="backup">สำรองข้อมูล (JSON)</button>
+        <button data-act="restore">นำเข้าข้อมูลสำรอง</button>
+      </div>
+    </details>
+    <input type="file" id="fileRestore" accept="application/json,.json" hidden>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="wrap foot">
+  <span><b>หนองผึ้งเกมส์ 2026</b> · แข่งขันกีฬาอำเภอเกษตรวิสัย</span>
+  <span>ข้อมูลบันทึกในเบราว์เซอร์เครื่องนี้ · ควรสำรองไฟล์ JSON เป็นระยะ</span>
+</footer>
+
+<dialog class="modal" id="matchModal">
+  <form id="matchForm">
+    <div class="mh"><div><span class="kicker" id="modalSub">รอบแรก</span><h3 id="modalTitle">คู่แข่งขัน</h3></div><button type="button" class="x" id="modalClose" aria-label="ปิด">×</button></div>
+    <div class="mb">
+      <div class="sb">
+        <div class="tn ta"><span><small>HOME</small><span id="teamA">–</span></span></div>
+        <div class="tn tb"><span><small>AWAY</small><span id="teamB">–</span></span></div>
+        <div class="sa"><input class="si" id="scoreA" type="number" min="0" max="999" step="1" placeholder="–" aria-label="คะแนนทีมที่ 1"></div>
+        <div class="colon">:</div>
+        <div class="sbb"><input class="si" id="scoreB" type="number" min="0" max="999" step="1" placeholder="–" aria-label="คะแนนทีมที่ 2"></div>
+      </div>
+      <label class="f"><span>กรณีคะแนนเท่ากัน เลือกทีมชนะ (จุดโทษ / การตัดสิน)</span><select class="input" id="tieWinner"><option value="">ไม่เสมอ</option><option value="a">ทีมที่ 1</option><option value="b">ทีมที่ 2</option></select></label>
+      <div id="modalNotice" class="alert" hidden></div>
+      <div class="sub-h">วัน เวลา และสนาม</div>
+      <div class="fields">
+        <label class="f"><span>วันแข่งขัน</span><input class="input" id="matchDate" type="date"></label>
+        <label class="f"><span>เวลาเริ่ม</span><input class="input" id="matchTime" type="time" step="900"></label>
+      </div>
+      <label class="f"><span>สนามแข่งขัน</span><input class="input" id="matchVenue" type="text" maxlength="120" placeholder="ระบุชื่อสนาม"></label>
+      <p class="tiny" id="durationNote"></p>
+    </div>
+    <div class="mf"><button type="button" class="btn btn-sm btn-danger" id="clearScore">ล้างผลคะแนน</button><div><button type="button" class="btn btn-sm" id="cancelModal">ยกเลิก</button><button type="submit" class="btn btn-sm btn-dark">บันทึก</button></div></div>
+  </form>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(()=>{'use strict';
+const KEY='nongphueng_sports_v2';
+const TEAMS=['ศูนย์เครือข่ายที่ 8 ชุดที่ 1','ศูนย์เครือข่ายที่ 9 ชุดที่ 2','ศูนย์เครือข่ายที่ 10 ชุดที่ 2','ศูนย์เครือข่ายที่ 8 ชุดที่ 2','ศูนย์เครือข่ายที่ 9 ชุดที่ 1','ศูนย์เครือข่ายที่ 10 ชุดที่ 1'];
+const CODES=['8/1','9/2','10/2','8/2','9/1','10/1'];
+const ICONS={
+ football:'<circle cx="12" cy="12" r="9"/><path d="M12 7.6l4 2.9-1.5 4.7h-5L8 10.5z"/><path d="M12 3v4.6M16 10.5l4.6-1.3M14.5 15.2l2.8 4M9.5 15.2l-2.8 4M8 10.5L3.4 9.2"/>',
+ futsal:'<path d="M3 19V6h18v13"/><path d="M7.5 6v13M12 6v13M16.5 6v13M3 10.5h18M3 15h18" stroke-width="1.1" opacity=".55"/>',
+ volleyball:'<circle cx="12" cy="12" r="9"/><path d="M12 3c-2.4 2.9-3 6.3-1 9"/><path d="M11 12c3.5.6 7-.3 9.6-3"/><path d="M11 12c-1.6 3.2-4.6 5.4-8.3 5.6"/><path d="M6.6 4.8c3 .5 5.9 2.7 7.4 6.6"/><path d="M19.8 15.6c-3 1.6-6.6 1.4-9.3-.7"/>',
+ tabletennis:'<circle cx="10" cy="10" r="6.3"/><path d="M14.6 14.6l5 5"/><circle cx="19" cy="5.5" r="1.8"/>',
+ petanque:'<circle cx="8.5" cy="14.5" r="5"/><path d="M4 13c2.8 1.4 6.2 1.4 9 0"/><circle cx="17" cy="16.2" r="3.3"/><circle cx="17.5" cy="6.5" r="1.6"/>',
+ takraw:'<circle cx="12" cy="12" r="9"/><path d="M5.8 6.2l12.4 11.6M5.8 17.8L18.2 6.2M3 12h18M12 3v18" stroke-width="1.3"/>',
+ trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/>',
+ pin:'<path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>',
+ edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+ shuffle:'<path d="M16 4h4v4M4 20L20 4M20 16v4h-4M15 15l5 5M4 4l5 5"/>',
+ download:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+ print:'<path d="M7 9V4h10v5M7 17H5a1 1 0 0 1-1-1v-5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a1 1 0 0 1-1 1h-2"/><path d="M7 14h10v6H7z"/>',
+ search:'<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>',
+ arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>'
+};
+const ic=(id,cls='')=>`<svg class="ico ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id]}</svg>`;
+const SPORTS=[{id:'football',name:'ฟุตบอล',en:'Football',duration:60,venue:'สนามฟุตบอล'},{id:'futsal',name:'ฟุตซอล',en:'Futsal',duration:45,venue:'สนามฟุตซอล'},{id:'volleyball',name:'วอลเลย์บอล',en:'Volleyball',duration:60,venue:'สนามวอลเลย์บอล'},{id:'tabletennis',name:'ปิงปอง',en:'Table Tennis',duration:30,venue:'สนามปิงปอง'},{id:'petanque',name:'เปตอง',en:'Pétanque',duration:45,venue:'สนามเปตอง'},{id:'takraw',name:'ตะกร้อ',en:'Sepak Takraw',duration:45,venue:'สนามตะกร้อ'}];
+const DIVS=[{id:'primary_male',name:'ประถมชาย'},{id:'primary_female',name:'ประถมหญิง'},{id:'secondary_male',name:'มัธยมชาย'},{id:'secondary_female',name:'มัธยมหญิง'}];
+const MATCH={M1:{number:1,round:0,sides:[{team:0},{team:1}],parents:[]},M2:{number:2,round:1,sides:[{winner:'M1'},{team:2}],parents:['M1']},M3:{number:3,round:0,sides:[{team:3},{team:4}],parents:[]},M4:{number:4,round:1,sides:[{winner:'M3'},{team:5}],parents:['M3']},M5:{number:5,round:2,sides:[{winner:'M2'},{winner:'M4'}],parents:['M2','M4']}};
+const MATCH_ORDER=['M1','M3','M2','M4','M5'];
+const ROUND=['รอบแรก','รอบรองชนะเลิศ','รอบชิงชนะเลิศ'];
+const TH_M=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const TH_ML=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const TH_D=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const $=q=>document.querySelector(q),$$=q=>[...document.querySelectorAll(q)];
+const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sport=id=>SPORTS.find(x=>x.id===id),div=id=>DIVS.find(x=>x.id===id);
+const key=(s,d,m)=>`${s}|${d}|${m}`;
+const pd=x=>{const [y,m,d]=x.split('-').map(Number);return {y,m,d,w:new Date(Date.UTC(y,m-1,d)).getUTCDay()}};
+const dShort=x=>{if(!x)return '';const p=pd(x);return `${p.d} ${TH_M[p.m-1]}`};
+const dLong=x=>{const p=pd(x);return `${TH_D[p.w]}ที่ ${p.d} ${TH_ML[p.m-1]} ${p.y+543}`};
+const dRange=(a,b)=>{if(!a||!b)return '';const x=pd(a),z=pd(b);if(x.y===z.y&&x.m===z.m)return x.d===z.d?`${z.d} ${TH_M[z.m-1]} ${z.y+543}`:`${x.d}–${z.d} ${TH_M[z.m-1]} ${z.y+543}`;return `${x.d} ${TH_M[x.m-1]}${x.y!==z.y?' '+(x.y+543):''} – ${z.d} ${TH_M[z.m-1]} ${z.y+543}`};
+const atTime=t=>t.split(':').map(Number).reduce((h,m)=>h*60+m,0);
+const toTime=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+const minutesStamp=(date,time)=>{if(!date||!time)return NaN;return Date.parse(date+'T'+time+':00Z')/60000};
+const dateList=(a,b)=>{let out=[],t=Date.parse(a+'T00:00:00Z'),end=Date.parse(b+'T00:00:00Z');if(!Number.isFinite(t)||!Number.isFinite(end)||end<t)return out;for(;t<=end&&out.length<60;t+=86400000)out.push(new Date(t).toISOString().slice(0,10));return out};
+
+/* ---------- data ---------- */
+const DEFAULT_NAME='แข่งขันกีฬาอำเภอเกษตรวิสัย “หนองผึ้งเกมส์”';
+function defaultState(){const brackets={};SPORTS.forEach(s=>DIVS.forEach(d=>brackets[key(s.id,d.id,'_')]={results:{},schedules:{}}));const sportSettings={};SPORTS.forEach(s=>sportSettings[s.id]={duration:s.duration,venue:s.venue});return {version:2,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-15',dateTo:'2026-12-18',timeFrom:'08:00',timeTo:'17:00',interval:15,rest:15,strict:false,sports:sportSettings},brackets}}
+function validState(v){return Boolean(v&&v.version===2&&typeof v.eventName==='string'&&v.brackets&&v.settings&&v.settings.sports&&SPORTS.every(s=>DIVS.every(d=>{const b=v.brackets[key(s.id,d.id,'_')];return b&&typeof b==='object'&&b.results&&b.schedules})))}
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY));if(validState(v))return v}catch(e){console.warn(e)}return defaultState()}
+let state=load(),view='home',activeSport='football',activeDivision='primary_male',editing=null,toastTimer=null,filter={sport:'all',division:'all',day:'all',text:''};
+if(['การแข่งขันกีฬา “หนองผึ้งเกมส์”','การแข่งขันกีฬาอำเภอ'].includes(state.eventName))state.eventName=DEFAULT_NAME;
+function heroTitle(){const n=state.eventName,i=n.indexOf('“');return i>0?`${safe(n.slice(0,i).trim())}<span class="h1-sub">${safe(n.slice(i))}</span>`:safe(n)}
+const bdata=(s,d)=>state.brackets[key(s,d,'_')];
+function outcome(s,d,m,cache){const k=key(s,d,m);if(cache.has(k))return cache.get(k);const cfg=MATCH[m],b=bdata(s,d);const sides=cfg.sides.map(x=>x.team!==undefined?x.team:(outcome(s,d,x.winner,cache).winner));const r=b.results[m]||{};const [a,z]=sides;let winner=null,completed=false;if(a!==null&&z!==null&&Number.isInteger(r.a)&&Number.isInteger(r.b)&&r.a>=0&&r.b>=0){if(r.a>r.b)winner=a;else if(r.b>r.a)winner=z;else if(r.tieWinner==='a')winner=a;else if(r.tieWinner==='b')winner=z;completed=winner!==null}const res={a,b:z,winner,completed,result:r};cache.set(k,res);return res}
+function possibilities(s,d,m,cache,pcache){const k=key(s,d,m);if(pcache.has(k))return pcache.get(k);const cfg=MATCH[m];const sets=cfg.sides.map(x=>{if(x.team!==undefined)return [x.team];const o=outcome(s,d,x.winner,cache);return o.completed?[o.winner]:possibilities(s,d,x.winner,cache,pcache)});const r=[...new Set(sets.flat())];pcache.set(k,r);return r}
+function allEvents(){const oc=new Map(),pc=new Map(),res=[];SPORTS.forEach(s=>DIVS.forEach(d=>MATCH_ORDER.forEach(m=>{const o=outcome(s.id,d.id,m,oc),b=bdata(s.id,d.id);res.push({key:key(s.id,d.id,m),s:s.id,d:d.id,m,round:MATCH[m].round,number:MATCH[m].number,participants:possibilities(s.id,d.id,m,oc,pc),sides:[o.a,o.b],winner:o.winner,completed:o.completed,result:o.result,schedule:{...(b.schedules[m]||{})},parents:MATCH[m].parents.map(p=>key(s.id,d.id,p)),duration:Number(state.settings.sports[s.id].duration)||s.duration,defaultVenue:state.settings.sports[s.id].venue||s.venue})})));return res}
+function store(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){alert('ไม่สามารถบันทึกในเบราว์เซอร์ได้ กรุณาสำรอง JSON: '+e.message)}}
+function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3200)}
+const hasDate=e=>Boolean(e.schedule.date&&e.schedule.time);
+const tStamp=e=>hasDate(e)?minutesStamp(e.schedule.date,e.schedule.time):Infinity;
+const byTime=(a,b)=>{const x=tStamp(a),y=tStamp(b);return x===y?0:x-y};
+const labelEvent=e=>`${sport(e.s).name} ${div(e.d).name} คู่ ${e.number}`;
+const teamLabel=(e,i)=>e.sides[i]===null?`ผู้ชนะคู่ที่ ${MATCH[MATCH[e.m].sides[i].winner].number}`:TEAMS[e.sides[i]];
+const schedRange=e=>({start:minutesStamp(e.schedule.date,e.schedule.time),end:minutesStamp(e.schedule.date,e.schedule.time)+e.duration});
+function sharesTeam(a,b){if(!state.settings.strict&&a.d!==b.d)return false;return a.participants.some(t=>b.participants.includes(t))}
+function warnings(events){const problems=[],active=events.filter(hasDate),map=new Map(events.map(e=>[e.key,e])),z=state.settings;
+ for(const e of events){const t=e.schedule;if(Boolean(t.date)!==Boolean(t.time)){problems.push(`${labelEvent(e)}: วันและเวลาต้องระบุพร้อมกัน`);continue}if(!hasDate(e))continue;
+  const start=minutesStamp(t.date,t.time);if(!Number.isFinite(start)||!dateList(z.dateFrom,z.dateTo).includes(t.date)||atTime(t.time)<atTime(z.timeFrom)||atTime(t.time)+e.duration>atTime(z.timeTo))problems.push(`${labelEvent(e)}: อยู่นอกวันหรือช่วงเวลาที่กำหนด`);
+  for(const p of e.parents){const parent=map.get(p);if(!parent||!hasDate(parent)){problems.push(`${labelEvent(e)}: ยังไม่กำหนดเวลาคู่ก่อนหน้า`);continue}if(start<schedRange(parent).end+Number(z.rest))problems.push(`${labelEvent(e)}: แข่งก่อนคู่ ${parent.number} จบและพักครบ`)}}
+ for(let i=0;i<active.length;i++){const a=active[i],ra=schedRange(a);for(let j=i+1;j<active.length;j++){const b=active[j],rb=schedRange(b);const p1=(a.schedule.venue||'').trim().toLocaleLowerCase(),p2=(b.schedule.venue||'').trim().toLocaleLowerCase();if(p1&&p1===p2&&ra.start<rb.end&&rb.start<ra.end)problems.push(`สนามชนกัน: ${labelEvent(a)} ↔ ${labelEvent(b)} (${a.schedule.venue})`);if(sharesTeam(a,b)&&ra.start<rb.end+Number(z.rest)&&rb.start<ra.end+Number(z.rest))problems.push(`ทีมชนกัน: ${labelEvent(a)} ↔ ${labelEvent(b)} (รวมเวลาพัก ${z.rest} นาที)`)}}
+ return problems}
+function validateTrial(e,ns,items,byKey){const z=state.settings,minute=atTime(ns.time),start=minutesStamp(ns.date,ns.time),end=start+e.duration;
+ if(!Number.isFinite(start)||!dateList(z.dateFrom,z.dateTo).includes(ns.date)||minute<atTime(z.timeFrom)||minute+e.duration>atTime(z.timeTo))return 'วัน/เวลาไม่อยู่ในช่วงการแข่งขัน';
+ for(const pid of e.parents){const parent=byKey.get(pid);if(!parent||!hasDate(parent))return 'ต้องจัดเวลาคู่ก่อนหน้าให้เรียบร้อย';if(start<schedRange(parent).end+Number(z.rest))return 'ต้องเริ่มหลังคู่ก่อนหน้าจบและมีเวลาพัก'}
+ for(const o of items){if(e.key===o.key||!hasDate(o))continue;const r=schedRange(o);if(ns.venue&&o.schedule.venue&&ns.venue.trim().toLocaleLowerCase()===o.schedule.venue.trim().toLocaleLowerCase()&&start<r.end&&r.start<end)return `สนามซ้ำกับ ${labelEvent(o)}`;
+  if(sharesTeam(e,o)&&start<r.end+Number(z.rest)&&r.start<end+Number(z.rest))return `ทีมอาจแข่งชนกับ ${labelEvent(o)}`;
+  if(o.parents.includes(e.key)&&r.start<end+Number(z.rest))return `คู่ถัดไป ${labelEvent(o)} เริ่มเร็วเกินไป`}
+ return ''}
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+function autoSchedule(keepExisting=false,silent=false){const z=state.settings,dates=dateList(z.dateFrom,z.dateTo);if(!dates.length||dates.length>31){alert('กรุณากำหนดช่วงวันแข่งขันไม่เกิน 31 วัน');return null}if(atTime(z.timeTo)<=atTime(z.timeFrom)){alert('เวลาเลิกต้องมากกว่าเวลาเริ่ม');return null}
+ const events=allEvents();if(!keepExisting)events.forEach(e=>e.schedule={});const byKey=new Map(events.map(e=>[e.key,e]));const failed=[];
+ for(let round=0;round<3;round++){const batch=shuffle(events.filter(e=>e.round===round));for(let i=0;i<batch.length;i++){const e=batch[i];if(hasDate(e))continue;let placed=false,preferred=[];
+  // opening rounds spread over the first days, semifinals next, finals on the last day
+  if(dates.length>=3){const cut=Math.ceil((dates.length-1)/2);if(round===0){const pre=dates.slice(0,cut);preferred=[pre[i%pre.length],...pre]}else if(round===1)preferred=dates.slice(cut,-1);else preferred=[dates[dates.length-1]]}else if(dates.length===2)preferred=round===0?[dates[0]]:[dates[1]];else preferred=[...dates];
+  const scan=[...new Set([...preferred,...dates])];
+  outer:for(const date of scan){for(let min=atTime(z.timeFrom);min+e.duration<=atTime(z.timeTo);min+=Number(z.interval)||15){const trial={date,time:toTime(min),venue:e.defaultVenue};if(!validateTrial(e,trial,events,byKey)){e.schedule=trial;placed=true;break outer}}}
+  if(!placed)failed.push(e)}}
+ for(const e of events){const b=bdata(e.s,e.d);if(hasDate(e))b.schedules[e.m]={...e.schedule};else delete b.schedules[e.m]}
+ store();const n=events.filter(hasDate).length;if(!silent)toast(`จัดตารางแล้ว ${n}/${events.length} นัด${failed.length?` · ยังไม่ลงเวลา ${failed.length} นัด`:''}`);return n}
+
+/* ---------- views ---------- */
+function render(){$$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===view));const app=$('#app');
+ if(view==='home')app.innerHTML=homeHTML();
+ else if(view==='bracket'){app.innerHTML=bracketHTML()}
+ else if(view==='schedule'){app.innerHTML=scheduleHTML();bindSchedule();renderFixtures()}
+ else{app.innerHTML=settingsHTML();bindSettings()}
+ tick();reveal(app)}
+const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const io=!REDUCED&&'IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.06,rootMargin:'0px 0px -30px 0px'}):null;
+const RV='.hero,.sec-h,.sp,.nx,.tbl-wrap,.page-h,.pick,.bracket-bar,.notice,.days,.filters,.group-h,.fx,.card,.actions';
+function reveal(root){if(!io)return;root.querySelectorAll(RV).forEach(el=>{if(el.classList.contains('rv'))return;const sib=[...el.parentElement.children].filter(c=>c.matches(RV));el.style.transitionDelay=Math.min(sib.indexOf(el),8)*60+'ms';el.classList.add('rv');el.addEventListener('transitionend',()=>{el.style.transitionDelay=''},{once:true});io.observe(el)})}
+function confetti(){if(REDUCED)return;const box=document.createElement('div'),em=['💗','💖','💕','❤️','💞','🌸','🌺','🌷','🌼','💮'];box.className='confetti';for(let i=0;i<110;i++){const p=document.createElement('i');p.textContent=em[i%em.length];p.style.left=Math.random()*100+'vw';p.style.fontSize=(16+Math.random()*22)+'px';p.style.setProperty('--dx',(Math.random()*240-120)+'px');p.style.setProperty('--r',(Math.random()*540-270)+'deg');p.style.animationDuration=(3+Math.random()*2.6)+'s';p.style.animationDelay=Math.random()*1.4+'s';box.appendChild(p)}document.body.appendChild(box);setTimeout(()=>box.remove(),8000)}
+function setView(v){view=v;render();window.scrollTo({top:0,behavior:'smooth'})}
+
+function homeHTML(){const es=allEvents(),z=state.settings,done=es.filter(e=>e.completed).length;
+ const cards=SPORTS.map(s=>{const list=es.filter(e=>e.s===s.id),d=list.filter(e=>e.completed).length,nx=list.filter(e=>hasDate(e)&&!e.completed).sort(byTime)[0];
+  return `<button class="sp" data-sport="${s.id}" data-goto="${s.id}"><span class="sp-ic">${ic(s.id)}</span><span><span class="sp-name">${s.name}</span><span class="sp-en">${s.en}</span></span><span class="bar"><i style="width:${d/list.length*100}%"></i></span><span class="sp-foot"><span>${nx?`ถัดไป ${dShort(nx.schedule.date)} · ${nx.schedule.time}`:(d===list.length?'จบการแข่งขัน':'ยังไม่จัดเวลา')}</span><b>${d}/${list.length}</b></span></button>`}).join('');
+ const upcoming=es.filter(e=>hasDate(e)&&!e.completed).sort(byTime).slice(0,6);
+ const next=upcoming.map(e=>`<button class="nx" data-sport="${e.s}" data-open="${e.key}"><span class="nx-top"><span class="nx-time"><b>${e.schedule.time}</b><small>${dLong(e.schedule.date)}</small></span><span class="chip"><span class="sdot"></span>${sport(e.s).name}</span></span><span class="nx-teams"><span class="${e.sides[0]===null?'muted':''}">${safe(teamLabel(e,0))}</span><em>VS</em><span class="${e.sides[1]===null?'muted':''}">${safe(teamLabel(e,1))}</span></span><span class="nx-foot">${div(e.d).name} · ${ROUND[e.round]} · ${safe(e.schedule.venue||'')}</span></button>`).join('');
+ const champ=SPORTS.map(s=>`<tr data-sport="${s.id}"><th><span class="sdot"></span>${s.name}</th>${DIVS.map(d=>{const f=es.find(e=>e.s===s.id&&e.d===d.id&&e.m==='M5');return `<td>${f.winner!=null?`<span class="cw">${ic('trophy')}${safe(TEAMS[f.winner])}</span>`:'<span class="muted">รอผล</span>'}</td>`}).join('')}</tr>`).join('');
+ return `<section class="wrap"><div class="hero"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i>${['football','volleyball','tabletennis','takraw','petanque','futsal'].map((x,i)=>`<span class="fl fl${i+1}" aria-hidden="true">${ic(x)}</span>`).join('')}<div class="hero-ghost" aria-hidden="true">GAMES 2026</div><div class="hero-grid"><div>
+  <span class="eyebrow"><i></i>Kaset Wisai District Games 2026</span>
+  <h1>${heroTitle()}</h1>
+  <p class="hero-sub">ตารางแข่งขัน ผังการแข่งขัน และผลการแข่งขันกีฬาอำเภอเกษตรวิสัย 6 ชนิดกีฬา 24 รุ่น ระดับประถมศึกษาและมัธยมศึกษา</p>
+  <div class="hero-meta"><div><small>Date</small><b>${dRange(z.dateFrom,z.dateTo)}</b></div><div><small>Time</small><b>${safe(z.timeFrom)}–${safe(z.timeTo)} น.</b></div><div><small>Format</small><b>แพ้คัดออก 6 ทีม</b></div></div>
+  <div class="hero-cta"><button class="btn btn-volt" data-view-link="schedule">ดูตารางแข่งขัน ${ic('arrow')}</button><button class="btn btn-ghost" data-view-link="bracket">ผังการแข่งขัน</button></div>
+ </div><div><div class="cd-label" id="cdLabel">เริ่มการแข่งขันใน</div><div class="cd" id="countdown"><div><b data-cd="d">00</b><span>วัน</span></div><div><b data-cd="h">00</b><span>ชั่วโมง</span></div><div><b data-cd="m">00</b><span>นาที</span></div><div><b data-cd="s">00</b><span>วินาที</span></div></div></div></div>
+ <div class="kpis"><div><b>6</b><span>ชนิดกีฬา</span></div><div><b>24</b><span>รุ่นการแข่งขัน</span></div><div><b>${es.length}</b><span>นัดทั้งหมด</span></div><div><b><em>${done}</em></b><span>แข่งขันแล้ว</span></div></div></div></section>
+ <section class="wrap sec"><div class="sec-h"><div><span class="kicker">Sports</span><h2>ชนิดกีฬา</h2></div><button class="link" data-view-link="bracket">ดูผังทั้งหมด ${ic('arrow')}</button></div><div class="sports">${cards}</div></section>
+ <section class="wrap sec"><div class="sec-h"><div><span class="kicker">Up next</span><h2>นัดถัดไป</h2></div><button class="link" data-view-link="schedule">ตารางทั้งหมด ${ic('arrow')}</button></div>${next?`<div class="next">${next}</div>`:'<div class="empty">ไม่มีนัดที่รอแข่งขัน</div>'}</section>
+ <section class="wrap sec"><div class="sec-h"><div><span class="kicker">Champions</span><h2>ทำเนียบผู้ชนะเลิศ</h2></div></div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>ชนิดกีฬา</th>${DIVS.map(d=>`<th>${d.name}</th>`).join('')}</tr></thead><tbody>${champ}</tbody></table></div></section>`}
+
+function tick(){const el=$('#countdown');if(!el)return;const z=state.settings,start=new Date(`${z.dateFrom}T${z.timeFrom}:00`).getTime(),end=new Date(`${z.dateTo}T${z.timeTo}:00`).getTime(),now=Date.now();let diff=start-now,label='เริ่มการแข่งขันใน',live=false;
+ if(diff<=0){if(now<end){label='กำลังแข่งขัน · สิ้นสุดใน';diff=end-now;live=true}else{label='การแข่งขันจบลงแล้ว';diff=0}}
+ const s=Math.max(0,Math.floor(diff/1000)),parts={d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60};
+ for(const k in parts){const b=el.querySelector(`[data-cd="${k}"]`),v=String(parts[k]).padStart(2,'0');if(b&&b.textContent!==v){b.textContent=v;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}}
+ $('#cdLabel').innerHTML=(live?'<i class="live"></i>':'')+label}
+setInterval(tick,1000);
+
+const BJ={M1:{x:300,y:160},M2:{x:580,y:225},M3:{x:300,y:450},M4:{x:580,y:515},M5:{x:860,y:370}};
+const BARMS=[['M1',0,0,110],['M1',1,0,210],['M2',0,300,160],['M2',1,0,290],['M3',0,0,400],['M3',1,0,500],['M4',0,300,450],['M4',1,0,580],['M5',0,580,225],['M5',1,580,515]];
+function bracketBoard(){const oc=new Map(),O=m=>outcome(activeSport,activeDivision,m,oc),sch=bdata(activeSport,activeDivision).schedules;let paths='',labels='',nodes='';
+ for(const [m,side,sx,sy] of BARMS){const dl=Math.round((BJ[m].x-300)*1.3),o=O(m),j=BJ[m],t=side?o.b:o.a,tbd=t===null,win=o.completed&&t===o.winner,lose=o.completed&&!win;
+  const cls=win?'win':lose?'lose':(!tbd&&sx?'adv':'');paths+=`<path pathLength="1" class="${cls} ${cls==='adv'?'':'draw'}" style="animation-delay:${dl}ms" d="M${sx} ${sy}H${j.x}V${j.y}"/>`;
+  const left=sx?sx+30:0,w=j.x-left-12,name=tbd?`ผู้ชนะคู่ที่ ${MATCH[MATCH[m].sides[side].winner].number}`:TEAMS[t];
+  labels+=`<button class="bl ${win?'win':''} ${lose?'lose':''} ${tbd?'tbd':''}" style="left:${left}px;top:${sy-35}px;width:${w}px;animation-delay:${dl+120}ms" data-match="${m}" title="${safe(name)}"><span class="code">${tbd?'–':CODES[t]}</span><span class="name">${safe(name)}</span>${o.completed?`<span class="score">${side?o.result.b:o.result.a}</span>`:''}</button>`}
+ const f=O('M5');paths+=`<path pathLength="1" class="draw ${f.completed?'win':''}" style="animation-delay:950ms" d="M860 370H1080"/>`;
+ labels+=`<div class="champ-l ${f.completed?'won':''}" style="left:886px;top:326px">${ic('trophy')}<span>${f.completed?safe(TEAMS[f.winner]):'รอผู้ชนะเลิศ'}</span></div>`;
+ for(const m of MATCH_ORDER){const o=O(m),j=BJ[m],sc=sch[m]||{},fin=m==='M5',r=fin?24:20,when=sc.date&&sc.time?`${dShort(sc.date)} · ${sc.time} น.`:'ยังไม่จัดเวลา';
+  nodes+=`<button class="bn ${o.completed?'done':''} ${fin?'final':''}" style="left:${j.x-r}px;top:${j.y-r}px;animation-delay:${Math.round((j.x-300)*1.3)+420}ms" data-match="${m}" aria-label="คู่ที่ ${MATCH[m].number} บันทึกผลหรือแก้ไขเวลา">${MATCH[m].number}</button><div class="cap" style="left:${j.x+30}px;top:${j.y+(fin?16:11)}px;animation-delay:${Math.round((j.x-300)*1.3)+520}ms"><b>${o.completed?'จบแล้ว':ROUND[MATCH[m].round]}</b>${when}${sc.venue?`<br>${safe(sc.venue)}`:''}</div>`}
+ const heads=[[0,'Round 1','รอบแรก'],[330,'Semi-final','รอบรองชนะเลิศ'],[610,'Final','รอบชิงชนะเลิศ'],[886,'Champion','ผู้ชนะเลิศ']].map(([x,a,b])=>`<div class="lb-h" style="left:${x}px">${a}<b>${b}</b></div>`).join('');
+ return `<div class="lb-wrap"><div class="lb">${heads}<svg viewBox="0 0 1080 612" width="1080" height="612" aria-hidden="true"><defs><linearGradient id="lbg" x1="0" y1="0" x2="1080" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff6fae"/><stop offset="1" stop-color="#3fb8ff"/></linearGradient></defs>${paths}</svg>${labels}${nodes}</div></div>`}
+
+function bracketHTML(){return `<section class="wrap"><div class="page-h"><div><span class="kicker">Tournament Bracket</span><h1>ผังการแข่งขัน</h1><p class="lead">แพ้คัดออก 6 ทีม · คู่ 1→2 สายบน, คู่ 3→4 สายล่าง, ผู้ชนะคู่ 2 และ 4 ชิงชนะเลิศในคู่ 5</p></div><div class="toolbar"><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์ผัง</button></div></div>
+ <div class="pick">${SPORTS.map(x=>`<button class="pk ${x.id===activeSport?'active':''}" data-sport="${x.id}" data-pick-sport="${x.id}" aria-pressed="${x.id===activeSport}"><span class="ic">${ic(x.id)}</span>${x.name}</button>`).join('')}</div>
+ <div class="bracket-bar"><div class="seg">${DIVS.map(x=>`<button class="${x.id===activeDivision?'active':''}" data-pick-div="${x.id}" aria-pressed="${x.id===activeDivision}">${x.name}</button>`).join('')}</div><div class="legend"><span><i class="lg done"></i>เส้นทางผู้ชนะ</span><span><i class="lg"></i>รอแข่งขัน</span></div></div>
+ ${bracketBoard()}<p class="hint"><span class="m-only">← ปัดซ้าย–ขวาเพื่อดูผังเต็ม → · </span>แตะหมายเลขคู่ หรือชื่อทีม เพื่อบันทึกผล หรือแก้ไขวัน เวลา และสนาม</p></section>`}
+
+function scheduleHTML(){const es=allEvents(),z=state.settings,issues=warnings(es),miss=es.filter(e=>!hasDate(e)).length,dates=[...new Set(es.filter(hasDate).map(e=>e.schedule.date))].sort();if(filter.day!=='all'&&!dates.includes(filter.day))filter.day='all';
+ const dayBtn=(id,top,main,n)=>`<button class="day ${filter.day===id?'active':''}" data-day="${id}"><small>${top}</small><b>${main}</b><i>${n} นัด</i></button>`;
+ const opt=(v,list)=>list.map(([a,b])=>`<option value="${a}" ${v===a?'selected':''}>${b}</option>`).join('');
+ return `<section class="wrap"><div class="page-h"><div><span class="kicker">Match Schedule</span><h1>ตารางแข่งขัน</h1><p class="lead">${dRange(z.dateFrom,z.dateTo)} · ${es.length} นัด ทุกชนิดกีฬา</p></div><div class="toolbar"><button class="btn btn-sm btn-dark" id="reshuffle">${ic('shuffle')}สุ่มตารางใหม่</button><button class="btn btn-sm" id="fillEmpty">เติมคู่ที่ยังไม่มีเวลา</button><button class="btn btn-sm" data-act="csv">${ic('download')}Excel</button><button class="btn btn-sm" data-act="print">${ic('print')}พิมพ์</button></div></div>
+ <div class="notice ${issues.length?'warn':''}"><i></i><span>${issues.length?`พบข้อขัดแย้ง ${issues.length} รายการ — ดูรายละเอียดที่หน้าตั้งค่า`:`ไม่มีทีมหรือสนามชนกัน${miss?` · ยังไม่จัดเวลา ${miss} นัด`:' · จัดครบทุกนัดแล้ว'}`}</span></div>
+ <div class="days">${dayBtn('all','All days','ทั้งหมด',es.length)}${dates.map((d,i)=>dayBtn(d,`Day ${i+1}`,dShort(d),es.filter(e=>e.schedule.date===d).length)).join('')}</div>
+ <div class="filters"><select class="input" id="fSport" aria-label="ชนิดกีฬา">${opt(filter.sport,[['all','ทุกชนิดกีฬา'],...SPORTS.map(s=>[s.id,s.name])])}</select><select class="input" id="fDiv" aria-label="รุ่น">${opt(filter.division,[['all','ทุกรุ่น'],...DIVS.map(d=>[d.id,d.name])])}</select><div class="search">${ic('search')}<input class="input" id="fText" placeholder="ค้นหาทีม สนาม หรือชนิดกีฬา" value="${safe(filter.text)}" aria-label="ค้นหา"></div></div>
+ <div id="fixtures"></div></section>`}
+function bindSchedule(){$('#reshuffle').addEventListener('click',()=>{if(confirm('สุ่มตารางแข่งขันใหม่ทั้งหมด? วันเวลาที่แก้ไขเองจะถูกแทนที่ แต่ผลคะแนนยังอยู่')){autoSchedule(false);render()}});$('#fillEmpty').addEventListener('click',()=>{autoSchedule(true);render()});
+ $('#fSport').addEventListener('change',e=>{filter.sport=e.target.value;renderFixtures()});$('#fDiv').addEventListener('change',e=>{filter.division=e.target.value;renderFixtures()});$('#fText').addEventListener('input',e=>{filter.text=e.target.value;renderFixtures()})}
+function renderFixtures(){const box=$('#fixtures');if(!box)return;const q=filter.text.trim().toLocaleLowerCase();
+ const list=allEvents().filter(e=>(filter.sport==='all'||e.s===filter.sport)&&(filter.division==='all'||e.d===filter.division)&&(filter.day==='all'||e.schedule.date===filter.day)&&(!q||`${sport(e.s).name} ${div(e.d).name} ${teamLabel(e,0)} ${teamLabel(e,1)} ${e.schedule.venue||''} คู่ ${e.number}`.toLocaleLowerCase().includes(q))).sort((a,b)=>byTime(a,b)||a.round-b.round||a.s.localeCompare(b.s)||a.d.localeCompare(b.d));
+ if(!list.length){box.innerHTML='<div class="empty" style="margin-top:18px">ไม่พบการแข่งขันตามเงื่อนไขที่เลือก</div>';return}
+ const groups=new Map();list.forEach(e=>{const g=e.schedule.date||'';if(!groups.has(g))groups.set(g,[]);groups.get(g).push(e)});
+ box.innerHTML=[...groups].map(([d,items])=>`<div class="group-h"><h3>${d?dLong(d):'ยังไม่กำหนดเวลา'}</h3><span>${items.length} Matches</span></div><div class="fx-list">${items.map(fxHTML).join('')}</div>`).join('');reveal(box)}
+function fxHTML(e){const t=i=>`<span class="t ${i?'b':'a'} ${e.sides[i]===null?'tbd':''} ${e.completed&&e.sides[i]===e.winner?'win':''}">${safe(teamLabel(e,i))}</span>`;
+ const st=e.completed?['done','จบแล้ว']:hasDate(e)?['plan','รอแข่งขัน']:['none','ยังไม่จัด'];
+ return `<div class="fx" data-sport="${e.s}"><div class="fx-time"><b>${e.schedule.time||'--:--'}</b><small>${e.duration} นาที</small></div><div class="fx-meta"><span class="sdot"></span><div><strong>${sport(e.s).name} · ${div(e.d).name}</strong><small>คู่ที่ ${e.number} · ${ROUND[e.round]}</small></div></div><div class="fx-teams">${t(0)}<span class="fx-score ${e.completed?'done':'vs'}">${e.completed?`${e.result.a} – ${e.result.b}`:'VS'}</span>${t(1)}</div><div class="fx-venue">${ic('pin')}<span>${safe(e.schedule.venue||'–')}</span></div><div class="fx-status"><span class="badge ${st[0]}">${st[1]}</span></div><button class="icon-btn" data-open="${e.key}" aria-label="บันทึกผลหรือแก้ไข ${safe(labelEvent(e))}" title="บันทึกผล / แก้ไขเวลา">${ic('edit')}</button></div>`}
+
+function settingsHTML(){const z=state.settings,es=allEvents(),errs=warnings(es),planned=es.filter(hasDate).length;
+ return `<section class="wrap"><div class="page-h"><div><span class="kicker">Settings</span><h1>ตั้งค่าการแข่งขัน</h1><p class="lead">กำหนดวัน เวลา สนาม และระยะเวลาต่อนัด ระบบจะจัดตารางโดยไม่ให้ทีมหรือสนามชนกัน</p></div></div>
+ <div class="grid2"><div class="card"><h3>วันและเวลาแข่งขัน</h3><p class="d">กำหนดได้สูงสุด 31 วัน</p><div class="fields">
+  <label class="f"><span>วันแรก</span><input type="date" class="input" id="fromDate" value="${z.dateFrom}"></label><label class="f"><span>วันสุดท้าย</span><input type="date" class="input" id="toDate" value="${z.dateTo}"></label>
+  <label class="f"><span>เริ่มแข่งขัน</span><input type="time" class="input" id="fromTime" value="${z.timeFrom}"></label><label class="f"><span>สิ้นสุดแข่งขัน</span><input type="time" class="input" id="toTime" value="${z.timeTo}"></label>
+  <label class="f"><span>ช่วงเวลาที่ใช้จัด</span><select class="input" id="interval">${[15,30,60].map(n=>`<option value="${n}" ${Number(z.interval)===n?'selected':''}>ทุก ${n} นาที</option>`).join('')}</select></label><label class="f"><span>พักก่อนนัดถัดไป (นาที)</span><input type="number" class="input" id="rest" min="0" max="120" step="5" value="${z.rest}"></label></div>
+  <label class="check"><input type="checkbox" id="strict" ${z.strict?'checked':''}><span><b>โหมดเคร่งครัด</b> — ทีมชื่อเดียวกันห้ามแข่งชนเวลากัน แม้คนละรุ่นหรือคนละเพศ (อาจต้องใช้วันมากขึ้น)</span></label></div>
+ <div class="card"><h3>สนามและเวลาต่อนัด</h3><p class="d">สนามชื่อเดียวกันจะไม่ถูกจัดให้แข่งพร้อมกัน</p><div class="sport-row head"><span>ชนิดกีฬา</span><span>นาที/นัด</span><span>ชื่อสนาม</span></div>
+  ${SPORTS.map(s=>`<div class="sport-row" data-sport="${s.id}"><span class="sr-name"><span class="sdot"></span>${s.name}</span><input class="input" type="number" min="15" max="240" step="5" id="dur-${s.id}" value="${Number(z.sports[s.id].duration)}" aria-label="นาทีต่อนัด ${s.name}"><input class="input" id="venue-${s.id}" value="${safe(z.sports[s.id].venue)}" maxlength="120" aria-label="สนาม ${s.name}"></div>`).join('')}</div></div>
+ <div class="actions"><button class="btn btn-dark" id="saveSettings">บันทึกการตั้งค่า</button><button class="btn btn-volt" id="saveAndGen">${ic('shuffle')}บันทึกและสุ่มตารางใหม่</button><button class="btn btn-danger" id="resetSchedules">ล้างวันเวลาทั้งหมด</button></div>
+ <div class="grid2"><div class="card"><h3>ตรวจสอบตาราง</h3><p class="d">จัดเวลาแล้ว ${planned}/${es.length} นัด</p><div class="notice ${errs.length?'warn':''}" style="margin:0 0 12px"><i></i><span>${errs.length?`พบปัญหา ${errs.length} รายการ`:'ไม่พบทีมหรือสนามชนกัน'}</span></div>${errs.length?`<ul class="warn-list">${errs.slice(0,80).map(m=>`<li>${safe(m)}</li>`).join('')}</ul>`:''}</div>
+ <div class="card"><h3>ข้อมูล</h3><p class="d">ข้อมูลบันทึกในเบราว์เซอร์เครื่องนี้ ควรสำรองไฟล์ JSON ไว้เป็นระยะ และนำเข้าคืนได้ทุกเครื่อง</p><div class="actions" style="margin:0"><button class="btn btn-sm" data-act="rename">แก้ไขชื่องาน</button><button class="btn btn-sm" data-act="backup">${ic('download')}สำรองข้อมูล</button><button class="btn btn-sm" data-act="restore">นำเข้าข้อมูล</button><button class="btn btn-sm" data-act="csv">ส่งออก Excel</button></div></div></div></section>`}
+function bindSettings(){$('#saveSettings').addEventListener('click',()=>applySettings(false));$('#saveAndGen').addEventListener('click',()=>{if(confirm('บันทึกและสุ่มเวลาใหม่ทั้งหมด? วันเวลาเดิมจะเปลี่ยน แต่ผลคะแนนยังอยู่'))applySettings(true)});
+ $('#resetSchedules').addEventListener('click',()=>{if(!confirm('ลบวันและเวลาแข่งขันทั้งหมด? ผลคะแนนจะยังอยู่'))return;SPORTS.forEach(s=>DIVS.forEach(d=>bdata(s.id,d.id).schedules={}));store();render();toast('ล้างตารางแข่งขันแล้ว')})}
+function applySettings(gen){const f=$('#fromDate').value,t=$('#toDate').value,from=$('#fromTime').value,to=$('#toTime').value,days=dateList(f,t),rest=Number($('#rest').value);
+ if(!days.length||days.length>31){alert('กรุณากำหนดวันที่เริ่มและสิ้นสุดถูกต้อง (สูงสุด 31 วัน)');return}if(!from||!to||atTime(to)<=atTime(from)){alert('กรุณากำหนดเวลาเริ่ม–สิ้นสุดให้ถูกต้อง');return}if(!Number.isInteger(rest)||rest<0||rest>120){alert('เวลาพักต้องเป็น 0–120 นาที');return}
+ const settings={dateFrom:f,dateTo:t,timeFrom:from,timeTo:to,rest,interval:Number($('#interval').value),strict:$('#strict').checked,sports:{}};
+ for(const s of SPORTS){const duration=Number($('#dur-'+s.id).value),venue=$('#venue-'+s.id).value.trim();if(!Number.isInteger(duration)||duration<15||duration>240||!venue){alert('ตรวจสอบระยะเวลาและชื่อสนามของ '+s.name);return}settings.sports[s.id]={duration,venue}}
+ state.settings=settings;if(gen)autoSchedule(false);else{store();toast('บันทึกการตั้งค่าแล้ว')}render()}
+
+/* ---------- match dialog ---------- */
+function openMatch(s,d,m){editing={s,d,m};const o=outcome(s,d,m,new Map()),sc=bdata(s,d).schedules[m]||{};const texts=[o.a,o.b].map((n,i)=>n===null?`ผู้ชนะคู่ที่ ${MATCH[MATCH[m].sides[i].winner].number}`:TEAMS[n]);const known=o.a!==null&&o.b!==null;
+ $('#modalTitle').textContent=`${sport(s).name} · ${div(d).name} · คู่ที่ ${MATCH[m].number}`;$('#modalSub').textContent=ROUND[MATCH[m].round];$('#teamA').textContent=texts[0];$('#teamB').textContent=texts[1];
+ $('#scoreA').value=o.result.a??'';$('#scoreB').value=o.result.b??'';['#scoreA','#scoreB','#tieWinner'].forEach(q=>$(q).disabled=!known);
+ $('#tieWinner').value=o.result.tieWinner||'';$('#tieWinner').options[1].textContent='ทีมที่ 1: '+texts[0];$('#tieWinner').options[2].textContent='ทีมที่ 2: '+texts[1];
+ $('#matchDate').value=sc.date||'';$('#matchTime').value=sc.time||'';$('#matchVenue').value=sc.venue||state.settings.sports[s].venue;
+ $('#durationNote').textContent=`ระยะเวลาแข่งขัน ${state.settings.sports[s].duration} นาที · พักขั้นต่ำก่อนนัดถัดไป ${state.settings.rest} นาที`;
+ const note=$('#modalNotice');note.hidden=known;if(!known)note.textContent='ยังไม่ทราบผู้ชนะจากคู่ก่อนหน้า จึงยังบันทึกคะแนนไม่ได้ แต่กำหนดวัน เวลา และสนามล่วงหน้าได้';
+ $('#clearScore').disabled=!o.completed;$('#matchModal').showModal()}
+function clearDescendantScores(s,d,m){const deps=[m],removed=[];while(deps.length){const x=deps.shift();for(const [id,cfg] of Object.entries(MATCH))if(cfg.parents.includes(x)&&!removed.includes(id)){removed.push(id);deps.push(id)}}removed.forEach(id=>delete bdata(s,d).results[id]);return removed}
+function saveMatch(ev){ev.preventDefault();if(!editing)return;const {s,d,m}=editing,b=bdata(s,d),old=b.results[m]||{},o=outcome(s,d,m,new Map());const sa=$('#scoreA').value.trim(),sb=$('#scoreB').value.trim();
+ if((sa==='')!==(sb==='')){alert('กรุณากรอกคะแนนทั้งสองทีม หรือเว้นว่างทั้งคู่');return}let next=null;
+ if(sa!==''){const a=Number(sa),v=Number(sb);if(!Number.isInteger(a)||!Number.isInteger(v)||a<0||v<0||a>999||v>999){alert('คะแนนต้องเป็นจำนวนเต็ม 0–999');return}if(o.a===null||o.b===null){alert('ยังไม่ทราบทีมแข่งจากคู่ก่อนหน้า');return}const tieWinner=a===v?$('#tieWinner').value:'';if(a===v&&!tieWinner){alert('คะแนนเสมอกัน กรุณาเลือกทีมที่ชนะจากจุดโทษหรือการตัดสิน');return}next={a,b:v,tieWinner}}
+ const date=$('#matchDate').value,time=$('#matchTime').value,venue=$('#matchVenue').value.trim();if(Boolean(date)!==Boolean(time)){alert('กรุณาระบุวันและเวลาให้ครบ');return}if(date&&!venue){alert('กรุณากรอกชื่อสนาม');return}
+ const es=allEvents(),target=es.find(x=>x.key===key(s,d,m)),byKey=new Map(es.map(x=>[x.key,x]));if(date){const err=validateTrial(target,{date,time,venue},es,byKey);if(err){alert('ไม่สามารถบันทึกตารางแข่งขันได้: '+err);return}}
+ const before=new Set(warnings(es)),prevR=JSON.parse(JSON.stringify(b.results)),prevS=JSON.parse(JSON.stringify(b.schedules));
+ const changed=JSON.stringify(next||null)!==JSON.stringify(Object.keys(old).length?old:null);
+ if(changed){const down=Object.keys(MATCH).filter(x=>x!==m&&MATCH[x].round>MATCH[m].round&&b.results[x]);if(down.length&&!confirm('การเปลี่ยนคะแนนอาจเปลี่ยนทีมในรอบถัดไป ระบบจะล้างผลรอบถัดไปที่เกี่ยวข้อง ยืนยันหรือไม่?'))return;clearDescendantScores(s,d,m);if(next)b.results[m]=next;else delete b.results[m]}
+ if(date)b.schedules[m]={date,time,venue};else delete b.schedules[m];
+ const fresh=warnings(allEvents()).filter(x=>!before.has(x));if(fresh.length){b.results=prevR;b.schedules=prevS;alert('ไม่สามารถบันทึกได้ เพราะทำให้ตารางมีปัญหาใหม่:\n\n'+fresh.slice(0,3).join('\n')+'\n\nกรุณาปรับเวลาแข่งขันก่อน');return}
+ store();$('#matchModal').close();editing=null;render();if(m==='M5'&&next){confetti();toast('ยินดีด้วย! ได้ผู้ชนะเลิศแล้ว 🏆')}else toast('บันทึกข้อมูลการแข่งขันแล้ว')}
+function clearScore(){if(!editing)return;const {s,d,m}=editing;if(!confirm('ล้างคะแนนคู่นี้และคะแนนรอบถัดไปที่เกี่ยวข้อง? วันและเวลาจะไม่ถูกล้าง'))return;clearDescendantScores(s,d,m);delete bdata(s,d).results[m];store();$('#matchModal').close();editing=null;render();toast('ล้างผลคะแนนแล้ว')}
+
+/* ---------- export / import ---------- */
+function download(text,name,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3500)}
+function exportCSV(){const es=allEvents().sort(byTime);const head=['ชนิดกีฬา','ประเภท','คู่ที่','รอบ','ทีมที่ 1','ทีมที่ 2','วันแข่งขัน (ค.ศ.)','เวลาเริ่ม','ระยะเวลา (นาที)','สนามแข่งขัน','คะแนนทีม 1','คะแนนทีม 2','ผู้ชนะ','สถานะ'];
+ const rows=[head,...es.map(e=>[sport(e.s).name,div(e.d).name,e.number,ROUND[e.round],teamLabel(e,0),teamLabel(e,1),e.schedule.date||'',e.schedule.time||'',e.duration,e.schedule.venue||'',e.completed?e.result.a:'',e.completed?e.result.b:'',e.winner==null?'':TEAMS[e.winner],e.completed?'แข่งขันแล้ว':hasDate(e)?'รอแข่งขัน':'ยังไม่กำหนด'])];
+ download('﻿'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),'ตารางแข่งขัน_หนองผึ้งเกมส์.csv','text/csv;charset=utf-8');toast('ส่งออกตารางเป็น CSV แล้ว')}
+function act(name){if(name==='csv')exportCSV();else if(name==='print')window.print();else if(name==='backup'){download(JSON.stringify(state,null,2),'district-games-backup.json','application/json;charset=utf-8');toast('ดาวน์โหลดไฟล์สำรองแล้ว')}else if(name==='restore')$('#fileRestore').click();else if(name==='rename'){const s=prompt('ชื่อการแข่งขัน',state.eventName);if(s!==null&&s.trim()){state.eventName=s.trim();store();render()}}}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{const menu=$('#menu');if(menu.open&&!e.target.closest('#menu'))menu.open=false;
+ const el=e.target.closest('[data-view],[data-view-link],[data-goto],[data-pick-sport],[data-pick-div],[data-day],[data-open],[data-match],[data-act]');if(!el)return;const ds=el.dataset;
+ if(ds.view)setView(ds.view);
+ else if(ds.viewLink){e.preventDefault();setView(ds.viewLink)}
+ else if(ds.goto){activeSport=ds.goto;setView('bracket')}
+ else if(ds.pickSport){activeSport=ds.pickSport;render()}
+ else if(ds.pickDiv){activeDivision=ds.pickDiv;render()}
+ else if(ds.day){filter.day=ds.day;render()}
+ else if(ds.open){const [s,d,m]=ds.open.split('|');openMatch(s,d,m)}
+ else if(ds.match)openMatch(activeSport,activeDivision,ds.match);
+ else if(ds.act){menu.open=false;act(ds.act)}});
+$('#fileRestore').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!validState(data))throw new Error('ไฟล์ไม่ใช่ข้อมูลสำรองเวอร์ชันปัจจุบัน');if(confirm('นำเข้าข้อมูลสำรองนี้แทนข้อมูลปัจจุบันทั้งหมด?')){state=data;store();render();toast('นำเข้าข้อมูลสำรองแล้ว')}}catch(ex){alert('นำเข้าไม่สำเร็จ: '+ex.message)}finally{e.target.value=''}});
+$('#matchForm').addEventListener('submit',saveMatch);$('#clearScore').addEventListener('click',clearScore);$('#modalClose').addEventListener('click',()=>$('#matchModal').close());$('#cancelModal').addEventListener('click',()=>$('#matchModal').close());
+
+// first visit: seed a complete, editable schedule
+if(!localStorage.getItem(KEY))autoSchedule(false,true);
+render();
+})();
+</script>
+</body>
+</html>
