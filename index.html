@@ -530,13 +530,13 @@ const dateList=(a,b)=>{let out=[],t=Date.parse(a+'T00:00:00Z'),end=Date.parse(b+
 
 /* ---------- data ---------- */
 const DEFAULT_NAME='แข่งขันกีฬาอำเภอเกษตรวิสัย “หนองผึ้งเกมส์”';
-function defaultState(){return migrate({version:3,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:true,sepEvents:false,sports:{}},brackets:{}})}
+function defaultState(){return migrate({version:3,eventName:DEFAULT_NAME,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,sports:{}},brackets:{}})}
 const validSeeds=a=>{if(!Array.isArray(a)||a.length!==6)return false;const t=a.filter(x=>x!==null);return t.every(x=>Number.isInteger(x)&&x>=0&&x<6)&&new Set(t).size===t.length};
 // upgrades older saved data (v2: 4 divisions per sport) to the current set of events
-const DATA_REV=6;
+const DATA_REV=7;
 function migrate(v){if(!v||typeof v!=='object'||(v.version!==2&&v.version!==3)||typeof v.eventName!=='string'||!v.settings||typeof v.settings!=='object')return null;
  if((Number(v.rev)||0)<DATA_REV){const bs={};for(const [k,b] of Object.entries(v.brackets||{}))if(b&&typeof b==='object')bs[k]={...b,schedules:{}};
-  v={...v,rev:DATA_REV,brackets:bs,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:true,sepEvents:false,lockedDays:[],sports:{}}}}
+  v={...v,rev:DATA_REV,brackets:bs,settings:{dateFrom:'2026-12-14',dateTo:'2026-12-18',days:['2026-12-14','2026-12-15','2026-12-17','2026-12-18'],timeFrom:'09:00',timeTo:'17:00',interval:5,rest:15,strict:false,sepIndiv:false,sepEvents:false,lockedDays:[],sports:{}}}}
  const brackets={},src=v.brackets&&typeof v.brackets==='object'?v.brackets:{};
  SPORTS.forEach(s=>s.divs.forEach(d=>{const k=key(s.id,d,'_'),b=src[k];brackets[k]=b&&typeof b==='object'&&b.results&&b.schedules?{results:b.results,schedules:b.schedules,seeds:validSeeds(b.seeds)?b.seeds:[...SEED0]}:{results:{},schedules:{},seeds:[...SEED0]}}));
  const old=v.settings.sports||{},sports={};SPORTS.forEach(s=>{const o=old[s.id]||{};const dbd=o.durByDiv&&typeof o.durByDiv==='object'?o.durByDiv:(s.durByDiv||{});sports[s.id]={duration:Number(o.duration)||s.duration,durByDiv:{...dbd},byLevel:o.byLevel===undefined?!!s.byLevel:!!o.byLevel,venue:String(o.venue||s.venue),courts:Math.min(16,Math.max(1,Number(o.courts)||s.courts)),days:Array.isArray(o.days)?o.days.filter(d=>typeof d==='string'):[...(DEF_DAYS[s.id]||[])]}});
