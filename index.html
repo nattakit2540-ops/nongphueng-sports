@@ -369,7 +369,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 #printSheet .ps-grp{break-inside:avoid;page-break-inside:avoid;margin:0 0 10px}
 #printSheet .ps-grp h3{text-align:center;font:600 14px var(--body);margin:6px 0 3px}#printSheet .ps-grp h4{text-align:center;font:500 13px var(--body);margin:6px 0 3px}
 #printSheet table{width:100%;border-collapse:collapse;table-layout:fixed}
-#printSheet th,#printSheet td{border-left:1px solid #000;border-right:1px solid #000;padding:2px 6px;text-align:center;vertical-align:middle}
+#printSheet th,#printSheet td{border:1px solid #000;padding:2px 6px;text-align:center;vertical-align:middle}
 #printSheet thead th{border:1px solid #000;font-weight:500;padding:4px 6px}
 #printSheet tbody tr:last-child td{border-bottom:1px solid #000}#printSheet tr.lv td{border-top:1px solid #000}
 #printSheet .c-n{width:6%}#printSheet .c-m{width:51%}#printSheet .c-t{width:8%}#printSheet .c-d{width:16%}#printSheet .c-r{width:19%}#printSheet td{white-space:nowrap;overflow:hidden}
@@ -904,8 +904,8 @@ function exportWord(){const M=sheetModel(),wd=[650,5500,850,1772,2000],B='w:val=
  M.days.forEach(d=>{body+=wPara(wRun(d.label,{b:1,sz:30}),{box:1,keep:1,before:200,after:60});
   d.tables.forEach(T=>{body+=wPara(wRun(T.head,{b:T.main}),{jc:'center',keep:1,before:T.main?160:100,after:40});
    const head=`<w:tr><w:trPr><w:cantSplit/><w:tblHeader/></w:trPr>${SHEET_COLS.map(([h],i)=>cell(i,wRun(h),{top:1,bottom:1,keep:1})).join('')}</w:tr>`;
-   const rows=T.rows.map((r,k)=>{const keep=k<T.rows.length-1,o={top:r.lv||k===0,bottom:!keep,keep};return `<w:tr><w:trPr><w:cantSplit/></w:trPr>${cell(0,wRun(r.n),o)}${cell(1,wRun(r.a,{b:r.wa})+wRun('  -  ')+wRun(r.b,{b:r.wb}),o)}${cell(2,wRun(r.t),o)}${cell(3,wRun(r.dv),o)}${cell(4,wRun(r.res),o)}</w:tr>`}).join('');
-   body+=`<w:tbl><w:tblPr><w:tblW w:w="${wd.reduce((a,b)=>a+b)}" w:type="dxa"/><w:jc w:val="center"/><w:tblBorders><w:top ${B}/><w:left ${B}/><w:bottom ${B}/><w:right ${B}/><w:insideH w:val="nil"/><w:insideV ${B}/></w:tblBorders><w:tblLayout w:type="fixed"/></w:tblPr><w:tblGrid>${wd.map(w=>`<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>${head}${rows}</w:tbl>`})});
+   const rows=T.rows.map((r,k)=>{const keep=k<T.rows.length-1,o={top:1,bottom:1,keep};return `<w:tr><w:trPr><w:cantSplit/></w:trPr>${cell(0,wRun(r.n),o)}${cell(1,wRun(r.a,{b:r.wa})+wRun('  -  ')+wRun(r.b,{b:r.wb}),o)}${cell(2,wRun(r.t),o)}${cell(3,wRun(r.dv),o)}${cell(4,wRun(r.res),o)}</w:tr>`}).join('');
+   body+=`<w:tbl><w:tblPr><w:tblW w:w="${wd.reduce((a,b)=>a+b)}" w:type="dxa"/><w:jc w:val="center"/><w:tblBorders><w:top ${B}/><w:left ${B}/><w:bottom ${B}/><w:right ${B}/><w:insideH ${B}/><w:insideV ${B}/></w:tblBorders><w:tblLayout w:type="fixed"/></w:tblPr><w:tblGrid>${wd.map(w=>`<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>${head}${rows}</w:tbl>`})});
  if(!M.count)body+=wPara(wRun('ไม่มีการแข่งขัน'));body+='<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="20" w:lineRule="exact"/><w:rPr><w:sz w:val="2"/><w:szCs w:val="2"/></w:rPr></w:pPr></w:p>';
  const sect='<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="680" w:right="567" w:bottom="680" w:left="567" w:header="0" w:footer="0" w:gutter="0"/></w:sectPr>';
  const sfx=view==='schedule'&&schedMode==='sport'?'_'+sport(activeSport).name:view==='schedule'&&schedMode==='list'&&filter.day!=='all'?'_'+filter.day:'';
