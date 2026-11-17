@@ -372,7 +372,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 #printSheet th,#printSheet td{border-left:1px solid #000;border-right:1px solid #000;padding:2px 6px;text-align:center;vertical-align:middle}
 #printSheet thead th{border:1px solid #000;font-weight:500;padding:4px 6px}
 #printSheet tbody tr:last-child td{border-bottom:1px solid #000}#printSheet tr.lv td{border-top:1px solid #000}
-#printSheet .c-n{width:7%}#printSheet .c-m{width:48%}#printSheet .c-t{width:9%}#printSheet .c-d{width:17%}#printSheet .c-r{width:19%}#printSheet td{white-space:nowrap;overflow:hidden}
+#printSheet .c-n{width:6%}#printSheet .c-m{width:51%}#printSheet .c-t{width:8%}#printSheet .c-d{width:16%}#printSheet .c-r{width:19%}#printSheet td{white-space:nowrap;overflow:hidden}
 #printSheet td.m{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#printSheet td.m b{font-weight:700}
 #printSheet.landscape svg{display:block;width:276mm;height:188mm;margin:0 auto}
 .clash-teams{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 12px;margin-top:6px}
@@ -836,7 +836,7 @@ function dailyReportHTML(){const days=compDays(),all=allEvents();if(!days.includ
  </div>`}
 function sheetEvents(){let es=allEvents();if(view==='schedule'){if(schedMode==='sport')es=es.filter(e=>e.s===activeSport);else if(schedMode==='list'){if(filter.day!=='all')es=es.filter(e=>e.schedule.date===filter.day);if(filter.sport!=='all')es=es.filter(e=>e.s===filter.sport);if(filter.division!=='all')es=es.filter(e=>e.d===filter.division)}}return es}
 /* one data model for the printed sheet and the .docx: days → tables (one per sport · venue · round) → rows */
-function sheetModel(){const es=sheetEvents(),vn=e=>(e.schedule.venue||'').split(' · ')[0],days=new Map();
+function sheetModel(){const es=sheetEvents(),vn=e=>(e.schedule.venue||'').split(' · ')[0],sch=e=>{const p=(e.schedule.venue||'').split(' · ');if(!p[1])return p[0];const s=p[1].replace(/\s*\(.*\)\s*$/,'');return s.length>20?s.replace(/^โรงเรียน/,'รร.'):s},days=new Map();
  es.forEach(e=>{const d=hasDate(e)?e.schedule.date:'';if(!days.has(d))days.set(d,[]);days.get(d).push(e)});
  const dKeys=[...days.keys()].sort((a,b)=>!a?1:!b?-1:a<b?-1:a>b?1:0),ord=(a,b)=>byTime(a,b)||div(a.d).lv.localeCompare(div(b.d).lv)||DIVS.findIndex(x=>x.id===a.d)-DIVS.findIndex(x=>x.id===b.d)||a.number-b.number;
  return {count:es.length,days:dKeys.map(d=>{const list=days.get(d),groups=new Map();
@@ -844,10 +844,10 @@ function sheetModel(){const es=sheetEvents(),vn=e=>(e.schedule.venue||'').split(
   const gk=[...groups.keys()].sort((a,b)=>{const x=groups.get(a),y=groups.get(b);return SPORTS.findIndex(s=>s.id===x[0].s)-SPORTS.findIndex(s=>s.id===y[0].s)||vn(x[0]).localeCompare(vn(y[0]),'th')});
   const tables=[];gk.forEach(k=>{const g=groups.get(k),v=vn(g[0]);let n=0;
    [...new Set(g.map(e=>e.round))].sort().forEach((r,ri)=>{let lastLv=null;
-    const rows=g.filter(e=>e.round===r).sort(ord).map(e=>{n++;const t=e.schedule.time||'',lv=div(e.d).lv,row={n,a:teamLabel(e,0),b:teamLabel(e,1),wa:e.completed&&e.winner===e.sides[0],wb:e.completed&&e.winner===e.sides[1],t,dv:div(e.d).name,res:vn(e),lv:lastLv!==null&&lv!==lastLv};lastLv=lv;return row});
+    const rows=g.filter(e=>e.round===r).sort(ord).map(e=>{n++;const t=e.schedule.time||'',lv=div(e.d).lv,row={n,a:teamLabel(e,0),b:teamLabel(e,1),wa:e.completed&&e.winner===e.sides[0],wb:e.completed&&e.winner===e.sides[1],t,dv:div(e.d).name,res:sch(e),lv:lastLv!==null&&lv!==lastLv};lastLv=lv;return row});
     tables.push({main:ri===0,head:ri===0?`ประเภท${sport(g[0].s).name}${v?`   สนาม${v}`:''}   (${ROUND[r]})`:ROUND[r],rows})})});
   return {label:d?dLong(d):'ยังไม่กำหนดวันเวลา',tables}})}}
-const SHEET_COLS=[['ลำดับ','c-n',7],['คู่แข่งขัน','c-m',48],['เวลา','c-t',9],['รุ่น','c-d',17],['สนามแข่งขัน','c-r',19]];
+const SHEET_COLS=[['ลำดับ','c-n',6],['คู่แข่งขัน','c-m',51],['เวลา','c-t',8],['รุ่น','c-d',16],['สนามแข่งขัน','c-r',19]];
 function sheetHTML(){const M=sheetModel(),tm=(t,w)=>w?`<b>${safe(t)}</b>`:safe(t);
  const body=M.days.map(d=>`<div class="ps-day">${d.label}</div>`+d.tables.map(T=>`<div class="ps-grp">${T.main?`<h3>${safe(T.head).replace(/ {3}/g,' &nbsp; ')}</h3>`:`<h4>${T.head}</h4>`}<table><thead><tr>${SHEET_COLS.map(([h,c])=>`<th class="${c}">${h}</th>`).join('')}</tr></thead><tbody>${T.rows.map(r=>`<tr${r.lv?' class="lv"':''}><td>${r.n}</td><td class="m">${tm(r.a,r.wa)} &nbsp;-&nbsp; ${tm(r.b,r.wb)}</td><td>${r.t}</td><td>${r.dv}</td><td>${r.res}</td></tr>`).join('')}</tbody></table></div>`).join('')).join('');
  return `<p class="ps-title">ตารางการแข่งขัน ${safe(state.eventName)}</p><p class="ps-sub">${M.count} นัด</p>${body||'<p>ไม่มีการแข่งขัน</p>'}`}
@@ -898,7 +898,7 @@ function docxBlob(body,sect,img){const rels=`<?xml version="1.0" encoding="UTF-8
   ['word/_rels/document.xml.rels',rels],['word/styles.xml',styles]];
  if(img)files.push(['word/media/image1.png',img]);return zipStore(files)}
 const saveBlob=(blob,name)=>{const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3500)};
-function exportWord(){const M=sheetModel(),wd=[754,5170,969,1831,2048],B='w:val="single" w:sz="6" w:space="0" w:color="000000"';
+function exportWord(){const M=sheetModel(),wd=[650,5500,850,1772,2000],B='w:val="single" w:sz="6" w:space="0" w:color="000000"';
  const cell=(i,runs,o={})=>`<w:tc><w:tcPr><w:tcW w:w="${wd[i]}" w:type="dxa"/><w:tcBorders><w:top ${o.top?B:'w:val="nil"'}/><w:bottom ${o.bottom?B:'w:val="nil"'}/></w:tcBorders><w:vAlign w:val="center"/></w:tcPr>${wPara(runs,{jc:'center',keep:o.keep})}</w:tc>`;
  let body=wPara(wRun('ตารางการแข่งขัน '+state.eventName,{b:1,sz:32}),{jc:'center'})+wPara(wRun(M.count+' นัด'),{jc:'center',after:80});
  M.days.forEach(d=>{body+=wPara(wRun(d.label,{b:1,sz:30}),{box:1,keep:1,before:200,after:60});
