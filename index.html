@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#ff6fae">
 <meta name="description" content="ตารางแข่งขัน ผังการแข่งขัน และผลการแข่งขัน แข่งขันกีฬาอำเภอเกษตรวิสัย “หนองผึ้งเกมส์” 2026">
 <title>หนองผึ้งเกมส์ · แข่งขันกีฬาอำเภอเกษตรวิสัย 2026</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7-12-7V9z' fill='%23ff6fae'/%3E%3Cpath d='M16 10l5.2 3v6L16 22l-5.2-3v-6z' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="48x48" href="icon-48.png"><link rel="apple-touch-icon" href="icon-192.png"><meta property="og:image" content="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -24,7 +24,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 .topbar{position:sticky;top:0;z-index:50;background:rgba(248,250,255,.82);backdrop-filter:saturate(1.6) blur(16px);-webkit-backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--line)}
 .topbar-in{display:flex;align-items:center;gap:18px;height:70px}
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink);margin-right:auto}
-.brand svg{width:38px;height:38px;transition:transform .6s var(--ease)}.brand:hover svg{transform:rotate(60deg)}
+.brand-logo{width:46px;height:auto;display:block;filter:drop-shadow(0 3px 6px rgba(236,72,153,.25));transition:transform .5s var(--ease)}.brand:hover .brand-logo{transform:rotate(-6deg) scale(1.08)}
 .brand b{display:block;font:700 17px/1.15 var(--display)}
 .brand small{display:block;font:600 11.5px/1.2 var(--num);letter-spacing:3px;color:var(--muted)}
 .tabs{display:flex;gap:2px;background:rgba(255,255,255,.75);border:1px solid var(--line);padding:4px;border-radius:99px}
@@ -376,6 +376,11 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disa
 #printSheet td.m{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#printSheet td.m b{font-weight:700}
 #printSheet.landscape svg{display:block;width:276mm;height:188mm;margin:0 auto}
 .clash-teams{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 12px;margin-top:6px}
+.hero-side{display:flex;flex-direction:column;align-items:center}.hero-logo{width:min(300px,70%);height:auto;margin:-6px auto 10px;filter:drop-shadow(0 14px 24px rgba(236,72,153,.25));animation:logoFloat 5s ease-in-out infinite}
+@keyframes logoFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+@media (prefers-reduced-motion:reduce){.hero-logo{animation:none}}
+@media (max-width:760px){.hero-side{order:-1}.hero-logo{width:min(190px,55%);margin:0 auto 6px}.brand-logo{width:38px}}
+@media print{.hero-logo{animation:none}}
 /* responsive */
 @media(max-width:1100px){.champs{grid-template-columns:repeat(2,1fr)}.sports{grid-template-columns:repeat(3,1fr)}.next{grid-template-columns:repeat(2,1fr)}.fx{grid-template-columns:70px minmax(0,1fr) minmax(0,2fr) 104px 38px}.fx-venue{display:none}}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
@@ -410,7 +415,7 @@ body{background:#fff}.topbar,.foot,.toolbar,.filters,.days,.icon-btn,.hero-cta,.
 <header class="topbar">
   <div class="wrap topbar-in">
     <a class="brand" href="#" data-view-link="home" aria-label="หน้าแรก">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6fae"/><stop offset="1" stop-color="#3fb8ff"/></linearGradient></defs><path d="M16 2l12 7v14l-12 7-12-7V9z" fill="url(#lg1)"/><path d="M16 10l5.2 3v6L16 22l-5.2-3v-6z" fill="#fff"/></svg>
+      <img class="brand-logo" src="logo.webp" alt="โลโก้ Nong Phueng Games 2026" width="46" height="50">
       <span><b>หนองผึ้งเกมส์</b><small>KASET WISAI 2026</small></span>
     </a>
     <nav class="tabs" aria-label="เมนูหลัก">
@@ -717,7 +722,7 @@ function homeHTML(){const es=allEvents(),z=state.settings,done=es.filter(e=>e.co
   <p class="hero-sub">ตารางแข่งขัน ผังการแข่งขัน และผลการแข่งขันกีฬาอำเภอเกษตรวิสัย ${SPORTS.length} ชนิดกีฬา ${NDIV} ประเภท ระดับประถมศึกษาและมัธยมศึกษา</p>
   <div class="hero-meta"><div><small>Date</small><b>${fmtDays(compDays())}</b></div><div><small>Time</small><b>${safe(z.timeFrom)}–${safe(z.timeTo)} น.</b></div><div><small>Format</small><b>แพ้คัดออก 6 ทีม</b></div></div>
   <div class="hero-cta"><button class="btn btn-volt" data-view-link="schedule">ดูตารางแข่งขัน ${ic('arrow')}</button><button class="btn btn-ghost" data-view-link="bracket">ผังการแข่งขัน</button></div>
- </div><div><div class="cd-label" id="cdLabel">เริ่มการแข่งขันใน</div><div class="cd" id="countdown"><div><b data-cd="d">00</b><span>วัน</span></div><div><b data-cd="h">00</b><span>ชั่วโมง</span></div><div><b data-cd="m">00</b><span>นาที</span></div><div><b data-cd="s">00</b><span>วินาที</span></div></div></div></div>
+ </div><div class="hero-side"><img class="hero-logo" src="logo.webp" alt="Nong Phueng Games 2026" width="510" height="560"><div class="cd-label" id="cdLabel">เริ่มการแข่งขันใน</div><div class="cd" id="countdown"><div><b data-cd="d">00</b><span>วัน</span></div><div><b data-cd="h">00</b><span>ชั่วโมง</span></div><div><b data-cd="m">00</b><span>นาที</span></div><div><b data-cd="s">00</b><span>วินาที</span></div></div></div></div>
  <div class="kpis"><div><b>${SPORTS.length}</b><span>ชนิดกีฬา</span></div><div><b>${NDIV}</b><span>ประเภทการแข่งขัน</span></div><div><b>${es.length}</b><span>นัดทั้งหมด</span></div><div><b><em>${done}</em></b><span>แข่งขันแล้ว</span></div></div></div></section>
  <section class="wrap sec"><div class="sec-h"><div><span class="kicker">Sports</span><h2>ชนิดกีฬา</h2></div><button class="link" data-view-link="bracket">ดูผังทั้งหมด ${ic('arrow')}</button></div><div class="sports">${cards}</div></section>
  <section class="wrap sec"><div class="sec-h"><div><span class="kicker">Daily report</span><h2>รายงานผลประจำวัน</h2></div><button class="link" data-goto-report="1">ดูรายงาน ${ic('arrow')}</button></div><p class="lead">สรุปผลการแข่งขันของแต่ละวัน แยกตามชนิดกีฬาและประเภท พิมพ์หรือส่งออก Excel ได้</p></section>
